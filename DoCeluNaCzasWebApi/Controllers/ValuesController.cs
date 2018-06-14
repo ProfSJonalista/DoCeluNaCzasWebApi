@@ -14,19 +14,19 @@ namespace DoCeluNaCzasWebApi.Controllers
     public class ValuesController : ApiController
     {
         // GET api/values
-        public string Get()
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value 1", "value2" };
+        }
+
+        // GET api/values/5
+        public string Get(int id)
         {
             DataClass data = new DataClass();
             BussinessClass bussiness = new BussinessClass();
             ServiceClass service = new ServiceClass();
 
             return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + ", Shalalalala";
-        }
-
-        // GET api/values/5
-        public string Get(int id)
-        {
-            return "value";
         }
 
         // POST api/values
