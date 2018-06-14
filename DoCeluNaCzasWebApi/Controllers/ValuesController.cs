@@ -16,7 +16,7 @@ namespace DoCeluNaCzasWebApi.Controllers
         // GET api/values
         public IEnumerable<string> Get()
         {
-            return new string[] { "value 1", "value2" };
+            return new string[] { "value1", "value2" };
         }
 
         // GET api/values/5
