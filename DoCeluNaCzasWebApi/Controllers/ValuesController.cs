@@ -26,7 +26,7 @@ namespace DoCeluNaCzasWebApi.Controllers
             BussinessClass bussiness = new BussinessClass();
             ServiceClass service = new ServiceClass();
 
-            return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + ", Shalalalala";
+            return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + "WORK GODDAMIT";
         }
 
         // POST api/values
