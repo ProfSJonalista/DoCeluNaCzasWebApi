@@ -11,9 +11,8 @@ using System.Web.Http;
 namespace DoCeluNaCzasWebApi.Controllers
 {
     [Authorize]
-    public class ValuesController : ApiController
+    public class AuthorizedValuesController : ApiController
     {
-        // GET api/values
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
