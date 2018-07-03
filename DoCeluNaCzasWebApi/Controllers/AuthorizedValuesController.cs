@@ -18,7 +18,6 @@ namespace DoCeluNaCzasWebApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
         public string Get(int id)
         {
             DataClass data = new DataClass();
@@ -28,17 +27,14 @@ namespace DoCeluNaCzasWebApi.Controllers
             return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + ", WORK GODDAMIT" + ", Test CD. Oooh eeh oooh ah ah ting tang, walla walla bang bang";
         }
 
-        // POST api/values
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5
         public void Put(int id, [FromBody]string value)
         {
         }
-
-        // DELETE api/values/5
+        
         public void Delete(int id)
         {
         }
