@@ -29,9 +29,6 @@ namespace DoCeluNaCzasWebApi.Controllers
             BussinessClass bussiness = new BussinessClass();
             ServiceClass service = new ServiceClass();
 
-            BusStopsService busStopsService = new BusStopsService();
-            var derp = await busStopsService.GetStopsForCurrentDay();
-
             return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + ", WORK GODDAMIT" + ", Test CD. Oooh eeh oooh ah ah ting tang, walla walla bang bang";
         }
 

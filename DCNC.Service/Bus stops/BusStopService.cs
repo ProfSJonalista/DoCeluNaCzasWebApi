@@ -10,21 +10,23 @@ using System.Web;
 
 namespace DCNC.Service.Bus_stops
 {
-    public class BusStopsService
+    public class BusStopService
     {
-        public async Task<BusStopData> GetStopsForCurrentDay()
+        public async Task<string> GetStopsForCurrentDay()
         {
             var json = await PublicTransportRepository.GetBusStops();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
             var data = BusStopConverter(stops.First);
 
-            return data;
+            var jsonToSend = JsonConvert.SerializeObject(data);
+            return jsonToSend;
         }
 
         private BusStopData BusStopConverter(JToken busStop)
         {
             BusStopData busStopData = new BusStopData();
             busStopData.Stops = new List<Stop>();
+            busStopData.Day = busStop.Path;
 
             foreach (var item in busStop.Children())
             {
