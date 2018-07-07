@@ -76,7 +76,8 @@
   <ItemGroup>
     <Compile Include="BussinessClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Public Transport\BusStop.cs" />
+    <Compile Include="Public Transport\AgencyData.cs" />
+    <Compile Include="Public Transport\BusStopData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

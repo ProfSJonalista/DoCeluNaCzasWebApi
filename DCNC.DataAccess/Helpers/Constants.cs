@@ -8,5 +8,6 @@ namespace DCNC.DataAccess.Helpers
     public class Constants
     {
         public const string BUS_STOPS = "http://91.244.248.19/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/cd4c08b5-460e-40db-b920-ab9fc93c1a92/download/stops.json";
+        public const string AGENCIES = "http://91.244.248.19/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/8b3aa347-3bb7-4c58-9113-d47458ec1fc3/download/agency.json";
     }
 }

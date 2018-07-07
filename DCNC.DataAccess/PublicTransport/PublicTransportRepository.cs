@@ -12,17 +12,25 @@ namespace DCNC.DataAccess.PublicTransport
     {
         public async static Task<string> GetBusStops()
         {
-            string bus_stops = "";
+            return await DownloadData(Constants.BUS_STOPS);
+        }
 
-            using(HttpClient client = new HttpClient())
+        public async static Task<string> GetAgencies()
+        {
+            return await DownloadData(Constants.AGENCIES);
+        }
+
+        private async static Task<string> DownloadData(string url)
+        {
+            var data = "";
+            using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetAsync(Constants.BUS_STOPS);
+                var response = await client.GetAsync(url);
                 var json = await response.Content.ReadAsStringAsync();
-
-                bus_stops = json;
+                data = json;
             }
 
-            return bus_stops;
+            return data;
         }
     }
 }

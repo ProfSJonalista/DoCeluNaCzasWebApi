@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DCNC.Service.Bus_stops
+namespace DCNC.Service.Public_Transport
 {
     public class BusStopService
     {
