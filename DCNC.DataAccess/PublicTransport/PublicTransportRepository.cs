@@ -20,6 +20,11 @@ namespace DCNC.DataAccess.PublicTransport
             return await DownloadData(Constants.AGENCIES);
         }
 
+        public async static Task<string> GetBusLines()
+        {
+            return await DownloadData(Constants.BUS_LINES);
+        }
+
         private async static Task<string> DownloadData(string url)
         {
             var data = "";

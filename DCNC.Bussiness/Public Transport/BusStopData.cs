@@ -6,6 +6,13 @@ using System.Web;
 
 namespace DCNC.Bussiness.Public_Transport
 {
+    public class BusStopData
+    {
+        public string Day { get; set; }
+        public DateTime LastUpdate { get; set; }
+        public IList<Stop> Stops { get; set; }
+    }
+
     public class Stop
     {
         public int StopId { get; set; }
@@ -25,12 +32,5 @@ namespace DCNC.Bussiness.Public_Transport
         public bool? TicketZoneBorder { get; set; }
         public bool? OnDemand { get; set; }
         public string ActivationDate { get; set; }
-    }
-
-    public class BusStopData
-    {
-        public string Day { get; set; }
-        public DateTime LastUpdate { get; set; }
-        public IList<Stop> Stops { get; set; }
     }
 }
