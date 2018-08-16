@@ -14,7 +14,7 @@ namespace DoCeluNaCzasWebApi.Controllers
     {
         public async Task<string> Get()
         {
-            return await BusStopService.GetStopsForCurrentDay();
+            return BusStopService.GetStopsForCurrentDayAsJson();
         }
     }
 }

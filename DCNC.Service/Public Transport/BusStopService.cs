@@ -12,11 +12,17 @@ namespace DCNC.Service.Public_Transport
 {
     public class BusStopService
     {
-        public async static Task<string> GetStopsForCurrentDay()
+
+        public async static Task<BusStopData> GetBusStopData()
         {
             var json = await PublicTransportRepository.GetBusStops();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
-            var data = BusStopConverter(stops.First);
+            return BusStopConverter(stops.First);
+        }
+
+        public static string GetStopsForCurrentDayAsJson()
+        {
+            var data = GetBusStopData();
 
             var jsonToSend = JsonConvert.SerializeObject(data);
             return jsonToSend;
@@ -24,9 +30,11 @@ namespace DCNC.Service.Public_Transport
 
         private static BusStopData BusStopConverter(JToken busStop)
         {
-            BusStopData busStopData = new BusStopData();
-            busStopData.Stops = new List<Stop>();
-            busStopData.Day = busStop.Path;
+            BusStopData busStopData = new BusStopData()
+            {
+                Day = busStop.Path,
+                Stops = new List<Stop>()
+            };
 
             foreach (var item in busStop.Children())
             {

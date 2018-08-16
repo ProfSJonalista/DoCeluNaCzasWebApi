@@ -13,7 +13,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
     {
         public async Task<string> Get()
         {
-            return await BusLineService.GetLinesForCurrentDay();
+            return await BusLineService.GetLinesForCurrentDayAsJson();
         }
     }
 }

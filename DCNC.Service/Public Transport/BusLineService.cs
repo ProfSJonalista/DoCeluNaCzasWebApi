@@ -12,29 +12,36 @@ namespace DCNC.Service.Public_Transport
 {
     public class BusLineService
     {
-        public async static Task<string> GetLinesForCurrentDay()
+        public async static Task<BusLineData> GetBusLineData()
         {
             var json = await PublicTransportRepository.GetBusLines();
             JObject lines = (JObject)JsonConvert.DeserializeObject(json);
-            var data = BusLineConverter(lines.First);
-        
+            return BusLineConverter(lines.First);
+        }
+
+        public static string GetLinesForCurrentDayAsJson()
+        {
+            var data = GetBusLineData();
+
             var jsonToSend = JsonConvert.SerializeObject(data);
             return jsonToSend;
         }
 
         private static BusLineData BusLineConverter(JToken busLine)
         {
-            BusLineData busLineData = new BusLineData();
-            busLineData.Routes = new List<Route>();
-            busLineData.Day = busLine.Path;
+            BusLineData busLineData = new BusLineData()
+            {
+                Day = busLine.Path,
+                Routes = new List<Route>()
+            };
 
-            foreach(var item in busLine.Children())
+            foreach (var item in busLine.Children())
             {
                 busLineData.LastUpdate = item.Value<string>("lastUpdate");
 
                 var routeList = item.Value<JArray>("routes");
 
-                foreach(JObject line in routeList.Children<JObject>())
+                foreach (JObject line in routeList.Children<JObject>())
                 {
                     Route routeToAdd = new Route()
                     {

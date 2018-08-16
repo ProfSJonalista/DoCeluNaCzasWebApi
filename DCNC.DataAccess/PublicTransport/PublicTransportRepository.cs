@@ -25,6 +25,16 @@ namespace DCNC.DataAccess.PublicTransport
             return await DownloadData(Constants.BUS_LINES);
         }
 
+        public async static Task<string> GetTrips()
+        {
+            return await DownloadData(Constants.TRIPS);
+        }
+
+        public async static Task<string> GetStopsInTrips()
+        {
+            return await DownloadData(Constants.STOPS_IN_TRIPS);
+        }
+
         private async static Task<string> DownloadData(string url)
         {
             var data = "";
