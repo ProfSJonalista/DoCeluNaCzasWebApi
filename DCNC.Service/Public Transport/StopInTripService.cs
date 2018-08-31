@@ -46,6 +46,8 @@ namespace DCNC.Service.Public_Transport
                         TripActivationDate = stop.Value<string>("tripActivationDate"),
                         StopActivationDate = stop.Value<string>("stopActivationDate")
                     };
+
+                    stopInTripData.StopsInTrip.Add(stopInTripToAdd);
                 }
             }
 

@@ -11,9 +11,9 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class BusLineController : ApiController
     {
-        public async Task<string> Get()
+        public string Get()
         {
-            return await BusLineService.GetLinesForCurrentDayAsJson();
+            return BusLineService.GetLinesForCurrentDayAsJson();
         }
     }
 }

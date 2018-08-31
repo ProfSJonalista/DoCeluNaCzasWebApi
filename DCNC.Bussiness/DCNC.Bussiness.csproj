@@ -80,6 +80,7 @@
     <Compile Include="Public Transport\BusLineData.cs" />
     <Compile Include="Public Transport\BusStopData.cs" />
     <Compile Include="Public Transport\StopInTripData.cs" />
+    <Compile Include="Public Transport\StopTripDataModel.cs" />
     <Compile Include="Public Transport\TripData.cs" />
   </ItemGroup>
   <ItemGroup>
