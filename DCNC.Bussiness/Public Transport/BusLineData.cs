@@ -9,7 +9,7 @@ namespace DCNC.Bussiness.Public_Transport
     {
         public string Day { get; set; }
         public string LastUpdate { get; set; }
-        public IList<Route> Routes { get; set; }
+        public List<Route> Routes { get; set; }
     }
 
     public class Route

@@ -9,20 +9,40 @@ namespace DCNC.Service.Public_Transport
 {
     public class TimeTableService
     {
+        static TripData _trips;
+        static BusLineData _busLines;
+        static BusStopData _busStops;
+        static StopInTripData _stopsInTrips;
+        static List<StopTripDataModel> _tripsWithBusStops;
+
         public async static Task<string> GetStopsLinkedWithTrips()
         {
             var data = "";
 
-            var trips = await TripService.GetTripData();
-            var busLines = await BusLineService.GetBusLineData();
-            var busStops = await BusStopService.GetBusStopData();
-            var stopsInTrips = await StopInTripService.GetStopInTripData();
-            var tripsWithBusStops = new List<StopTripDataModel>();
-            foreach (var busLine in busLines.Routes)
-            {
-                var tripListByRouteId = trips.Trips.Where(x => x.RouteId == busLine.RouteId).ToList();
+            //TODO - checking last updates
 
-                foreach(var trip in tripListByRouteId)
+            if (_trips == null || (_trips.Day.Equals(DateTime.Now.ToString("yyyy-MM-dd"))) && DateTime.Now.Hour <= 6)
+            {
+                _trips = await TripService.GetTripData();
+                _busLines = await BusLineService.GetBusLineData();
+                _busStops = await BusStopService.GetBusStopData();
+                _stopsInTrips = await StopInTripService.GetStopInTripData();
+                _tripsWithBusStops = new List<StopTripDataModel>();
+            }
+            
+            TripsWithBusStopsMapper();
+            //JoinTrips();
+
+            return data;
+        }
+
+        private static void TripsWithBusStopsMapper()
+        {
+            foreach (var busLine in _busLines.Routes)
+            {
+                var tripListByRouteId = _trips.Trips.Where(x => x.RouteId == busLine.RouteId).ToList();
+
+                foreach (var trip in tripListByRouteId)
                 {
                     var tripToAdd = new StopTripDataModel()
                     {
@@ -31,41 +51,47 @@ namespace DCNC.Service.Public_Transport
                         Stops = new List<StopTripModel>()
                     };
 
-                    var stops = stopsInTrips.StopsInTrip.Where(x => x.RouteId == trip.RouteId && x.TripId == trip.TripId).ToList();
+                    var stops = _stopsInTrips.StopsInTrip.Where(x => x.RouteId == trip.RouteId && x.TripId == trip.TripId).ToList();
 
-                    foreach (var stop in stops)
-                    {
-                        
-                        var stopByStopId = busStops.Stops.Where(x => x.StopId == stop.StopId).Single();
-
-                        var stopToAdd = new StopTripModel()
-                        {
-                            RouteId = busLine.RouteId,
-                            TripId = trip.TripId,
-                            AgencyId = busLine.AgencyId,
-                            DirectionId = trip.DirectionId,
-                            StopId = stop.StopId,
-                            OnDemand = stopByStopId.OnDemand.HasValue ? stopByStopId.OnDemand.Value : false,
-                            StopName = stopByStopId.StopDesc,
-                            TripHeadsign = trip.TripHeadsign,
-                            StopLat = stopByStopId.StopLat,
-                            StopLon = stopByStopId.StopLon,
-                            StopSequence = stop.StopSequence,
-                            RouteShortName = busLine.RouteShortName
-                        };
-
-                        tripToAdd.Stops.Add(stopToAdd);
-                    }
+                    stops.ForEach(stop => tripToAdd.Stops.Add(StopMapper(busLine, trip, stop)));
                     
                     tripToAdd.Stops = tripToAdd.Stops.OrderBy(x => x.StopSequence).ToList();
-                    tripsWithBusStops.Add(tripToAdd);
+                    _tripsWithBusStops.Add(tripToAdd);
                 }
             }
-
-            var sevensixty = tripsWithBusStops.Where(x => x.BusLineName.Equals("770")).ToList();
-
-
-            return data;
         }
+
+        private static StopTripModel StopMapper(Route busLine, Trip trip, StopInTrip stop)
+        {
+            var stopByStopId = _busStops.Stops.Where(x => x.StopId == stop.StopId).Single();
+
+            return new StopTripModel()
+            {
+                RouteId = busLine.RouteId,
+                TripId = trip.TripId,
+                AgencyId = busLine.AgencyId,
+                DirectionId = trip.DirectionId,
+                StopId = stop.StopId,
+                OnDemand = stopByStopId.OnDemand.HasValue ? stopByStopId.OnDemand.Value : false,
+                StopName = stopByStopId.StopDesc,
+                TripHeadsign = trip.TripHeadsign,
+                StopLat = stopByStopId.StopLat,
+                StopLon = stopByStopId.StopLon,
+                StopSequence = stop.StopSequence,
+                RouteShortName = busLine.RouteShortName
+            };
+        }
+
+        //private static void JoinTrips()
+        //{
+        //    var distinctBusLines = _busLines.Routes.Select(x => x).Distinct().ToList();
+
+        //    distinctBusLines.ForEach(busLine => JoinTripsForEachBusLine(busLine));
+        //}
+
+        //private static void JoinTripsForEachBusLine(Route busLine)
+        //{
+        //    var tripsWithBusStopsForEachBus = _tripsWithBusStops.Select
+        //}
     }
 }
