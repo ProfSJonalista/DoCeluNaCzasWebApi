@@ -1,4 +1,5 @@
 ﻿using DCNC.Bussiness.Public_Transport;
+using DCNC.Service.Public_Transport.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace DCNC.Service.Public_Transport
             }
             
             TripsWithBusStopsMapper();
-            //JoinTrips();
+            JoinTrips();
 
             return data;
         }
@@ -82,16 +83,24 @@ namespace DCNC.Service.Public_Transport
             };
         }
 
-        //private static void JoinTrips()
-        //{
-        //    var distinctBusLines = _busLines.Routes.Select(x => x).Distinct().ToList();
+        private static void JoinTrips()
+        {
+            var distinctBusLines = _busLines.Routes.Select(x => x).Distinct().ToList();
 
-        //    distinctBusLines.ForEach(busLine => JoinTripsForEachBusLine(busLine));
-        //}
+            distinctBusLines.ForEach(busLine => JoinTripsForEachBusLine(busLine));
+        }
 
-        //private static void JoinTripsForEachBusLine(Route busLine)
-        //{
-        //    var tripsWithBusStopsForEachBus = _tripsWithBusStops.Select
-        //}
+        private static void JoinTripsForEachBusLine(Route busLine)
+        {
+            var tripsWithBusStopsForBusLine = _tripsWithBusStops.Where(x => x.BusLineName.Equals(busLine.RouteShortName)).ToList();
+
+            var first = tripsWithBusStopsForBusLine.First().Stops;
+            var merged = new List<StopTripModel>();
+
+            foreach(var trip in tripsWithBusStopsForBusLine)
+            {
+                merged = first.Intersect(trip.Stops, new RouteComparer()).ToList();
+            }
+        }
     }
 }

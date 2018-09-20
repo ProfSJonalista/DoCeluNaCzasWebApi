@@ -78,6 +78,7 @@
     <Compile Include="Public Transport\BusLineService.cs" />
     <Compile Include="Public Transport\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Public Transport\Helpers\RouteComparer.cs" />
     <Compile Include="Public Transport\StopInTripService.cs" />
     <Compile Include="Public Transport\TimeTableService.cs" />
     <Compile Include="Public Transport\TripService.cs" />

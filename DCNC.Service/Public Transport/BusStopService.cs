@@ -20,9 +20,9 @@ namespace DCNC.Service.Public_Transport
             return BusStopConverter(stops.First);
         }
 
-        public static string GetStopsForCurrentDayAsJson()
+        public async static Task<string> GetStopsForCurrentDayAsJson()
         {
-            var data = GetBusStopData();
+            var data = await GetBusStopData();
 
             var jsonToSend = JsonConvert.SerializeObject(data);
             return jsonToSend;
