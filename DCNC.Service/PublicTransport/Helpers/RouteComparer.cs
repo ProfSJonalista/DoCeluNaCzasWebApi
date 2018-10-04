@@ -1,10 +1,10 @@
-﻿using DCNC.Bussiness.Public_Transport;
+﻿using DCNC.Bussiness.PublicTransport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Service.Public_Transport.Helpers
+namespace DCNC.Service.PublicTransport.Helpers
 {
     public class RouteComparer : IEqualityComparer<StopTripModel>
     {

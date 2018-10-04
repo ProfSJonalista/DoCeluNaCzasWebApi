@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Bussiness.Public_Transport
+namespace DCNC.Bussiness.PublicTransport
 {
     public class BusStopData
     {
-        public string Day { get; set; }
+        public DateTime Day { get; set; }
         public DateTime LastUpdate { get; set; }
         public IList<Stop> Stops { get; set; }
     }
@@ -31,6 +31,6 @@ namespace DCNC.Bussiness.Public_Transport
         public bool? Depot { get; set; }
         public bool? TicketZoneBorder { get; set; }
         public bool? OnDemand { get; set; }
-        public string ActivationDate { get; set; }
+        public DateTime ActivationDate { get; set; }
     }
 }

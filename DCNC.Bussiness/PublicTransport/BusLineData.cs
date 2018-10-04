@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Bussiness.Public_Transport
+namespace DCNC.Bussiness.PublicTransport
 {
     public class BusLineData
     {
-        public string Day { get; set; }
-        public string LastUpdate { get; set; }
+        public DateTime Day { get; set; }
+        public DateTime LastUpdate { get; set; }
         public List<Route> Routes { get; set; }
     }
 
@@ -18,6 +18,6 @@ namespace DCNC.Bussiness.Public_Transport
         public int AgencyId { get; set; }
         public string RouteShortName { get; set; }
         public string RouteLongName { get; set; }
-        public string ActivationDate { get; set; }
+        public DateTime ActivationDate { get; set; }
     }
 }

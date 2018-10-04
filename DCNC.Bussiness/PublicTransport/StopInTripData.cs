@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Bussiness.Public_Transport
+namespace DCNC.Bussiness.PublicTransport
 {
     public class StopInTripData
     {
-        public string Day { get; set; }
-        public string LastUpdate { get; set; }
+        public DateTime Day { get; set; }
+        public DateTime LastUpdate { get; set; }
         public IList<StopInTrip> StopsInTrip { get; set; }
     }
 
@@ -20,7 +20,7 @@ namespace DCNC.Bussiness.Public_Transport
         public int StopSequence { get; set; }
         public int AgencyId { get; set; }
         public int TopologyVersionId { get; set; }
-        public string TripActivationDate { get; set; }
-        public string StopActivationDate { get; set; }
+        public DateTime TripActivationDate { get; set; }
+        public DateTime StopActivationDate { get; set; }
     }
 }

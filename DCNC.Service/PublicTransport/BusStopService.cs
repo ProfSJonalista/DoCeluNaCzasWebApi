@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.Public_Transport;
+﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DCNC.Service.Public_Transport
+namespace DCNC.Service.PublicTransport
 {
     public class BusStopService
     {
@@ -32,7 +32,7 @@ namespace DCNC.Service.Public_Transport
         {
             BusStopData busStopData = new BusStopData()
             {
-                Day = busStop.Path,
+                Day = DateTime.Parse(busStop.Path),
                 Stops = new List<Stop>()
             };
 
@@ -55,14 +55,14 @@ namespace DCNC.Service.Public_Transport
                         Date = stop.Value<DateTime>("date"),
                         StopLat = stop.Value<double>("stopLat"),
                         StopLon = stop.Value<double>("stopLon"),
-                        ZoneId = stop.Value<int?>("zoneId").HasValue ? stop.Value<int?>("zoneId").Value : 0,
+                        ZoneId = stop.Value<int?>("zoneId") ?? 0,
                         ZoneName = stop.Value<string>("zoneName"),
-                        VirtualBusStop = stop.Value<bool?>("virtual").HasValue ? stop.Value<bool?>("virtual").Value : false,
-                        NonPassenger = stop.Value<bool?>("nonpassenger").HasValue ? stop.Value<bool?>("nonpassenger").Value : false,
-                        Depot = stop.Value<bool?>("depot").HasValue ? stop.Value<bool?>("depot").Value : false,
-                        TicketZoneBorder = stop.Value<bool?>("ticketZoneBorder").HasValue ? stop.Value<bool?>("ticketZoneBorder").Value : false,
-                        OnDemand = stop.Value<bool?>("onDemand").HasValue ? stop.Value<bool?>("onDemand").Value : false,
-                        ActivationDate = stop.Value<string>("activationDate")
+                        VirtualBusStop = stop.Value<bool?>("virtual") ?? false,
+                        NonPassenger = stop.Value<bool?>("nonpassenger") ?? false,
+                        Depot = stop.Value<bool?>("depot") ?? false,
+                        TicketZoneBorder = stop.Value<bool?>("ticketZoneBorder") ?? false,
+                        OnDemand = stop.Value<bool?>("onDemand") ?? false,
+                        ActivationDate = stop.Value<DateTime>("activationDate")
                     };
 
                     busStopData.Stops.Add(stopToAdd);

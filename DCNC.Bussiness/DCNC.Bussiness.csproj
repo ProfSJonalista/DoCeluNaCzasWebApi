@@ -76,12 +76,12 @@
   <ItemGroup>
     <Compile Include="BussinessClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Public Transport\AgencyData.cs" />
-    <Compile Include="Public Transport\BusLineData.cs" />
-    <Compile Include="Public Transport\BusStopData.cs" />
-    <Compile Include="Public Transport\StopInTripData.cs" />
-    <Compile Include="Public Transport\StopTripDataModel.cs" />
-    <Compile Include="Public Transport\TripData.cs" />
+    <Compile Include="PublicTransport\AgencyData.cs" />
+    <Compile Include="PublicTransport\BusLineData.cs" />
+    <Compile Include="PublicTransport\BusStopData.cs" />
+    <Compile Include="PublicTransport\StopInTripData.cs" />
+    <Compile Include="PublicTransport\StopTripDataModel.cs" />
+    <Compile Include="PublicTransport\TripData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

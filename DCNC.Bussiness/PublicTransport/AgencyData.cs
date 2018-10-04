@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Bussiness.Public_Transport
+namespace DCNC.Bussiness.PublicTransport
 {
     public class AgencyData
     {

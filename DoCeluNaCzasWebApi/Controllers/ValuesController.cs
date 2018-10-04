@@ -1,7 +1,7 @@
 ﻿using DCNC.Bussiness;
 using DCNC.DataAccess;
 using DCNC.Service;
-using DCNC.Service.Public_Transport;
+using DCNC.Service.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.Public_Transport;
+﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DCNC.Service.Public_Transport
+namespace DCNC.Service.PublicTransport
 {
     public class StopInTripService
     {
@@ -23,13 +23,13 @@ namespace DCNC.Service.Public_Transport
         {
             StopInTripData stopInTripData = new StopInTripData()
             {
-                Day = stops.Path,
+                Day = DateTime.Parse(stops.Path),
                 StopsInTrip = new List<StopInTrip>()
             };
 
             foreach(var item in stops.Children())
             {
-                stopInTripData.LastUpdate = item.Value<string>("lastUpdate");
+                stopInTripData.LastUpdate = item.Value<DateTime>("lastUpdate");
 
                 var stopList = item.Value<JArray>("stopsInTrip");
 
@@ -43,8 +43,8 @@ namespace DCNC.Service.Public_Transport
                         StopSequence = stop.Value<int>("stopSequence"),
                         AgencyId = stop.Value<int>("agencyId"),
                         TopologyVersionId = stop.Value<int>("topologyVersionId"),
-                        TripActivationDate = stop.Value<string>("tripActivationDate"),
-                        StopActivationDate = stop.Value<string>("stopActivationDate")
+                        TripActivationDate = stop.Value<DateTime>("tripActivationDate"),
+                        StopActivationDate = stop.Value<DateTime>("stopActivationDate")
                     };
 
                     stopInTripData.StopsInTrip.Add(stopInTripToAdd);

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DCNC.Bussiness.Public_Transport
+namespace DCNC.Bussiness.PublicTransport
 {
     public class StopTripDataModel
     {
         public string BusLineName { get; set; }
         public string TripHeadsign { get; set; }
+        public DateTime ActivationDate { get; set; }
         public List<StopTripModel> Stops { get; set; }
     }
 

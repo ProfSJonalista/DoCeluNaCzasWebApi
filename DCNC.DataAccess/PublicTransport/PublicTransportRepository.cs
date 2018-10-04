@@ -35,6 +35,8 @@ namespace DCNC.DataAccess.PublicTransport
             return await DownloadData(Constants.STOPS_IN_TRIPS);
         }
 
+        //public async static Task<string>
+
         private async static Task<string> DownloadData(string url)
         {
             var data = "";

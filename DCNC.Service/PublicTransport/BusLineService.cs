@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.Public_Transport;
+﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DCNC.Service.Public_Transport
+namespace DCNC.Service.PublicTransport
 {
     public class BusLineService
     {
@@ -31,13 +31,13 @@ namespace DCNC.Service.Public_Transport
         {
             BusLineData busLineData = new BusLineData()
             {
-                Day = busLine.Path,
+                Day = DateTime.Parse(busLine.Path),
                 Routes = new List<Route>()
             };
 
             foreach (var item in busLine.Children())
             {
-                busLineData.LastUpdate = item.Value<string>("lastUpdate");
+                busLineData.LastUpdate = item.Value<DateTime>("lastUpdate");
 
                 var routeList = item.Value<JArray>("routes");
 
@@ -49,7 +49,7 @@ namespace DCNC.Service.Public_Transport
                         AgencyId = line.Value<int>("agencyId"),
                         RouteShortName = line.Value<string>("routeShortName"),
                         RouteLongName = line.Value<string>("routeLongName"),
-                        ActivationDate = line.Value<string>("activationDate")
+                        ActivationDate = line.Value<DateTime>("activationDate")
                     };
 
                     busLineData.Routes.Add(routeToAdd);

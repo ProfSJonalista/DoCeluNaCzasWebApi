@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.Public_Transport;
+﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DCNC.Service.Public_Transport
+namespace DCNC.Service.PublicTransport
 {
     public class TripService
     {
@@ -23,13 +23,13 @@ namespace DCNC.Service.Public_Transport
         {
             var tripData = new TripData()
             {
-                Day = trips.Path,
+                Day = DateTime.Parse(trips.Path),
                 Trips = new List<Trip>()
             };
 
             foreach(JObject item in trips.Children<JObject>())
             {
-                tripData.LastUpdate = item.Value<string>("lastUpdate");
+                tripData.LastUpdate = item.Value<DateTime>("lastUpdate");
 
                 var tripList = item.Value<JArray>("trips");
 
@@ -43,7 +43,7 @@ namespace DCNC.Service.Public_Transport
                         TripHeadsign = trip.Value<string>("tripHeadsign"),
                         TripShortName = trip.Value<string>("tripShortName"),
                         DirectionId = trip.Value<int>("directionId"),
-                        ActivationDate = trip.Value<string>("activationDate")
+                        ActivationDate = trip.Value<DateTime>("activationDate")
                     };
 
                     tripData.Trips.Add(tripToAdd);
