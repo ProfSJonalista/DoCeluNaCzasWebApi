@@ -9,6 +9,8 @@ namespace DCNC.Bussiness.PublicTransport
     {
         public string BusLineName { get; set; }
         public string TripHeadsign { get; set; }
+        public bool MainRoute { get; set; }
+        public bool TechnicalTrip { get; set; }
         public DateTime ActivationDate { get; set; }
         public List<StopTripModel> Stops { get; set; }
     }
@@ -27,5 +29,6 @@ namespace DCNC.Bussiness.PublicTransport
         public double StopLon { get; set; }
         public int StopSequence { get; set; }
         public string RouteShortName { get; set; }
+        public bool BelongsToMainTrip { get; set; }
     }
 }

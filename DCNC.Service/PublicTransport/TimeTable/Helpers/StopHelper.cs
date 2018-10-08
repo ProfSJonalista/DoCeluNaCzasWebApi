@@ -8,7 +8,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public static class StopHelper
     {
-        internal static StopTripModel Mapper(Route busLine, Trip trip, StopInTrip stop, BusStopData busStops)
+        internal static StopTripModel Mapper(Route busLine, Trip trip, StopInTrip stop, BusStopData busStops, bool belongsToMainRoute)
         {
             var stopByStopId = busStops.Stops.Where(x => x.StopId == stop.StopId).Single();
 
@@ -25,7 +25,8 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                 StopLat = stopByStopId.StopLat,
                 StopLon = stopByStopId.StopLon,
                 StopSequence = stop.StopSequence,
-                RouteShortName = busLine.RouteShortName
+                RouteShortName = busLine.RouteShortName,
+                BelongsToMainTrip = belongsToMainRoute
             };
         }
 

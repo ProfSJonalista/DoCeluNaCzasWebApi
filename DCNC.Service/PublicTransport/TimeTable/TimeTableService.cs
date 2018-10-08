@@ -15,6 +15,7 @@ namespace DCNC.Service.PublicTransport.TimeTable
         static BusLineData _busLines;
         static BusStopData _busStops;
         static StopInTripData _stopsInTrips;
+        static ExpeditionData _expeditionData;
         static List<StopTripDataModel> _tripsWithBusStops;
 
         public async static Task<string> GetStopsLinkedWithTrips()
@@ -35,6 +36,9 @@ namespace DCNC.Service.PublicTransport.TimeTable
             if (_stopsInTrips == null)
                 _stopsInTrips = await StopInTripService.GetStopInTripData();
 
+            if (_expeditionData == null)
+                _expeditionData = await ExpeditionService.GetExpeditionData();
+
             if (_tripsWithBusStops == null)
             {
                 _tripsWithBusStops = new List<StopTripDataModel>();
@@ -54,21 +58,32 @@ namespace DCNC.Service.PublicTransport.TimeTable
 
                 foreach (var trip in tripListByRouteId)
                 {
+                    var expedition = _expeditionData.Expeditions
+                                                    .Where(x => x.RouteId == busLine.RouteId
+                                                             && x.TripId == trip.TripId
+                                                             && x.StartDate.ToString("yyyy-MM-dd").Equals(DateTime.Now.ToString("yyyy-MM-dd")))
+                                                     .ToList()
+                                                    .FirstOrDefault();
+
+                    if (expedition.TechnicalTrip)
+                        continue;
+
                     var tripToAdd = new StopTripDataModel()
                     {
                         BusLineName = busLine.RouteShortName,
                         TripHeadsign = trip.TripHeadsign,
+                        MainRoute = expedition.MainRoute,
+                        TechnicalTrip = expedition.TechnicalTrip,
                         ActivationDate = trip.ActivationDate,
                         Stops = new List<StopTripModel>()
                     };
 
                     var stops = _stopsInTrips.StopsInTrip.Where(x => x.RouteId == trip.RouteId && x.TripId == trip.TripId).ToList();
 
-                    stops.ForEach(stop => tripToAdd.Stops.Add(StopHelper.Mapper(busLine, trip, stop, _busStops)));
+                    stops.ForEach(stop => tripToAdd.Stops.Add(StopHelper.Mapper(busLine, trip, stop, _busStops, expedition.MainRoute)));
 
                     tripToAdd.Stops = tripToAdd.Stops.OrderBy(x => x.StopSequence).ToList();
                     _tripsWithBusStops.Add(tripToAdd);
-
                 }
             }
         }
@@ -84,40 +99,57 @@ namespace DCNC.Service.PublicTransport.TimeTable
         {
             var tripsWithBusStopsForBusLine = _tripsWithBusStops.Where(x => x.BusLineName.Equals(busLine.RouteShortName)).ToList();
 
-            var grouped = DictionaryOrganizer.GroupByDirectionAndOrderByDescending(tripsWithBusStopsForBusLine);
-
+            var grouped = DictionaryOrganizer.GroupAndOrder(tripsWithBusStopsForBusLine);
+            
             foreach (var direction in grouped)
             {
-                var longestTrip = direction.Value.First();
+                var hasMainRoute = direction.Value.Any(x => x.MainRoute);
+                var mainTrip = new StopTripDataModel();
+
+                if (hasMainRoute)
+                    mainTrip = direction.Value.FirstOrDefault();
+                else
+                {
+                    mainTrip = JoinTripHelper.GetMainTrip(mainTrip, direction.Value);
+                }
+
                 var joinedTrip = new StopTripDataModel()
                 {
-                    BusLineName = busLine.RouteShortName,
+                    BusLineName = mainTrip.BusLineName,
+                    TripHeadsign = mainTrip.TripHeadsign,
                     Stops = new List<StopTripModel>()
                 };
 
-                //dla każdego tripa, porównać przystanki z longestTrip
-                //każdą (całkowicie) połączoną listę, dodać do głównego obiektu
-
                 foreach (var trip in direction.Value)
                 {
-                    foreach (var stop in longestTrip.Stops)
+                    foreach (var stop in mainTrip.Stops)
                     {
                         foreach (var stopToCheck in trip.Stops)
                         {
                             var isSame = StopHelper.CheckIfStopsAreTheSame(stop, stopToCheck);
+                            var alreadyExist = JoinTripHelper.CheckIfBusStopAlreadyExists(stopToCheck.RouteShortName, stopToCheck.StopLat, stopToCheck.StopLon, joinedTrip);
 
-                            if (!isSame)
+                            var indexToAdd = 0;
+
+                            if (!isSame && !alreadyExist)
                             {
-
-                            }
-                            else
-                            {
-                                var alreadyExist = joinedTrip.Stops.Any(x => x.RouteShortName.Equals(stopToCheck.RouteShortName) && x.StopLat == stopToCheck.StopLat && x.StopLon == stopToCheck.StopLon);
-
-                                if (!alreadyExist)
+                                if (joinedTrip.Stops.Count == 0)
                                     joinedTrip.Stops.Add(stopToCheck);
+                                else
+                                {
+                                    var index = trip.Stops.IndexOf(stopToCheck);
 
-                                continue;
+                                    if (index == 0)
+                                    {
+                                        indexToAdd = index;
+                                    }
+                                    else
+                                    {
+                                        indexToAdd = JoinTripHelper.GetIndexToAdd(trip.Stops, index, joinedTrip);
+                                    }
+                                }
+
+                                joinedTrip.Stops.Insert(indexToAdd, stopToCheck);
                             }
                         }
                     }

@@ -8,10 +8,10 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public static class DictionaryOrganizer
     {
-        public static Dictionary<bool, List<StopTripDataModel>> GroupByDirectionAndOrderByDescending(List<StopTripDataModel> tripsWithBusStopsForBusLine)
+        public static Dictionary<bool, List<StopTripDataModel>> GroupAndOrder(List<StopTripDataModel> tripsWithBusStopsForBusLine)
         {
             var grouped = GroupByDirection(tripsWithBusStopsForBusLine);
-            grouped = OrderByDescending(grouped);
+            grouped = Order(grouped);
 
             return grouped;
         }
@@ -36,13 +36,13 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             return groupedByDirection;
         }
 
-        private static Dictionary<bool, List<StopTripDataModel>> OrderByDescending(Dictionary<bool, List<StopTripDataModel>> groupedByDirection)
+        private static Dictionary<bool, List<StopTripDataModel>> Order(Dictionary<bool, List<StopTripDataModel>> groupedByDirection)
         {
             var orderedDictionary = new Dictionary<bool, List<StopTripDataModel>>();
 
             foreach (var direction in groupedByDirection)
             {
-                var orderedList = direction.Value.OrderByDescending(x => x.Stops.Count).ToList();
+                var orderedList = direction.Value.OrderByDescending(x => x.MainRoute).ToList();
                 orderedDictionary.Add(direction.Key, orderedList);
             }
 

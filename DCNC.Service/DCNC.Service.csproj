@@ -78,9 +78,11 @@
     <Compile Include="PublicTransport\BusLineService.cs" />
     <Compile Include="PublicTransport\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicTransport\ExpeditionService.cs" />
     <Compile Include="PublicTransport\Helpers\RouteComparer.cs" />
     <Compile Include="PublicTransport\StopInTripService.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\DictionaryOrganizer.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\JoinTripHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\StopChecker.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\StopHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
