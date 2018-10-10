@@ -24,7 +24,7 @@ namespace DoCeluNaCzasWebApi.Controllers
         // GET api/values/5
         public async Task<string> Get(int id)
         {
-            var newData = await TimeTableService.GetStopsLinkedWithTrips();
+            var newData = await JoinTripService.GetStopsLinkedWithTrips();
             DataClass data = new DataClass();
             BussinessClass bussiness = new BussinessClass();
             ServiceClass service = new ServiceClass();

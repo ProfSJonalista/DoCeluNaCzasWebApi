@@ -42,7 +42,25 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 
             foreach (var direction in groupedByDirection)
             {
-                var orderedList = direction.Value.OrderByDescending(x => x.MainRoute).ToList();
+                var hasMainRoute = direction.Value.Any(x => x.MainRoute);
+                var orderedList = new List<StopTripDataModel>();
+                if (hasMainRoute)
+                {
+                    orderedList = direction.Value.OrderByDescending(x => x.MainRoute).ToList();
+                }
+                else
+                {
+                    orderedList = direction.Value.OrderByDescending(x => x.Stops.Count).ToList();
+                    var mainRoute = orderedList.FirstOrDefault();
+
+                    orderedList.Remove(mainRoute);
+
+                    mainRoute.MainRoute = true;
+                    mainRoute.Stops.ForEach(x => x.BelongsToMainTrip = true);
+
+                    orderedList.Insert(0, mainRoute);                    
+                }
+                
                 orderedDictionary.Add(direction.Key, orderedList);
             }
 

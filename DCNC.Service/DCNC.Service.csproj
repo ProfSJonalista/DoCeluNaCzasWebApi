@@ -83,8 +83,8 @@
     <Compile Include="PublicTransport\StopInTripService.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\DictionaryOrganizer.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\JoinTripHelper.cs" />
-    <Compile Include="PublicTransport\TimeTable\Helpers\StopChecker.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\StopHelper.cs" />
+    <Compile Include="PublicTransport\TimeTable\JoinTripService.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
     <Compile Include="PublicTransport\TripService.cs" />
     <Compile Include="ServiceClass.cs" />

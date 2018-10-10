@@ -10,7 +10,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
     {
         internal static StopTripModel Mapper(Route busLine, Trip trip, StopInTrip stop, BusStopData busStops, bool belongsToMainRoute)
         {
-            var stopByStopId = busStops.Stops.Where(x => x.StopId == stop.StopId).Single();
+            var stopByStopId = busStops.Stops.Where(x => x.StopId == stop.StopId).SingleOrDefault();
 
             return new StopTripModel()
             {

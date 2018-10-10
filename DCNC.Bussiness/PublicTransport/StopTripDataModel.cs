@@ -5,6 +5,12 @@ using System.Web;
 
 namespace DCNC.Bussiness.PublicTransport
 {
+    public class JoinedTripsModel
+    {
+        public string BusLineName { get; set; }
+        public List<StopTripDataModel> JoinedTrips { get; set; }
+    }
+
     public class StopTripDataModel
     {
         public string BusLineName { get; set; }
