@@ -46,10 +46,11 @@ namespace DCNC.Service.PublicTransport.TimeTable
             }
 
             if (_joinedTripsModels == null)
+            {
                 _joinedTripsModels = new List<JoinedTripsModel>();
-
-            JoinTrips();
-            var n20 = _joinedTripsModels.Where(x => x.BusLineName.Equals("N20")).ToList();
+                JoinTrips();
+            }
+            
             data = JsonConvert.SerializeObject(_joinedTripsModels);
 
             return data;
