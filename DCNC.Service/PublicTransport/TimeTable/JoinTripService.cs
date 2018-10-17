@@ -154,6 +154,14 @@ namespace DCNC.Service.PublicTransport.TimeTable
                     }
                 }
 
+                int sequence = 0;
+
+                foreach(var stop in joinedTrip.Stops)
+                {
+                    stop.StopSequence = sequence;
+                    sequence++;
+                }
+
                 joinedTrips.JoinedTrips.Add(joinedTrip);
             }
 
