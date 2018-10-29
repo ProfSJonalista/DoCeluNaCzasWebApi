@@ -1,4 +1,5 @@
-﻿using DCNC.Service.PublicTransport.TimeTable;
+﻿using DCNC.Service.PublicTransport.DataFolder;
+using DCNC.Service.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class JoinedTripsController : ApiController
     {
-        public async Task<string> Get()
+        public async Task<string> Get(bool hasData)
         {
-            return await JoinTripService.GetStopsLinkedWithTrips();
+            return await UpdateDataService.GetActualJoinedTrips(hasData);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -27,13 +28,13 @@ namespace DCNC.Service.PublicTransport
                 Trips = new List<Trip>()
             };
 
-            foreach(JObject item in trips.Children<JObject>())
+            foreach (JObject item in trips.Children<JObject>())
             {
                 tripData.LastUpdate = item.Value<DateTime>("lastUpdate");
 
                 var tripList = item.Value<JArray>("trips");
 
-                foreach(JObject trip in tripList.Children<JObject>())
+                foreach (JObject trip in tripList.Children<JObject>())
                 {
                     Trip tripToAdd = new Trip()
                     {
@@ -51,6 +52,49 @@ namespace DCNC.Service.PublicTransport
             }
 
             return tripData;
+        }
+
+        public static List<StopTripDataModel> TripsWithBusStopsMapper(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, ExpeditionData expeditionData, BusStopData busStopData)
+        {
+            var tripsWithBusStopsList = new List<StopTripDataModel>();
+
+            foreach (var busLine in busLineData.Routes)
+            {
+                var tripListByRouteId = tripData.Trips.Where(x => x.RouteId == busLine.RouteId).ToList();
+
+                foreach (var trip in tripListByRouteId)
+                {
+                    var expedition = expeditionData.Expeditions
+                                               .Where(x => x.RouteId == busLine.RouteId
+                                               && x.TripId == trip.TripId
+                                               && (x.StartDate == DateTime.Now || x.StartDate < DateTime.Now))
+                                               .ToList()
+                                               .FirstOrDefault();
+
+                    if (expedition.TechnicalTrip)
+                        continue;
+
+                    var tripToAdd = new StopTripDataModel()
+                    {
+                        BusLineName = busLine.RouteShortName,
+                        TripHeadsign = trip.TripHeadsign,
+                        MainRoute = expedition.MainRoute,
+                        TechnicalTrip = expedition.TechnicalTrip,
+                        ActivationDate = trip.ActivationDate,
+                        Stops = new List<StopTripModel>()
+                    };
+
+                    var stops = stopInTripData.StopsInTrip.Where(x => x.RouteId == trip.RouteId && x.TripId == trip.TripId).ToList();
+
+                    stops.ForEach(stop => tripToAdd.Stops.Add(StopHelper.Mapper(busLine, trip, stop, busStopData, expedition.MainRoute)));
+
+                    tripToAdd.Stops = tripToAdd.Stops.OrderBy(x => x.StopSequence).ToList();
+                    tripsWithBusStopsList.Add(tripToAdd);
+
+                }
+            }
+
+            return tripsWithBusStopsList;
         }
     }
 }

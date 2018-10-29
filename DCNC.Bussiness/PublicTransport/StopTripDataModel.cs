@@ -8,7 +8,7 @@ namespace DCNC.Bussiness.PublicTransport
     public class JoinedTripsModel
     {
         public string BusLineName { get; set; }
-        public List<StopTripDataModel> JoinedTrips { get; set; }
+        public List<StopTripDataModel> Trips { get; set; }
     }
 
     public class StopTripDataModel
