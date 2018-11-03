@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DCNC.Service.PublicTransport.DataFolder;
+﻿using DCNC.Service.PublicTransport.UpdateService;
 using Microsoft.Owin;
 using Owin;
 

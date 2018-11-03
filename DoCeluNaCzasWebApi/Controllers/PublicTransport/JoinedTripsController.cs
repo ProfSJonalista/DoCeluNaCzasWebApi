@@ -1,10 +1,4 @@
-﻿using DCNC.Service.PublicTransport.DataFolder;
-using DCNC.Service.PublicTransport.TimeTable;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using DCNC.Service.PublicTransport.UpdateService;
 using System.Threading.Tasks;
 using System.Web.Http;
 

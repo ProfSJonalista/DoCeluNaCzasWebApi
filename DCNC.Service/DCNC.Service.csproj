@@ -79,7 +79,7 @@
     <Compile Include="PublicTransport\BusLineService.cs" />
     <Compile Include="PublicTransport\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicTransport\DataFolder\UpdateDataService.cs" />
+    <Compile Include="PublicTransport\UpdateService\UpdateDataService.cs" />
     <Compile Include="PublicTransport\ExpeditionService.cs" />
     <Compile Include="PublicTransport\Resources\CacheKeys.cs" />
     <Compile Include="PublicTransport\StopInTripService.cs" />

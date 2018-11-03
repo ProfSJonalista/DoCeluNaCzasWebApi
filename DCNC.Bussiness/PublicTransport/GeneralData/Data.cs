@@ -16,5 +16,7 @@ namespace DCNC.Bussiness.PublicTransport.GeneralData
         public List<JoinedTripsModel> JoinedTrips { get; set; }
         public List<StopTripDataModel> TripsWithBusStops { get; set; }
         public string JoinedTripsAsJson { get; set; }
+        public string BusStopsAsJson { get; set; }
+        public string BusLinesAsJson { get; set; }
     }
 }

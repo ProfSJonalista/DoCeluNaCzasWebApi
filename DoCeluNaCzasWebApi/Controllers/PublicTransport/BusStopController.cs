@@ -1,5 +1,6 @@
 ﻿
 using DCNC.Service.PublicTransport;
+using DCNC.Service.PublicTransport.UpdateService;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -7,9 +8,9 @@ namespace DoCeluNaCzasWebApi.Controllers
 {
     public class BusStopController : ApiController
     {
-        public async Task<string> Get()
+        public async Task<string> Get(bool hasData)
         {
-            return await BusStopService.GetStopsForCurrentDayAsJson();
+            return await UpdateDataService.GetActualBusStops(hasData);
         }
     }
 }
