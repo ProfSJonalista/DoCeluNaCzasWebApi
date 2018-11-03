@@ -1,11 +1,13 @@
 ﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.PublicTransport.Resources;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -13,11 +15,39 @@ namespace DCNC.Service.PublicTransport
 {
     public class TripService
     {
+        static readonly ObjectCache _cache = MemoryCache.Default;
+
         public async static Task<TripData> GetTripData()
         {
             var json = await PublicTransportRepository.GetTrips();
             JObject trips = (JObject)JsonConvert.DeserializeObject(json);
+            TripData tripDataToReturn;
+
+            if (!trips.HasValues)
+            {
+                List<TripData> tripDatas = _cache[CacheKeys.TRIP_DATA_LIST_KEY] as List<TripData>;
+                tripDataToReturn = tripDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+
+                return tripDataToReturn;
+            }
+
+            tripDataToReturn = CacheTripDataAndGetFirstResult(trips);
+
             return TripConverter(trips.First);
+        }
+
+        private static TripData CacheTripDataAndGetFirstResult(JObject trips)
+        {
+            List<TripData> tripDataToCache = new List<TripData>();
+
+            foreach(var item in trips.Children())
+            {
+                tripDataToCache.Add(TripConverter(item));
+            }
+
+            _cache.Set(CacheKeys.TRIP_DATA_LIST_KEY, tripDataToCache, new CacheItemPolicy());
+
+            return tripDataToCache.FirstOrDefault();
         }
 
         private static TripData TripConverter(JToken trips)

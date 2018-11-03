@@ -1,10 +1,12 @@
 ﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.PublicTransport.Resources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,12 +14,39 @@ namespace DCNC.Service.PublicTransport
 {
     public class BusStopService
     {
+        static readonly ObjectCache _cache = MemoryCache.Default;
 
         public async static Task<BusStopData> GetBusStopData()
         {
             var json = await PublicTransportRepository.GetBusStops();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
-            return BusStopConverter(stops.First);
+            BusStopData busStopDataToReturn;
+
+            if (!stops.HasValues)
+            {
+                List<BusStopData> busStopDatas = _cache[CacheKeys.BUS_STOP_DATA_LIST_KEY] as List<BusStopData>;
+                busStopDataToReturn = busStopDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+
+                return busStopDataToReturn;
+            }
+
+            busStopDataToReturn = CacheBusStopDataAndGetFirstResult(stops);
+
+            return busStopDataToReturn;
+        }
+
+        private static BusStopData CacheBusStopDataAndGetFirstResult(JObject stops)
+        {
+            List<BusStopData> busStopDataToCache = new List<BusStopData>();
+
+            foreach(var item in stops.Children())
+            {
+                busStopDataToCache.Add(BusStopConverter(item));
+            }
+
+            _cache.Set(CacheKeys.BUS_STOP_DATA_LIST_KEY, busStopDataToCache, new CacheItemPolicy());
+
+            return busStopDataToCache.FirstOrDefault();
         }
 
         public async static Task<string> GetStopsForCurrentDayAsJson()

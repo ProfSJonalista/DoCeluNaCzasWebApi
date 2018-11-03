@@ -1,10 +1,12 @@
 ﻿using DCNC.Bussiness.PublicTransport;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.PublicTransport.Resources;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -12,11 +14,26 @@ namespace DCNC.Service.PublicTransport
 {
     public class ExpeditionService
     {
+        static readonly ObjectCache _cache = MemoryCache.Default;
+
         public async static Task<ExpeditionData> GetExpeditionData()
         {
             var json = await PublicTransportRepository.GetExpeditionData();
             JObject expeditions = (JObject)JsonConvert.DeserializeObject(json);
-            return ExpeditionConverter(expeditions);
+
+            if (!expeditions.HasValues)
+            {
+                return _cache[CacheKeys.EXPEDITION_DATA_LIST_KEY] as ExpeditionData;
+            }
+
+            return CacheExpeditionDataAndGetResult(expeditions);
+        }
+
+        private static ExpeditionData CacheExpeditionDataAndGetResult(JObject expeditions)
+        {
+            var expeditionsToCache = ExpeditionConverter(expeditions);
+            _cache.Set(CacheKeys.EXPEDITION_DATA_LIST_KEY, expeditionsToCache, new CacheItemPolicy());
+            return expeditionsToCache;
         }
 
         private static ExpeditionData ExpeditionConverter(JToken expedition)

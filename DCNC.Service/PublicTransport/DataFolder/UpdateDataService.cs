@@ -1,4 +1,6 @@
 ﻿using DCNC.Bussiness.PublicTransport;
+using DCNC.Bussiness.PublicTransport.GeneralData;
+using DCNC.Service.PublicTransport.Resources;
 using DCNC.Service.PublicTransport.TimeTable;
 using Newtonsoft.Json;
 using System;
@@ -9,26 +11,27 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
 
-
 namespace DCNC.Service.PublicTransport.DataFolder
 {
     public class UpdateDataService
     {
+        static Data _data;
         static Timer _timer;
         static TripData _trips;
         static BusLineData _busLines;
         static BusStopData _busStops;
         static StopInTripData _stopsInTrips;
         static ExpeditionData _expeditionData;
+        static readonly ObjectCache _cache = MemoryCache.Default;
 
         public async static Task Init()
         {
             await DownloadData();
             await AllocateData();
-            
-            Data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData);
-            Data.JoinedTrips = JoinTripService.JoinTrips(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData, Data.TripsWithBusStops);
-            Data.JoinedTripsAsJson = JsonConvert.SerializeObject(Data.JoinedTrips);
+
+            _data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
+
+            UpdateJoinedTrips();
         }
 
         //co określony okres czasu sprawdza czy nie zostały zaktualizowane dane na zewnętrznym API - jeśli tak, aktualizuje je
@@ -41,13 +44,16 @@ namespace DCNC.Service.PublicTransport.DataFolder
             _timer.Enabled = true;
         }
 
-        private static void UpdateDataEvent(Object source, ElapsedEventArgs e)
+        private async static void UpdateDataEvent(Object source, ElapsedEventArgs e)
         {
-            if (Data.BusLineData != null && Data.BusStopData != null && Data.ExpeditionData != null
-                && Data.TripData != null && Data.StopInTripData != null)
+
+            if (_data.BusLineData != null && _data.BusStopData != null && _data.ExpeditionData != null
+                && _data.TripData != null && _data.StopInTripData != null)
             {
 
                 var hasUpdates = CheckForUpdates();
+                await AllocateData();
+
                 if (hasUpdates)
                     UpdateJoinedTrips();
             }
@@ -55,9 +61,11 @@ namespace DCNC.Service.PublicTransport.DataFolder
 
         private static void UpdateJoinedTrips()
         {
-            Data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData);
-            Data.JoinedTrips = JoinTripService.JoinTrips(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData, Data.TripsWithBusStops);
-            Data.JoinedTripsAsJson = JsonConvert.SerializeObject(Data.JoinedTrips);
+            _data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData);
+            _data.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
+            _data.JoinedTripsAsJson = JsonConvert.SerializeObject(_data.JoinedTrips);
+
+            UpdateGeneralData(_data);
         }
 
         public static async Task DownloadData()
@@ -71,25 +79,29 @@ namespace DCNC.Service.PublicTransport.DataFolder
 
         public async static Task AllocateData()
         {
-            Data.TripData = _trips;
-            Data.BusLineData = _busLines;
-            Data.BusStopData = _busStops;
-            Data.StopInTripData = _stopsInTrips;
-            Data.ExpeditionData = _expeditionData;
+            Data dataToCache = new Data()
+            {
+                TripData = _trips,
+                BusLineData = _busLines,
+                BusStopData = _busStops,
+                StopInTripData = _stopsInTrips,
+                ExpeditionData = _expeditionData
+            };
+
+            UpdateGeneralData(dataToCache);
         }
 
         public static bool CheckForUpdates()
         {
-
-            if (Data.TripData.LastUpdate < _trips.LastUpdate)
+            if (_data.TripData.Day < _trips.Day)
                 return true;
-            if (Data.BusLineData.LastUpdate < _busLines.LastUpdate)
+            if (_data.BusLineData.Day < _busLines.Day)
                 return true;
-            if (Data.BusStopData.LastUpdate < _busStops.LastUpdate)
+            if (_data.BusStopData.Day < _busStops.Day)
                 return true;
-            if (Data.StopInTripData.LastUpdate < _stopsInTrips.LastUpdate)
+            if (_data.StopInTripData.Day < _stopsInTrips.Day)
                 return true;
-            if (Data.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
+            if (_data.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
                 return true;
 
             return false;
@@ -99,21 +111,18 @@ namespace DCNC.Service.PublicTransport.DataFolder
         {
             await DownloadData();
             var hasUpdates = CheckForUpdates();
-            
+
             if (hasUpdates)
             {
                 await AllocateData();
 
-                Data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData);
-                Data.JoinedTrips = JoinTripService.JoinTrips(Data.BusLineData, Data.TripData, Data.StopInTripData, Data.ExpeditionData, Data.BusStopData, Data.TripsWithBusStops);
+                UpdateJoinedTrips();
 
-                Data.JoinedTripsAsJson = JsonConvert.SerializeObject(Data.JoinedTrips);
-
-                return Data.JoinedTripsAsJson;
+                return _data.JoinedTripsAsJson;
             }
             else if (!hasData)
             {
-                return Data.JoinedTripsAsJson;
+                return _data.JoinedTripsAsJson;
             }
             else if (!hasUpdates && hasData)
             {
@@ -121,7 +130,12 @@ namespace DCNC.Service.PublicTransport.DataFolder
                 return "";
             }
 
-            return Data.JoinedTripsAsJson;
+            return _data.JoinedTripsAsJson;
+        }
+
+        private static void UpdateGeneralData(Data data)
+        {
+            _cache.Set(CacheKeys.GENERAL_DATA_KEY, data, new CacheItemPolicy());
         }
     }
 }
