@@ -1,6 +1,4 @@
-﻿
-using DCNC.Service.PublicTransport;
-using DCNC.Service.PublicTransport.UpdateService;
+﻿using DCNC.Service.PublicTransport.UpdateService;
 using System.Threading.Tasks;
 using System.Web.Http;
 

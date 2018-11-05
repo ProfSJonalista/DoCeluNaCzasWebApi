@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DCNC.Service.PublicTransport.Resources
+﻿namespace DCNC.Service.PublicTransport.Resources
 {
     public static class CacheKeys
     {
