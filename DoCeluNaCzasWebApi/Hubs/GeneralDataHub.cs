@@ -13,9 +13,9 @@ namespace DoCeluNaCzasWebApi.Hubs
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        public Data GetGeneralData()
+        public HubData GetGeneralData()
         {
-            return _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
+            return _cache[CacheKeys.GENERAL_HUB_DATA_KEY] as HubData;
         }
     }
 }
