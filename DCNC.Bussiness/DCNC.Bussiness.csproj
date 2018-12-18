@@ -82,6 +82,7 @@
     <Compile Include="PublicTransport\BusStopData.cs" />
     <Compile Include="PublicTransport\ExpeditionData.cs" />
     <Compile Include="PublicTransport\GeneralData\Data.cs" />
+    <Compile Include="PublicTransport\GeneralData\HubData.cs" />
     <Compile Include="PublicTransport\StopInTripData.cs" />
     <Compile Include="PublicTransport\StopTripDataModel.cs" />
     <Compile Include="PublicTransport\TripData.cs" />

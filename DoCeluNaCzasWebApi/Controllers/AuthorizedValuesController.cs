@@ -20,11 +20,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 
         public string Get(int id)
         {
-            DataClass data = new DataClass();
-            BussinessClass bussiness = new BussinessClass();
-            ServiceClass service = new ServiceClass();
-
-            return "Data " + data.data + ", Bussiness: " + bussiness.bussiness + ", Service: " + service.service + ", WORK GODDAMIT" + ", Test CD. Oooh eeh oooh ah ah ting tang, walla walla bang bang";
+            return "pamparam";
         }
 
         public void Post([FromBody]string value)

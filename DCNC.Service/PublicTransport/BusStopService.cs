@@ -49,14 +49,6 @@ namespace DCNC.Service.PublicTransport
             return busStopDataToCache.FirstOrDefault();
         }
 
-        public async static Task<string> GetStopsForCurrentDayAsJson()
-        {
-            var data = await GetBusStopData();
-
-            var jsonToSend = JsonConvert.SerializeObject(data);
-            return jsonToSend;
-        }
-
         private static BusStopData BusStopConverter(JToken busStop)
         {
             BusStopData busStopData = new BusStopData()

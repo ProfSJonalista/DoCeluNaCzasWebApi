@@ -7,6 +7,6 @@ namespace DCNC.Service
 {
     public class ServiceClass
     {
-        public string service = "service";
+        
     }
 }

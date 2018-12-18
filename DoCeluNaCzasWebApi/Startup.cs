@@ -11,7 +11,7 @@ namespace DoCeluNaCzasWebApi
         public async void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-
+            app.MapSignalR();
             await UpdateDataService.Init();
             UpdateDataService.SetTimer();
         }

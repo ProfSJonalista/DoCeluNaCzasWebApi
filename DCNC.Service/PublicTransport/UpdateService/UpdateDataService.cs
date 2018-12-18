@@ -18,6 +18,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
         static Data _data;
         static Timer _timer;
         static TripData _trips;
+        static HubData _hubData;
         static BusLineData _busLines;
         static BusStopData _busStops;
         static StopInTripData _stopsInTrips;
@@ -31,7 +32,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
 
             _data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
 
-            UpdateJoinedTrips();
+            UpdateJoinedTripsAndHubData();
         }
 
         //co określony okres czasu sprawdza czy nie zostały zaktualizowane dane na zewnętrznym API - jeśli tak, aktualizuje je
@@ -49,11 +50,11 @@ namespace DCNC.Service.PublicTransport.UpdateService
             if (_data.BusLineData != null && _data.BusStopData != null && _data.ExpeditionData != null
                             && _data.TripData != null && _data.StopInTripData != null)
             {
-                var hasUpdates = CheckUpdatesForJoinedTrips();
-                AllocateData();
-
-                if (hasUpdates)
-                    UpdateJoinedTrips();
+                if (CheckUpdatesForJoinedTrips())
+                {
+                    AllocateData();
+                    UpdateJoinedTripsAndHubData();
+                }
             }
         }
 
@@ -77,23 +78,35 @@ namespace DCNC.Service.PublicTransport.UpdateService
                 ExpeditionData = _expeditionData
             };
 
-            UpdateGeneralData(dataToCache);
+            UpdateCachedData(dataToCache, CacheKeys.GENERAL_DATA_KEY);
         }
 
-        private static void UpdateJoinedTrips()
+        private static void UpdateJoinedTripsAndHubData()
         {
             _data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData);
-            _data.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
+
+            _hubData = new HubData()
+            {
+                BusLineData = _busLines,
+                BusStopData = _busStops
+            };
+
+            _hubData.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
+            
+            #region TODO REMOVE LATER
             _data.JoinedTripsAsJson = JsonConvert.SerializeObject(_data.JoinedTrips);
             _data.BusLinesAsJson = JsonConvert.SerializeObject(_data.BusLineData);
             _data.BusStopsAsJson = JsonConvert.SerializeObject(_data.BusStopData);
+            _data.JoinedTrips = _hubData.JoinedTrips;
+            #endregion
 
-            UpdateGeneralData(_data);
+            UpdateCachedData(_data, CacheKeys.GENERAL_DATA_KEY);
+            UpdateCachedData(_hubData, CacheKeys.GENERAL_HUB_DATA_KEY);
         }
 
-        private static void UpdateGeneralData(Data data)
+        private static void UpdateCachedData<T>(T data, string cacheKey)
         {
-            _cache.Set(CacheKeys.GENERAL_DATA_KEY, data, new CacheItemPolicy());
+            _cache.Set(cacheKey, data, new CacheItemPolicy());
         }
 
         public static bool CheckUpdatesForJoinedTrips()
@@ -112,18 +125,18 @@ namespace DCNC.Service.PublicTransport.UpdateService
             return false;
         }
 
+        #region TODO REMOVE LATER
         private static bool CheckUpdatesForBusLines()
         {
-            return _data.BusLineData.Day < _busLines.Day;
+            return _data.BusLineData.Day < _busLines.Day; //TODO move to CheckUpdatesForJoinedTrips
         }
 
         private static bool CheckUpdatesForBusStops()
         {
-            return _data.BusStopData.Day < _busStops.Day;
+            return _data.BusStopData.Day < _busStops.Day; //TODO move to CheckUpdatesForJoinedTrips
         }
 
-        //jeśli użytkownik końcowy, na swoim urządzeniu, ma pobrane dane i są one aktualne, zwracany jest pusty string w celu zmniejszenia zużycia danych
-        //dotyczy to metod o pobieraniu aktualnych danych, czyli 3 poniższych
+        
         public async static Task<string> GetActualBusLines(bool hasData)
         {
             await DownloadData();
@@ -132,7 +145,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
             if (hasUpdates)
             {
                 AllocateData();
-                UpdateJoinedTrips();
+                UpdateJoinedTripsAndHubData();
 
                 return _data.BusLinesAsJson;
             }
@@ -153,7 +166,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
             if (hasUpdates)
             {
                 AllocateData();
-                UpdateJoinedTrips();
+                UpdateJoinedTripsAndHubData();
 
                 return _data.BusStopsAsJson;
             }
@@ -175,7 +188,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
             {
                 AllocateData();
 
-                UpdateJoinedTrips();
+                UpdateJoinedTripsAndHubData();
 
                 return _data.JoinedTripsAsJson;
             }
@@ -186,5 +199,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
 
             return _data.JoinedTripsAsJson;
         }
+
+        #endregion
     }
 }
