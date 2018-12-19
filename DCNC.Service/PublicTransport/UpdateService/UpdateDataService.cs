@@ -92,12 +92,12 @@ namespace DCNC.Service.PublicTransport.UpdateService
             };
 
             _hubData.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
-            
+
             #region TODO REMOVE LATER
+            _data.JoinedTrips = _hubData.JoinedTrips;
             _data.JoinedTripsAsJson = JsonConvert.SerializeObject(_data.JoinedTrips);
             _data.BusLinesAsJson = JsonConvert.SerializeObject(_data.BusLineData);
             _data.BusStopsAsJson = JsonConvert.SerializeObject(_data.BusStopData);
-            _data.JoinedTrips = _hubData.JoinedTrips;
             #endregion
 
             UpdateCachedData(_data, CacheKeys.GENERAL_DATA_KEY);
