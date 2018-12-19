@@ -6,9 +6,9 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class JoinedTripsController : ApiController
     {
-        public async Task<string> Get(bool hasData)
+        public string Get(bool hasData)
         {
-            return await UpdateDataService.GetActualJoinedTrips(hasData);
+            return UpdateDataService.GetJoinedTrips(hasData);
         }
     }
 }

@@ -48,15 +48,7 @@ namespace DCNC.Service.PublicTransport
 
             return busLineDatasToCache.FirstOrDefault();
         }
-
-        public async static Task<string> GetLinesForCurrentDayAsJson()
-        {
-            var data = await GetBusLineData();
-
-            var jsonToSend = JsonConvert.SerializeObject(data);
-            return jsonToSend;
-        }
-
+        
         private static BusLineData BusLineConverter(JToken busLine)
         {
             BusLineData busLineData = new BusLineData()

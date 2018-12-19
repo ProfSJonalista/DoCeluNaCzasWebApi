@@ -6,9 +6,9 @@ namespace DoCeluNaCzasWebApi.Controllers
 {
     public class BusStopController : ApiController
     {
-        public async Task<string> Get(bool hasData)
+        public string Get(bool hasData)
         {
-            return await UpdateDataService.GetActualBusStops(hasData);
+            return UpdateDataService.GetBusStops(hasData);
         }
     }
 }
