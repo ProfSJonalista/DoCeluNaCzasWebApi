@@ -16,7 +16,7 @@ namespace DCNC.Service.PublicTransport
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        public async static Task<BusStopData> GetBusStopData()
+        public async static Task<BusStopData> GetData()
         {
             var json = await PublicTransportRepository.GetBusStops();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
@@ -25,31 +25,36 @@ namespace DCNC.Service.PublicTransport
             if (!stops.HasValues)
             {
                 List<BusStopData> busStopDatas = _cache[CacheKeys.BUS_STOP_DATA_LIST_KEY] as List<BusStopData>;
-                busStopDataToReturn = busStopDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+                busStopDataToReturn = GetDataForCurrentDay(busStopDatas);
 
                 return busStopDataToReturn;
             }
 
-            busStopDataToReturn = CacheBusStopDataAndGetFirstResult(stops);
+            busStopDataToReturn = CacheDataAndGetCurrentDayResult(stops);
 
             return busStopDataToReturn;
         }
 
-        private static BusStopData CacheBusStopDataAndGetFirstResult(JObject stops)
+        private static BusStopData CacheDataAndGetCurrentDayResult(JObject stops)
         {
             List<BusStopData> busStopDataToCache = new List<BusStopData>();
 
             foreach(var item in stops.Children())
             {
-                busStopDataToCache.Add(BusStopConverter(item));
+                busStopDataToCache.Add(Converter(item));
             }
 
             _cache.Set(CacheKeys.BUS_STOP_DATA_LIST_KEY, busStopDataToCache, new CacheItemPolicy());
 
-            return busStopDataToCache.FirstOrDefault();
+            return GetDataForCurrentDay(busStopDataToCache);
         }
 
-        private static BusStopData BusStopConverter(JToken busStop)
+        private static BusStopData GetDataForCurrentDay(List<BusStopData> dataList)
+        {
+            return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
+        }
+
+        private static BusStopData Converter(JToken busStop)
         {
             BusStopData busStopData = new BusStopData()
             {

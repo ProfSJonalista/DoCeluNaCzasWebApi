@@ -16,7 +16,7 @@ namespace DCNC.Service.PublicTransport
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        public async static Task<TripData> GetTripData()
+        public async static Task<TripData> GetData()
         {
             var json = await PublicTransportRepository.GetTrips();
             JObject trips = (JObject)JsonConvert.DeserializeObject(json);
@@ -25,17 +25,17 @@ namespace DCNC.Service.PublicTransport
             if (!trips.HasValues)
             {
                 List<TripData> tripDatas = _cache[CacheKeys.TRIP_DATA_LIST_KEY] as List<TripData>;
-                tripDataToReturn = tripDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+                tripDataToReturn = GetDataForCurrentDay(tripDatas);
 
                 return tripDataToReturn;
             }
 
-            tripDataToReturn = CacheTripDataAndGetFirstResult(trips);
+            tripDataToReturn = CacheDataAndGetCurrentDayResult(trips);
 
             return TripConverter(trips.First);
         }
 
-        private static TripData CacheTripDataAndGetFirstResult(JObject trips)
+        private static TripData CacheDataAndGetCurrentDayResult(JObject trips)
         {
             List<TripData> tripDataToCache = new List<TripData>();
 
@@ -46,7 +46,12 @@ namespace DCNC.Service.PublicTransport
 
             _cache.Set(CacheKeys.TRIP_DATA_LIST_KEY, tripDataToCache, new CacheItemPolicy());
 
-            return tripDataToCache.FirstOrDefault();
+            return GetDataForCurrentDay(tripDataToCache);
+        }
+
+        private static TripData GetDataForCurrentDay(List<TripData> dataList)
+        {
+            return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
 
         private static TripData TripConverter(JToken trips)

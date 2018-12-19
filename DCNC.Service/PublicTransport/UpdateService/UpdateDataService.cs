@@ -59,8 +59,10 @@ namespace DCNC.Service.PublicTransport.UpdateService
 
         private static void UpdateJoinedTrips()
         {
-            _data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData);
-            _data.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
+            _data.TripsWithBusStops = TripService.TripsWithBusStopsMapper(_data.BusLineData, _data.TripData, 
+                                                                          _data.StopInTripData, _data.ExpeditionData, _data.BusStopData);
+            _data.JoinedTrips = JoinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, 
+                                                          _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
             
             _data.JoinedTripsAsJson = JsonConvert.SerializeObject(_data.JoinedTrips);
             _data.BusLinesAsJson = JsonConvert.SerializeObject(_data.BusLineData);
@@ -71,9 +73,9 @@ namespace DCNC.Service.PublicTransport.UpdateService
 
         public static async Task DownloadData()
         {
-            _trips = await TripService.GetTripData();
+            _trips = await TripService.GetData();
             _busLines = await BusLineService.GetBusLineData();
-            _busStops = await BusStopService.GetBusStopData();
+            _busStops = await BusStopService.GetData();
             _stopsInTrips = await StopInTripService.GetStopInTripData();
             _expeditionData = await ExpeditionService.GetExpeditionData();
         }

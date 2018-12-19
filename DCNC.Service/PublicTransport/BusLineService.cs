@@ -25,17 +25,17 @@ namespace DCNC.Service.PublicTransport
             if (!lines.HasValues)
             {
                 List<BusLineData> busLineDatas = _cache[CacheKeys.BUS_LINE_DATA_LIST_KEY] as List<BusLineData>;
-                busLineDataToReturn = busLineDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+                busLineDataToReturn = GetDataForCurrentDay(busLineDatas);
 
                 return busLineDataToReturn;
             }
 
-            busLineDataToReturn = CacheBusLineDataAndGetFirstResult(lines);
+            busLineDataToReturn = CacheBusLineDataAndGetCurrentDayResult(lines);
 
             return busLineDataToReturn;
         }
 
-        private static BusLineData CacheBusLineDataAndGetFirstResult(JObject lines)
+        private static BusLineData CacheBusLineDataAndGetCurrentDayResult(JObject lines)
         {
             List<BusLineData> busLineDatasToCache = new List<BusLineData>();
 
@@ -46,7 +46,12 @@ namespace DCNC.Service.PublicTransport
 
             _cache.Set(CacheKeys.BUS_LINE_DATA_LIST_KEY, busLineDatasToCache, new CacheItemPolicy());
 
-            return busLineDatasToCache.FirstOrDefault();
+            return GetDataForCurrentDay(busLineDatasToCache);
+        }
+
+        private static BusLineData GetDataForCurrentDay(List<BusLineData> busLineDataList)
+        {
+            return busLineDataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
         
         private static BusLineData BusLineConverter(JToken busLine)

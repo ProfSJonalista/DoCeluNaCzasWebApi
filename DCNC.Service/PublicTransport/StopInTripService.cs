@@ -26,17 +26,17 @@ namespace DCNC.Service.PublicTransport
             if (!stops.HasValues)
             {
                 List<StopInTripData> stopInTripDatas = _cache[CacheKeys.STOP_IN_TRIP_DATA_LIST_KEY] as List<StopInTripData>;
-                stopInTripDataToReturn = stopInTripDatas.Where(x => x.Day == DateTime.Now).SingleOrDefault();
+                stopInTripDataToReturn = GetDataForCurrentDay(stopInTripDatas);
 
                 return stopInTripDataToReturn;
             }
 
-            stopInTripDataToReturn = CacheStopInTripDataAndGetFirstResult(stops);
+            stopInTripDataToReturn = CacheStopInTripDataAndGetCurrentDayResult(stops);
 
             return stopInTripDataToReturn;
         }
 
-        private static StopInTripData CacheStopInTripDataAndGetFirstResult(JObject stops)
+        private static StopInTripData CacheStopInTripDataAndGetCurrentDayResult(JObject stops)
         {
             List<StopInTripData> stopInTripDataToCache = new List<StopInTripData>();
 
@@ -47,7 +47,11 @@ namespace DCNC.Service.PublicTransport
 
             _cache.Set(CacheKeys.STOP_IN_TRIP_DATA_LIST_KEY, stopInTripDataToCache, new CacheItemPolicy());
 
-            return stopInTripDataToCache.FirstOrDefault();
+            return GetDataForCurrentDay(stopInTripDataToCache);
+        }
+        private static StopInTripData GetDataForCurrentDay(List<StopInTripData> dataList)
+        {
+            return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
 
         private static StopInTripData StopInTripConverter(JToken stops)
@@ -77,7 +81,7 @@ namespace DCNC.Service.PublicTransport
                         TripActivationDate = stop.Value<DateTime>("tripActivationDate"),
                         StopActivationDate = stop.Value<DateTime>("stopActivationDate")
                     };
-
+                    
                     stopInTripData.StopsInTrip.Add(stopInTripToAdd);
                 }
             }

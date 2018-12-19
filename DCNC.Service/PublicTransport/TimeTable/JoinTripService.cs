@@ -9,7 +9,8 @@ namespace DCNC.Service.PublicTransport.TimeTable
 {
     public class JoinTripService
     {
-        public static List<JoinedTripsModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, ExpeditionData expeditionData, BusStopData busStopData, List<StopTripDataModel> tripsWithBusStops)
+        public static List<JoinedTripsModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
+                                                       ExpeditionData expeditionData, BusStopData busStopData, List<StopTripDataModel> tripsWithBusStops)
         {
             var joinedTripsModelList = new List<JoinedTripsModel>();
             var distinctBusLines = busLineData.Routes.GroupBy(x => x.RouteShortName).Select(x => x.FirstOrDefault()).ToList();
