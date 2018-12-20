@@ -15,10 +15,16 @@ namespace DCNC.Service.PublicTransport
     public class BusStopService
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
+        PublicTransportRepository _publicTransportRepository;
 
-        public async static Task<BusStopData> GetData()
+        public BusStopService()
         {
-            var json = await PublicTransportRepository.GetBusStops();
+            _publicTransportRepository = new PublicTransportRepository();
+        }
+
+        public async Task<BusStopData> GetData()
+        {
+            var json = await _publicTransportRepository.GetBusStops();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
             BusStopData busStopDataToReturn;
 
@@ -35,7 +41,7 @@ namespace DCNC.Service.PublicTransport
             return busStopDataToReturn;
         }
 
-        private static BusStopData CacheDataAndGetCurrentDayResult(JObject stops)
+        private BusStopData CacheDataAndGetCurrentDayResult(JObject stops)
         {
             List<BusStopData> busStopDataToCache = new List<BusStopData>();
 
@@ -49,12 +55,12 @@ namespace DCNC.Service.PublicTransport
             return GetDataForCurrentDay(busStopDataToCache);
         }
 
-        private static BusStopData GetDataForCurrentDay(List<BusStopData> dataList)
+        private BusStopData GetDataForCurrentDay(List<BusStopData> dataList)
         {
             return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
 
-        private static BusStopData Converter(JToken busStop)
+        private BusStopData Converter(JToken busStop)
         {
             BusStopData busStopData = new BusStopData()
             {

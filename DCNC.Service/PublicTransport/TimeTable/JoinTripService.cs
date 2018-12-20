@@ -1,4 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport;
+using DCNC.Bussiness.PublicTransport.JoinedTrips;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,18 @@ namespace DCNC.Service.PublicTransport.TimeTable
 {
     public class JoinTripService
     {
-        public static List<JoinedTripsModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
+        StopHelper _stopHelper;
+        JoinTripHelper _joinTripHelper;
+        DictionaryOrganizer _dictionaryOrganizer;
+
+        public JoinTripService()
+        {
+            _stopHelper = new StopHelper();
+            _joinTripHelper = new JoinTripHelper();
+            _dictionaryOrganizer = new DictionaryOrganizer();
+        }
+
+        public List<JoinedTripsViewModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
                                                        ExpeditionData expeditionData, BusStopData busStopData, List<StopTripDataModel> tripsWithBusStops)
         {
             var joinedTripsModelList = new List<JoinedTripsModel>();
@@ -17,14 +29,14 @@ namespace DCNC.Service.PublicTransport.TimeTable
 
             distinctBusLines.ForEach(busLine => joinedTripsModelList.Add(JoinTripsForEachBusLine(busLine, tripsWithBusStops)));
 
-            return joinedTripsModelList;
+            return _joinTripHelper.JoinedTripsMapper(joinedTripsModelList);
         }
 
-        private static JoinedTripsModel JoinTripsForEachBusLine(Route busLine, List<StopTripDataModel> tripsWithBusStops)
+        private JoinedTripsModel JoinTripsForEachBusLine(Route busLine, List<StopTripDataModel> tripsWithBusStops)
         {
             var tripsWithBusStopsForBusLine = tripsWithBusStops.Where(x => x.BusLineName.Equals(busLine.RouteShortName)).ToList();
 
-            var grouped = DictionaryOrganizer.GroupAndOrder(tripsWithBusStopsForBusLine);
+            var grouped = _dictionaryOrganizer.GroupAndOrder(tripsWithBusStopsForBusLine);
             var joinedTrips = new JoinedTripsModel()
             {
                 BusLineName = busLine.RouteShortName,
@@ -48,7 +60,7 @@ namespace DCNC.Service.PublicTransport.TimeTable
                     {
                         foreach (var stopToCheck in trip.Stops)
                         {
-                            var isSame = StopHelper.CheckIfStopsAreTheSame(stop, stopToCheck);
+                            var isSame = _stopHelper.CheckIfStopsAreTheSame(stop, stopToCheck);
                             var alreadyExist = JoinTripHelper.CheckIfBusStopAlreadyExists(stopToCheck.RouteShortName, stopToCheck.StopLat, stopToCheck.StopLon, joinedTripToAdd);
 
                             var indexToAdd = 0;

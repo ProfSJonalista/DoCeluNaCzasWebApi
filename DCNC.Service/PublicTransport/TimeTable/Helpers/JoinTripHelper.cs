@@ -1,13 +1,19 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport;
+using DCNC.Bussiness.PublicTransport.JoinedTrips;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public class JoinTripHelper
     {
+        MapperService _mapperService;
+
+        public JoinTripHelper()
+        {
+            _mapperService = new MapperService();
+        }
+
         internal static int GetIndexToAdd(List<StopTripModel> stops, int index, StopTripDataModel joinedTrip)
         {
             var previousStop = stops[index - 1];
@@ -29,6 +35,15 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             mainTrip.Stops.ForEach(x => x.BelongsToMainTrip = true);
 
             return mainTrip;
+        }
+
+        public List<JoinedTripsViewModel> JoinedTripsMapper(List<JoinedTripsModel> joinedTripsModelList)
+        {
+            List<JoinedTripsViewModel> listToReturn = new List<JoinedTripsViewModel>();
+
+            joinedTripsModelList.ForEach(x => listToReturn.Add(_mapperService.JoinTripsMapper(x)));
+
+            return listToReturn;
         }
     }
 }

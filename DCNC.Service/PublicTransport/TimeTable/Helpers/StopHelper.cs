@@ -6,9 +6,9 @@ using System.Web;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
-    public static class StopHelper
+    public class StopHelper
     {
-        internal static StopTripModel Mapper(Route busLine, Trip trip, StopInTrip stop, BusStopData busStops, bool belongsToMainRoute)
+        internal StopTripModel Mapper(Route busLine, Trip trip, StopInTrip stop, BusStopData busStops, bool belongsToMainRoute)
         {
             var stopByStopId = busStops.Stops.Where(x => x.StopId == stop.StopId).SingleOrDefault();
 
@@ -30,7 +30,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             };
         }
 
-        internal static bool CheckIfStopsAreTheSame(StopTripModel stop, StopTripModel stopToCheck)
+        internal bool CheckIfStopsAreTheSame(StopTripModel stop, StopTripModel stopToCheck)
         {
             return stop.RouteShortName.Equals(stopToCheck.RouteShortName) && stop.StopLat == stopToCheck.StopLat && stop.StopLon == stopToCheck.StopLon;
         }

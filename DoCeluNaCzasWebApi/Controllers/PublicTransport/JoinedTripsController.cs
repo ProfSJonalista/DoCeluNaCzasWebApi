@@ -1,4 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport;
+using DCNC.Bussiness.PublicTransport.JoinedTrips;
 using DCNC.Service.PublicTransport.UpdateService;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class JoinedTripsController : ApiController
     {
-        public List<JoinedTripsModel> Get(bool hasData)
+        public List<JoinedTripsViewModel> Get(bool hasData)
         {
             return UpdateDataService.GetJoinedTrips(hasData);
         }

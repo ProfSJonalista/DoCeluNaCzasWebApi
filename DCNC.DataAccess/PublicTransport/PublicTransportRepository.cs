@@ -10,32 +10,32 @@ namespace DCNC.DataAccess.PublicTransport
 {
     public class PublicTransportRepository
     {
-        public async static Task<string> GetBusStops()
+        public async Task<string> GetBusStops()
         {
             return await DownloadData(Constants.BUS_STOPS);
         }
 
-        public async static Task<string> GetBusLines()
+        public async Task<string> GetBusLines()
         {
             return await DownloadData(Constants.BUS_LINES);
         }
 
-        public async static Task<string> GetTrips()
+        public async Task<string> GetTrips()
         {
             return await DownloadData(Constants.TRIPS);
         }
 
-        public async static Task<string> GetStopsInTrips()
+        public async Task<string> GetStopsInTrips()
         {
             return await DownloadData(Constants.STOPS_IN_TRIPS);
         }
 
-        public async static Task<string> GetExpeditionData()
+        public async Task<string> GetExpeditionData()
         {
             return await DownloadData(Constants.EXPEDITION);
         }
 
-        private async static Task<string> DownloadData(string url)
+        private async Task<string> DownloadData(string url)
         {
             var data = "";
             using (HttpClient client = new HttpClient())

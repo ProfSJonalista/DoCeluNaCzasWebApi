@@ -6,9 +6,9 @@ using System.Web;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
-    public static class DictionaryOrganizer
+    public class DictionaryOrganizer
     {
-        public static Dictionary<bool, List<StopTripDataModel>> GroupAndOrder(List<StopTripDataModel> tripsWithBusStopsForBusLine)
+        public Dictionary<bool, List<StopTripDataModel>> GroupAndOrder(List<StopTripDataModel> tripsWithBusStopsForBusLine)
         {
             var grouped = GroupByDirection(tripsWithBusStopsForBusLine);
             grouped = Order(grouped);
@@ -16,7 +16,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             return grouped;
         }
 
-        private static Dictionary<bool, List<StopTripDataModel>> GroupByDirection(List<StopTripDataModel> tripsWithBusStopsForBusLine)
+        private Dictionary<bool, List<StopTripDataModel>> GroupByDirection(List<StopTripDataModel> tripsWithBusStopsForBusLine)
         {
             var groupedByDirection = new Dictionary<bool, List<StopTripDataModel>>();
 
@@ -36,7 +36,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             return groupedByDirection;
         }
 
-        private static Dictionary<bool, List<StopTripDataModel>> Order(Dictionary<bool, List<StopTripDataModel>> groupedByDirection)
+        private Dictionary<bool, List<StopTripDataModel>> Order(Dictionary<bool, List<StopTripDataModel>> groupedByDirection)
         {
             var orderedDictionary = new Dictionary<bool, List<StopTripDataModel>>();
 

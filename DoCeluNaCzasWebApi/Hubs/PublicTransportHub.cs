@@ -14,16 +14,6 @@ namespace DoCeluNaCzasWebApi.Hubs
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        #region JOINED TRIPS
-
-        public List<JoinedTripsModel> GetJoinedTripsModelList()
-        {
-            var data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
-            return data.JoinedTrips;
-        }
-
-        #endregion
-
         #region BUS STOPS
 
         public List<BusStopData> GetBusStopDataList()

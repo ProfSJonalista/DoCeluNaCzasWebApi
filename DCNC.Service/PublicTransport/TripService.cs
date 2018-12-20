@@ -14,11 +14,19 @@ namespace DCNC.Service.PublicTransport
 {
     public class TripService
     {
+        StopHelper _stopHelper;
+        PublicTransportRepository _publicTransportRepository;
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        public async static Task<TripData> GetData()
+        public TripService()
         {
-            var json = await PublicTransportRepository.GetTrips();
+            _stopHelper = new StopHelper();
+            _publicTransportRepository = new PublicTransportRepository();
+        }
+
+        public async Task<TripData> GetData()
+        {
+            var json = await _publicTransportRepository.GetTrips();
             JObject trips = (JObject)JsonConvert.DeserializeObject(json);
             TripData tripDataToReturn;
 
@@ -35,11 +43,11 @@ namespace DCNC.Service.PublicTransport
             return TripConverter(trips.First);
         }
 
-        private static TripData CacheDataAndGetCurrentDayResult(JObject trips)
+        private TripData CacheDataAndGetCurrentDayResult(JObject trips)
         {
             List<TripData> tripDataToCache = new List<TripData>();
 
-            foreach(var item in trips.Children())
+            foreach (var item in trips.Children())
             {
                 tripDataToCache.Add(TripConverter(item));
             }
@@ -49,12 +57,12 @@ namespace DCNC.Service.PublicTransport
             return GetDataForCurrentDay(tripDataToCache);
         }
 
-        private static TripData GetDataForCurrentDay(List<TripData> dataList)
+        private TripData GetDataForCurrentDay(List<TripData> dataList)
         {
             return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
 
-        private static TripData TripConverter(JToken trips)
+        private TripData TripConverter(JToken trips)
         {
             var tripData = new TripData()
             {
@@ -88,7 +96,7 @@ namespace DCNC.Service.PublicTransport
             return tripData;
         }
 
-        public static List<StopTripDataModel> TripsWithBusStopsMapper(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, ExpeditionData expeditionData, BusStopData busStopData)
+        public List<StopTripDataModel> TripsWithBusStopsMapper(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, ExpeditionData expeditionData, BusStopData busStopData)
         {
             var tripsWithBusStopsList = new List<StopTripDataModel>();
 
@@ -120,7 +128,7 @@ namespace DCNC.Service.PublicTransport
 
                     var stops = stopInTripData.StopsInTrip.Where(x => x.RouteId == trip.RouteId && x.TripId == trip.TripId).ToList();
 
-                    stops.ForEach(stop => tripToAdd.Stops.Add(StopHelper.Mapper(busLine, trip, stop, busStopData, expedition.MainRoute)));
+                    stops.ForEach(stop => tripToAdd.Stops.Add(_stopHelper.Mapper(busLine, trip, stop, busStopData, expedition.MainRoute)));
 
                     tripToAdd.Stops = tripToAdd.Stops.OrderBy(x => x.StopSequence).ToList();
                     tripsWithBusStopsList.Add(tripToAdd);

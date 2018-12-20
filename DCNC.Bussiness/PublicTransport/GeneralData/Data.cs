@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DCNC.Bussiness.PublicTransport.JoinedTrips;
+using System.Collections.Generic;
 
 namespace DCNC.Bussiness.PublicTransport.GeneralData
 {
@@ -10,11 +11,6 @@ namespace DCNC.Bussiness.PublicTransport.GeneralData
         public ExpeditionData ExpeditionData { get; set; }
         public StopInTripData StopInTripData { get; set; }
         public List<StopTripDataModel> TripsWithBusStops { get; set; }
-        #region TODO REMOVE LATER
-        public string JoinedTripsAsJson { get; set; }
-        public string BusStopsAsJson { get; set; }
-        public string BusLinesAsJson { get; set; }
-        public List<JoinedTripsModel> JoinedTrips { get; set; }
-        #endregion
+        public List<JoinedTripsViewModel> JoinedTrips { get; set; }
     }
 }

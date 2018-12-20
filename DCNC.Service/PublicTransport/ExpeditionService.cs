@@ -15,10 +15,16 @@ namespace DCNC.Service.PublicTransport
     public class ExpeditionService
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
+        PublicTransportRepository _publicTransportRepository;
 
-        public async static Task<ExpeditionData> GetExpeditionData()
+        public ExpeditionService()
         {
-            var json = await PublicTransportRepository.GetExpeditionData();
+            _publicTransportRepository = new PublicTransportRepository();
+        }
+
+        public async Task<ExpeditionData> GetExpeditionData()
+        {
+            var json = await _publicTransportRepository.GetExpeditionData();
             JObject expeditions = (JObject)JsonConvert.DeserializeObject(json);
 
             if (!expeditions.HasValues)
@@ -29,14 +35,14 @@ namespace DCNC.Service.PublicTransport
             return CacheExpeditionDataAndGetResult(expeditions);
         }
 
-        private static ExpeditionData CacheExpeditionDataAndGetResult(JObject expeditions)
+        private ExpeditionData CacheExpeditionDataAndGetResult(JObject expeditions)
         {
             var expeditionsToCache = ExpeditionConverter(expeditions);
             _cache.Set(CacheKeys.EXPEDITION_DATA_LIST_KEY, expeditionsToCache, new CacheItemPolicy());
             return expeditionsToCache;
         }
 
-        private static ExpeditionData ExpeditionConverter(JToken expedition)
+        private ExpeditionData ExpeditionConverter(JToken expedition)
         {
             ExpeditionData expeditionData = new ExpeditionData()
             {

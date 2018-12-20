@@ -15,11 +15,17 @@ namespace DCNC.Service.PublicTransport
     public class StopInTripService
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
+        PublicTransportRepository _publicTransportRepository;
 
-        public async static Task<StopInTripData> GetStopInTripData()
+        public StopInTripService()
+        {
+            _publicTransportRepository = new PublicTransportRepository();
+        }
+
+        public async Task<StopInTripData> GetStopInTripData()
         {
             
-            var json = await PublicTransportRepository.GetStopsInTrips();
+            var json = await _publicTransportRepository.GetStopsInTrips();
             JObject stops = (JObject)JsonConvert.DeserializeObject(json);
             StopInTripData stopInTripDataToReturn;
 
@@ -36,7 +42,7 @@ namespace DCNC.Service.PublicTransport
             return stopInTripDataToReturn;
         }
 
-        private static StopInTripData CacheStopInTripDataAndGetCurrentDayResult(JObject stops)
+        private StopInTripData CacheStopInTripDataAndGetCurrentDayResult(JObject stops)
         {
             List<StopInTripData> stopInTripDataToCache = new List<StopInTripData>();
 
@@ -49,12 +55,12 @@ namespace DCNC.Service.PublicTransport
 
             return GetDataForCurrentDay(stopInTripDataToCache);
         }
-        private static StopInTripData GetDataForCurrentDay(List<StopInTripData> dataList)
+        private StopInTripData GetDataForCurrentDay(List<StopInTripData> dataList)
         {
             return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
         }
 
-        private static StopInTripData StopInTripConverter(JToken stops)
+        private StopInTripData StopInTripConverter(JToken stops)
         {
             StopInTripData stopInTripData = new StopInTripData()
             {
