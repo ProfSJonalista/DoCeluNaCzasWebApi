@@ -57,7 +57,7 @@ namespace DCNC.Service.PublicTransport.UpdateService
         //co określony okres czasu sprawdza czy nie zostały zaktualizowane dane na zewnętrznym API - jeśli tak, aktualizuje je
         public void SetTimer()
         {
-            var timeInMilliseconds = 60000; //3600000; //1 godzina
+            var timeInMilliseconds = 3600000; //1 godzina
             _timer = new Timer(timeInMilliseconds);
             _timer.Elapsed += UpdateDataEvent;
             _timer.AutoReset = true;
