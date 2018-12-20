@@ -115,28 +115,28 @@ namespace DCNC.Service.PublicTransport.UpdateService
             return false;
         }
         
-        public static string GetBusLines(bool hasData)
+        public static BusLineData GetBusLines(bool hasData)
         {
             if (hasData)
-                 return "";
+                 return new BusLineData();
 
-            return _data.BusLinesAsJson;
+            return _data.BusLineData;
         }
 
-        public static string GetBusStops(bool hasData)
+        public static BusStopData GetBusStops(bool hasData)
         {
             if (hasData)
-                return "";
+                return new BusStopData();
 
-            return _data.BusStopsAsJson;
+            return _data.BusStopData;
         }
 
-        public static string GetJoinedTrips(bool hasData)
+        public static List<JoinedTripsModel> GetJoinedTrips(bool hasData)
         {
             if (hasData)
-                return "";
+                return new List<JoinedTripsModel>();
 
-            return _data.JoinedTripsAsJson;
+            return _data.JoinedTrips;
         }
     }
 }
