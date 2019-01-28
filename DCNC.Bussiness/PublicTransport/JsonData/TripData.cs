@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace DCNC.Bussiness.PublicTransport
+namespace DCNC.Bussiness.PublicTransport.JsonData
 {
-    public class TripData
+    public class TripData : Common
     {
-        public DateTime Day { get; set; }
-        public DateTime LastUpdate { get; set; }
         public IList<Trip> Trips { get; set; }
     }
 

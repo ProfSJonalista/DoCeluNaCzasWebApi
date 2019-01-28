@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.PublicTransport;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.PublicTransport.Resources;
 using Newtonsoft.Json;
@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace DCNC.Service.PublicTransport
 {

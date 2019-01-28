@@ -1,5 +1,4 @@
 ﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.GeneralData;
 using DCNC.Bussiness.PublicTransport.JoinedTrips;
 using DCNC.Service.PublicTransport.Resources;
 using DCNC.Service.PublicTransport.TimeTable;
@@ -11,12 +10,13 @@ using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Web;
+using DCNC.Bussiness.PublicTransport.JsonData;
 
 namespace DCNC.Service.PublicTransport.UpdateService
 {
-    public class UpdateDataService
+    public static class UpdateDataService
     {
-        static Data _data;
+        static GeneralData _generalData;
         static Timer _timer;
         static TripData _trips;
         static BusLineData _busLines;
@@ -25,15 +25,15 @@ namespace DCNC.Service.PublicTransport.UpdateService
         static ExpeditionData _expeditionData;
         static readonly ObjectCache _cache = MemoryCache.Default;
 
-        
-        TripService _tripService;
-        BusLineService _busLineService;
-        BusStopService _busStopService;
-        JoinTripService _joinTripService;
-        ExpeditionService _expeditionService;
-        StopInTripService _stopInTripService;
 
-        public UpdateDataService()
+        static TripService _tripService;
+        static BusLineService _busLineService;
+        static BusStopService _busStopService;
+        static JoinTripService _joinTripService;
+        static ExpeditionService _expeditionService;
+        static StopInTripService _stopInTripService;
+
+        public static async Task Init()
         {
             _tripService = new TripService();
             _busLineService = new BusLineService();
@@ -42,52 +42,44 @@ namespace DCNC.Service.PublicTransport.UpdateService
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
 
-        }
-
-        public async Task Init()
-        {
             await DownloadData();
             AllocateData();
 
-            _data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
+            _generalData = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
 
             UpdateJoinedTrips();
         }
 
         //co określony okres czasu sprawdza czy nie zostały zaktualizowane dane na zewnętrznym API - jeśli tak, aktualizuje je
-        public void SetTimer()
+        public static void SetTimer()
         {
-            var timeInMilliseconds = 3600000; //1 godzina
+            const int timeInMilliseconds = 3600000; //1 godzina
             _timer = new Timer(timeInMilliseconds);
             _timer.Elapsed += UpdateDataEvent;
             _timer.AutoReset = true;
             _timer.Enabled = true;
         }
 
-        private void UpdateDataEvent(Object source, ElapsedEventArgs e)
+        private static void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
-            if (_data.BusLineData != null && _data.BusStopData != null && _data.ExpeditionData != null
-                            && _data.TripData != null && _data.StopInTripData != null)
-            {
-                if (CheckForUpdates())
-                {
-                    AllocateData();
-                    UpdateJoinedTrips();
-                }
-            }
+            if (_generalData.BusLineData == null || _generalData.BusStopData == null || _generalData.ExpeditionData == null ||
+                _generalData.TripData == null || _generalData.StopInTripData == null) return;
+            if (!CheckForUpdates()) return;
+            AllocateData();
+            UpdateJoinedTrips();
         }
 
-        private void UpdateJoinedTrips()
+        private static void UpdateJoinedTrips()
         {
-            _data.TripsWithBusStops = _tripService.TripsWithBusStopsMapper(_data.BusLineData, _data.TripData, 
-                                                                          _data.StopInTripData, _data.ExpeditionData, _data.BusStopData);
-            _data.JoinedTrips = _joinTripService.JoinTrips(_data.BusLineData, _data.TripData, _data.StopInTripData, 
-                                                          _data.ExpeditionData, _data.BusStopData, _data.TripsWithBusStops);
+            _generalData.TripsWithBusStops = _tripService.TripsWithBusStopsMapper(_generalData.BusLineData, _generalData.TripData, 
+                                                                          _generalData.StopInTripData, _generalData.ExpeditionData, _generalData.BusStopData);
+            _generalData.JoinedTrips = _joinTripService.JoinTrips(_generalData.BusLineData, _generalData.TripData, _generalData.StopInTripData, 
+                                                          _generalData.ExpeditionData, _generalData.BusStopData, _generalData.TripsWithBusStops);
 
-            UpdateCachedData(_data, CacheKeys.GENERAL_DATA_KEY);
+            UpdateCachedData(_generalData, CacheKeys.GENERAL_DATA_KEY);
         }
 
-        public async Task DownloadData()
+        public static async Task DownloadData()
         {
             _trips = await _tripService.GetData();
             _busLines = await _busLineService.GetBusLineData();
@@ -96,9 +88,9 @@ namespace DCNC.Service.PublicTransport.UpdateService
             _expeditionData = await _expeditionService.GetExpeditionData();
         }
 
-        public void AllocateData()
+        public static void AllocateData()
         {
-            Data dataToCache = new Data()
+            var dataToCache = new GeneralData()
             {
                 TripData = _trips,
                 BusLineData = _busLines,
@@ -110,22 +102,22 @@ namespace DCNC.Service.PublicTransport.UpdateService
             UpdateCachedData(dataToCache, CacheKeys.GENERAL_DATA_KEY);
         }
 
-        private void UpdateCachedData<T>(T data, string cacheKey)
+        private static void UpdateCachedData<T>(T data, string cacheKey)
         {
             _cache.Set(cacheKey, data, new CacheItemPolicy());
         }
 
-        public bool CheckForUpdates()
+        public static bool CheckForUpdates()
         {
-            if (_data.TripData.Day < _trips.Day)
+            if (_generalData.TripData.Day < _trips.Day)
                 return true;
-            if (_data.BusLineData.Day < _busLines.Day)
+            if (_generalData.BusLineData.Day < _busLines.Day)
                 return true;
-            if (_data.BusStopData.Day < _busStops.Day)
+            if (_generalData.BusStopData.Day < _busStops.Day)
                 return true;
-            if (_data.StopInTripData.Day < _stopsInTrips.Day)
+            if (_generalData.StopInTripData.Day < _stopsInTrips.Day)
                 return true;
-            if (_data.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
+            if (_generalData.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
                 return true;
 
             return false;
@@ -133,26 +125,17 @@ namespace DCNC.Service.PublicTransport.UpdateService
         
         public static BusLineData GetBusLines(bool hasData)
         {
-            if (hasData)
-                 return new BusLineData();
-
-            return _data.BusLineData;
+            return hasData ? new BusLineData() : _generalData.BusLineData;
         }
 
         public static BusStopData GetBusStops(bool hasData)
         {
-            if (hasData)
-                return new BusStopData();
-
-            return _data.BusStopData;
+            return hasData ? new BusStopData() : _generalData.BusStopData;
         }
 
         public static List<JoinedTripsViewModel> GetJoinedTrips(bool hasData)
         {
-            if (hasData)
-                return new List<JoinedTripsViewModel>();
-
-            return _data.JoinedTrips;
+            return hasData ? new List<JoinedTripsViewModel>() : _generalData.JoinedTrips;
         }
     }
 }

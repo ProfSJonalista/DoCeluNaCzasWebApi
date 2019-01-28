@@ -9,13 +9,14 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
+using DCNC.Bussiness.PublicTransport.JsonData;
 
 namespace DCNC.Service.PublicTransport
 {
     public class BusLineService
     {
         static readonly ObjectCache _cache = MemoryCache.Default;
-        PublicTransportRepository _publicTransportRepository;
+        readonly PublicTransportRepository _publicTransportRepository;
 
         public BusLineService()
         {
@@ -25,12 +26,12 @@ namespace DCNC.Service.PublicTransport
         public async Task<BusLineData> GetBusLineData()
         {
             var json = await _publicTransportRepository.GetBusLines();
-            JObject lines = (JObject)JsonConvert.DeserializeObject(json);
+            var lines = (JObject)JsonConvert.DeserializeObject(json);
             BusLineData busLineDataToReturn;
 
             if (!lines.HasValues)
             {
-                List<BusLineData> busLineDatas = _cache[CacheKeys.BUS_LINE_DATA_LIST_KEY] as List<BusLineData>;
+                var busLineDatas = _cache[CacheKeys.BUS_LINE_DATA_LIST_KEY] as List<BusLineData>;
                 busLineDataToReturn = GetDataForCurrentDay(busLineDatas);
 
                 return busLineDataToReturn;
@@ -43,7 +44,7 @@ namespace DCNC.Service.PublicTransport
 
         private BusLineData CacheBusLineDataAndGetCurrentDayResult(JObject lines)
         {
-            List<BusLineData> busLineDatasToCache = new List<BusLineData>();
+            var busLineDatasToCache = new List<BusLineData>();
 
             foreach (var item in lines.Children())
             {
@@ -55,14 +56,14 @@ namespace DCNC.Service.PublicTransport
             return GetDataForCurrentDay(busLineDatasToCache);
         }
 
-        private BusLineData GetDataForCurrentDay(List<BusLineData> busLineDataList)
+        private BusLineData GetDataForCurrentDay(IEnumerable<BusLineData> busLineDataList)
         {
-            return busLineDataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
+            return busLineDataList.SingleOrDefault(x => x.Day.Date == DateTime.Now.Date);
         }
         
         private BusLineData BusLineConverter(JToken busLine)
         {
-            BusLineData busLineData = new BusLineData()
+            var busLineData = new BusLineData()
             {
                 Day = DateTime.Parse(busLine.Path),
                 Routes = new List<Route>()
@@ -76,7 +77,7 @@ namespace DCNC.Service.PublicTransport
 
                 foreach (JObject line in routeList.Children<JObject>())
                 {
-                    Route routeToAdd = new Route()
+                    var routeToAdd = new Route()
                     {
                         RouteId = line.Value<int>("routeId"),
                         AgencyId = line.Value<int>("agencyId"),

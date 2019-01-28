@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Web;
 using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.GeneralData;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.Resources;
 using Microsoft.AspNet.SignalR;
 
@@ -23,7 +23,7 @@ namespace DoCeluNaCzasWebApi.Hubs
 
         public BusStopData GetBusStopData()
         {
-            var data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
+            var data = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
             return data.BusStopData;
         }
 
@@ -38,7 +38,7 @@ namespace DoCeluNaCzasWebApi.Hubs
 
         public BusLineData GetBusLineData()
         {
-            var data = _cache[CacheKeys.GENERAL_DATA_KEY] as Data;
+            var data = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
             return data.BusLineData;
         }
 

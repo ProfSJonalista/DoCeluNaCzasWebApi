@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
+using DCNC.Bussiness.PublicTransport.JsonData;
 
 namespace DCNC.Service.PublicTransport
 {

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace DCNC.Bussiness.PublicTransport
+namespace DCNC.Bussiness.PublicTransport.JsonData
 {
-    public class ExpeditionData
+    public class ExpeditionData : Common
     {
-        public DateTime LastUpdate { get; set; }
         public List<Expedition> Expeditions { get; set; }
     }
 

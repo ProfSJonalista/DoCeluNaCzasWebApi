@@ -1,9 +1,9 @@
-﻿using DCNC.Bussiness.PublicTransport.JoinedTrips;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JoinedTrips;
 
-namespace DCNC.Bussiness.PublicTransport.GeneralData
+namespace DCNC.Bussiness.PublicTransport.JsonData
 {
-    public class Data
+    public class GeneralData
     {
         public TripData TripData { get; set; }
         public BusLineData BusLineData { get; set; }

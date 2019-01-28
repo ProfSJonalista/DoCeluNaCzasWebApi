@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Web;
+using DCNC.Bussiness.PublicTransport.JsonData;
 
 namespace DCNC.Service.PublicTransport
 {
@@ -57,12 +58,12 @@ namespace DCNC.Service.PublicTransport
 
         private BusStopData GetDataForCurrentDay(List<BusStopData> dataList)
         {
-            return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
+            return dataList.SingleOrDefault(x => x.Day.Date == DateTime.Now.Date);
         }
 
         private BusStopData Converter(JToken busStop)
         {
-            BusStopData busStopData = new BusStopData()
+            var busStopData = new BusStopData()
             {
                 Day = DateTime.Parse(busStop.Path),
                 Stops = new List<Stop>()
@@ -76,7 +77,7 @@ namespace DCNC.Service.PublicTransport
 
                 foreach (JObject stop in stopList.Children<JObject>())
                 {
-                    Stop stopToAdd = new Stop()
+                    var stopToAdd = new Stop()
                     {
                         StopId = stop.Value<int>("stopId"),
                         StopCode = stop.Value<string>("stopCode"),
