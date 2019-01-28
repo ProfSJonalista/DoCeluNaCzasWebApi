@@ -11,9 +11,9 @@ namespace DCNC.Service.PublicTransport.TimeTable
 {
     public class JoinTripService
     {
-        StopHelper _stopHelper;
-        JoinTripHelper _joinTripHelper;
-        DictionaryOrganizer _dictionaryOrganizer;
+        readonly StopHelper _stopHelper;
+        readonly JoinTripHelper _joinTripHelper;
+        readonly DictionaryOrganizer _dictionaryOrganizer;
 
         public JoinTripService()
         {
@@ -64,29 +64,23 @@ namespace DCNC.Service.PublicTransport.TimeTable
                             var isSame = _stopHelper.CheckIfStopsAreTheSame(stop, stopToCheck);
                             var alreadyExist = JoinTripHelper.CheckIfBusStopAlreadyExists(stopToCheck.RouteShortName, stopToCheck.StopLat, stopToCheck.StopLon, joinedTripToAdd);
 
-                            var indexToAdd = 0;
-
-                            if (!isSame && !alreadyExist)
+                            if (isSame || alreadyExist) continue;
+                            if (joinedTripToAdd.Stops.Count == 0)
+                                joinedTripToAdd.Stops.Add(stopToCheck);
+                            else
                             {
-                                if (joinedTripToAdd.Stops.Count == 0)
-                                    joinedTripToAdd.Stops.Add(stopToCheck);
-                                else
-                                {
-                                    var index = trip.Stops.IndexOf(stopToCheck);
+                                var index = trip.Stops.IndexOf(stopToCheck);
 
-                                    if (index == 0)
-                                        indexToAdd = index;
-                                    else
-                                        indexToAdd = JoinTripHelper.GetIndexToAdd(trip.Stops, index, joinedTripToAdd);
+                                var indexToAdd = 0;
+                                indexToAdd = index == 0 ? index : JoinTripHelper.GetIndexToAdd(trip.Stops, index, joinedTripToAdd);
 
-                                    joinedTripToAdd.Stops.Insert(indexToAdd, stopToCheck);
-                                }
+                                joinedTripToAdd.Stops.Insert(indexToAdd, stopToCheck);
                             }
                         }
                     }
                 }
 
-                int sequence = 0;
+                var sequence = 0;
 
                 foreach (var stop in joinedTripToAdd.Stops)
                 {

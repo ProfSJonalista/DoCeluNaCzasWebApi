@@ -1,10 +1,10 @@
-﻿using DCNC.DataAccess.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using DCNC.DataAccess.PublicTransport.Helpers;
 
 namespace DCNC.DataAccess.PublicTransport
 {
@@ -38,7 +38,7 @@ namespace DCNC.DataAccess.PublicTransport
         private async Task<string> DownloadData(string url)
         {
             var data = "";
-            using (HttpClient client = new HttpClient())
+            using (var client = new HttpClient())
             {
                 var response = await client.GetAsync(url);
                 var json = await response.Content.ReadAsStringAsync();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DCNC.DataAccess.Helpers
+﻿namespace DCNC.DataAccess.PublicTransport.Helpers
 {
     public class Constants
     {
