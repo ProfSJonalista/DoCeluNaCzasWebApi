@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
-namespace DCNC.Bussiness.PublicTransport.JoinedTrips
+namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
-    public class JoinedTripsViewModel
+    public class JoinedTripsModel
     {
         public string BusLineName { get; set; }
         public bool ContainsMultiplyTrips { get; set; }
-        public List<StopTripDataViewModel> JoinedTrips { get; set; }
+        public List<StopTripDataModel> JoinedTrips { get; set; }
     }
 
-    public class StopTripDataViewModel
+    public class StopTripDataModel
     {
         public string BusLineName { get; set; }
         public string FirstStopName { get; set; }
@@ -20,10 +18,10 @@ namespace DCNC.Bussiness.PublicTransport.JoinedTrips
         public bool MainRoute { get; set; }
         public bool TechnicalTrip { get; set; }
         public DateTime ActivationDate { get; set; }
-        public List<StopTripViewModel> Stops { get; set; }
+        public List<StopTripModel> Stops { get; set; }
     }
 
-    public class StopTripViewModel
+    public class StopTripModel
     {
         public int RouteId { get; set; }
         public int TripId { get; set; }

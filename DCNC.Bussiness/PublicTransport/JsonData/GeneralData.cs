@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DCNC.Bussiness.PublicTransport.JoinedTrips;
 
 namespace DCNC.Bussiness.PublicTransport.JsonData
 {
@@ -11,6 +10,6 @@ namespace DCNC.Bussiness.PublicTransport.JsonData
         public ExpeditionData ExpeditionData { get; set; }
         public StopInTripData StopInTripData { get; set; }
         public List<StopTripDataModel> TripsWithBusStops { get; set; }
-        public List<JoinedTripsViewModel> JoinedTrips { get; set; }
+        //public List<JoinedTripsViewModel> JoinedTrips { get; set; }
     }
 }

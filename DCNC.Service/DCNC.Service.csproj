@@ -75,22 +75,25 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PublicTransport\BusLineService.cs" />
-    <Compile Include="PublicTransport\BusStopService.cs" />
+    <Compile Include="PublicTransport\JsonData\BusLineService.cs" />
+    <Compile Include="PublicTransport\JsonData\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PublicTransport\Interfaces\IDataDownloadService.cs" />
+    <Compile Include="PublicTransport\JsonData\Abstracts\DataDownloadService.cs" />
+    <Compile Include="PublicTransport\JsonData\Interfaces\IDataDownloadService.cs" />
+    <Compile Include="PublicTransport\JsonData\Abstracts\DataAbstractService.cs" />
+    <Compile Include="PublicTransport\JsonData\Interfaces\IJsonDataService.cs" />
     <Compile Include="PublicTransport\RouteSearch\RouteSearchService.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\MapperService.cs" />
-    <Compile Include="PublicTransport\UpdateService\UpdateDataService.cs" />
-    <Compile Include="PublicTransport\ExpeditionService.cs" />
+    <Compile Include="PublicTransport\JsonData\ExpeditionService.cs" />
     <Compile Include="PublicTransport\Resources\CacheKeys.cs" />
-    <Compile Include="PublicTransport\StopInTripService.cs" />
+    <Compile Include="PublicTransport\JsonData\StopInTripService.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\DictionaryOrganizer.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\JoinTripHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\StopHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\JoinTripService.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
-    <Compile Include="PublicTransport\TripService.cs" />
+    <Compile Include="PublicTransport\JsonData\TripService.cs" />
+    <Compile Include="PublicTransport\UpdateData\TimeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -111,6 +114,7 @@
       <Name>DCNC.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

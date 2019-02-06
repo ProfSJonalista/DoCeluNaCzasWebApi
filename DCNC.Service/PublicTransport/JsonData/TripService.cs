@@ -1,69 +1,25 @@
 ﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.DataAccess.PublicTransport;
-using DCNC.Service.PublicTransport.Resources;
+using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Caching;
-using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Bussiness.PublicTransport.JsonData.Shared;
 
-namespace DCNC.Service.PublicTransport
+namespace DCNC.Service.PublicTransport.JsonData
 {
-    public class TripService
+    public class TripService : DataAbstractService
     {
         StopHelper _stopHelper;
-        PublicTransportRepository _publicTransportRepository;
-        static readonly ObjectCache _cache = MemoryCache.Default;
 
         public TripService()
         {
             _stopHelper = new StopHelper();
-            _publicTransportRepository = new PublicTransportRepository();
         }
 
-        public async Task<TripData> GetData()
-        {
-            var json = await _publicTransportRepository.GetTrips();
-            JObject trips = (JObject)JsonConvert.DeserializeObject(json);
-            TripData tripDataToReturn;
-
-            if (!trips.HasValues)
-            {
-                List<TripData> tripDatas = _cache[CacheKeys.TRIP_DATA_LIST_KEY] as List<TripData>;
-                tripDataToReturn = GetDataForCurrentDay(tripDatas);
-
-                return tripDataToReturn;
-            }
-
-            tripDataToReturn = CacheDataAndGetCurrentDayResult(trips);
-
-            return TripConverter(trips.First);
-        }
-
-        private TripData CacheDataAndGetCurrentDayResult(JObject trips)
-        {
-            List<TripData> tripDataToCache = new List<TripData>();
-
-            foreach (var item in trips.Children())
-            {
-                tripDataToCache.Add(TripConverter(item));
-            }
-
-            _cache.Set(CacheKeys.TRIP_DATA_LIST_KEY, tripDataToCache, new CacheItemPolicy());
-
-            return GetDataForCurrentDay(tripDataToCache);
-        }
-
-        private TripData GetDataForCurrentDay(List<TripData> dataList)
-        {
-            return dataList.Where(x => x.Day.Date == DateTime.Now.Date).SingleOrDefault();
-        }
-
-        private TripData TripConverter(JToken trips)
+        public override Common Converter(JToken trips)
         {
             var tripData = new TripData()
             {

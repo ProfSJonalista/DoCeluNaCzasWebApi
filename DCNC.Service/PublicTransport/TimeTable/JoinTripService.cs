@@ -1,5 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.JoinedTrips;
+//using DCNC.Bussiness.PublicTransport.JoinedTrips;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using System;
 using System.Collections.Generic;
@@ -22,16 +22,16 @@ namespace DCNC.Service.PublicTransport.TimeTable
             _dictionaryOrganizer = new DictionaryOrganizer();
         }
 
-        public List<JoinedTripsViewModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
-                                                       ExpeditionData expeditionData, BusStopData busStopData, List<StopTripDataModel> tripsWithBusStops)
-        {
-            var joinedTripsModelList = new List<JoinedTripsModel>();
-            var distinctBusLines = busLineData.Routes.GroupBy(x => x.RouteShortName).Select(x => x.FirstOrDefault()).ToList();
+        //public List<JoinedTripsViewModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
+        //                                               ExpeditionData expeditionData, BusStopData busStopData, List<StopTripDataModel> tripsWithBusStops)
+        //{
+        //    var joinedTripsModelList = new List<JoinedTripsModel>();
+        //    var distinctBusLines = busLineData.Routes.GroupBy(x => x.RouteShortName).Select(x => x.FirstOrDefault()).ToList();
 
-            distinctBusLines.ForEach(busLine => joinedTripsModelList.Add(JoinTripsForEachBusLine(busLine, tripsWithBusStops)));
+        //    distinctBusLines.ForEach(busLine => joinedTripsModelList.Add(JoinTripsForEachBusLine(busLine, tripsWithBusStops)));
 
-            return _joinTripHelper.JoinedTripsMapper(joinedTripsModelList);
-        }
+        //    return _joinTripHelper.JoinedTripsMapper(joinedTripsModelList);
+        //}
 
         private JoinedTripsModel JoinTripsForEachBusLine(Route busLine, List<StopTripDataModel> tripsWithBusStops)
         {

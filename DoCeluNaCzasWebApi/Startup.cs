@@ -1,7 +1,7 @@
-﻿using DCNC.Service.PublicTransport.UpdateService;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using DoCeluNaCzasWebApi.Services.UpdateService;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -20,9 +20,9 @@ namespace DoCeluNaCzasWebApi
             app.UseWebApi(config);
             ConfigureAuth(app);
             app.MapSignalR();
-            //UpdateDataService updateDataService = new UpdateDataService();
-            await UpdateDataService.Init();
-            UpdateDataService.SetTimer();
+            
+            await UDS.Init();
+            UDS.SetTimer();
         }
     }
 }

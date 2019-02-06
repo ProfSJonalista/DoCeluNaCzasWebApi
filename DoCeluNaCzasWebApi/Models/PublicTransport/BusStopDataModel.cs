@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+using System.Linq;
+using System.Web;
+using DoCeluNaCzasWebApi.Models.PublicTransport.Shared;
 
-namespace DCNC.Bussiness.PublicTransport.JsonData
+namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
-    public class BusStopData : Common
+    public class BusStopDataModel : CommonModel
     {
-        public IList<Stop> Stops { get; set; }
+        private List<StopViewModel> Stops { get; set; }
     }
 
-    public class Stop
+    public class StopViewModel
     {
         public int StopId { get; set; }
         public string StopCode { get; set; }

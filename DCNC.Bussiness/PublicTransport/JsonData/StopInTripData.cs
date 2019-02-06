@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JsonData.Shared;
 
 namespace DCNC.Bussiness.PublicTransport.JsonData
 {

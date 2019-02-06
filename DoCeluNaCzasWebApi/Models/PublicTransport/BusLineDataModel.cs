@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+using System.Linq;
+using System.Web;
+using DoCeluNaCzasWebApi.Models.PublicTransport.Shared;
 
-namespace DCNC.Bussiness.PublicTransport.JsonData
+namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
-    public class BusLineData : Common
+    public class BusLineDataModel : CommonModel
     {
-        public List<Route> Routes { get; set; }
+        private List<RouteViewModel> Routes { get; set; }
     }
 
-    public class Route
+    public class RouteViewModel
     {
         public int RouteId { get; set; }
         public int AgencyId { get; set; }

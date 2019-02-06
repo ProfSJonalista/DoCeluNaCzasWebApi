@@ -17,7 +17,8 @@ namespace DoCeluNaCzasWebApi.Controllers
         }
         public List<string> Get(int startStopId, int destinationStopId)
         {
-            return _routeSearchService.SearchRoute(startStopId, destinationStopId);
+            //return _routeSearchService.SearchRoute(startStopId, destinationStopId);
+            return new List<string>();
         }
     }
 }

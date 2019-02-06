@@ -79,9 +79,8 @@
     <Compile Include="PublicTransport\JsonData\BusLineData.cs" />
     <Compile Include="PublicTransport\JsonData\BusStopData.cs" />
     <Compile Include="PublicTransport\JsonData\ExpeditionData.cs" />
-    <Compile Include="PublicTransport\JsonData\Common.cs" />
+    <Compile Include="PublicTransport\JsonData\Shared\Common.cs" />
     <Compile Include="PublicTransport\JsonData\GeneralData.cs" />
-    <Compile Include="PublicTransport\JoinedTrips\JoinedTripsViewModel.cs" />
     <Compile Include="PublicTransport\RouteSearch\Change.cs" />
     <Compile Include="PublicTransport\JsonData\StopInTripData.cs" />
     <Compile Include="PublicTransport\JoinedTripsDataModel.cs" />
