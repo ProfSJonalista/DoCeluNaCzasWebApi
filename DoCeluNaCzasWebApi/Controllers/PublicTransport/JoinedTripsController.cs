@@ -1,17 +1,15 @@
-﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.JoinedTrips;
-using DCNC.Service.PublicTransport.UpdateService;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Services.UpdateService;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class JoinedTripsController : ApiController
     {
-        public List<JoinedTripsViewModel> Get(bool hasData)
+        public List<JoinedTripsModel> Get()
         {
-            return UpdateDataService.GetJoinedTrips(hasData);
+            return UDS.GetJoinedTrips();
         }
     }
 }

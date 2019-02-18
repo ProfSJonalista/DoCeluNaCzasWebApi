@@ -1,15 +1,15 @@
-﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.Service.PublicTransport.UpdateService;
-using System.Threading.Tasks;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DoCeluNaCzasWebApi.Services.UpdateService;
 using System.Web.Http;
+using DoCeluNaCzasWebApi.Models.PublicTransport;
 
 namespace DoCeluNaCzasWebApi.Controllers
 {
     public class BusStopController : ApiController
     {
-        public BusStopData Get(bool hasData)
-        {
-            return UpdateDataService.GetBusStops(hasData);
-        }
+       public BusStopDataModel Get()
+       {
+           return UDS.GetBusStops();
+       }
     }
 }
