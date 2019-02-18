@@ -1,8 +1,31 @@
-﻿namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
+﻿using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
+
+namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
 {
-    public class DictionaryOrganizer
+    public class Organizer
     {
-        
+        public Dictionary<bool, List<Trip>> GetTrips(List<Trip> busLineTrips)
+        {
+            var orgTrips = new Dictionary<bool, List<Trip>>();
+
+            busLineTrips.ForEach(trip =>
+            {
+                var key = trip.DirectionId == 1;
+
+                if (!orgTrips.ContainsKey(key))
+                {
+                    orgTrips.Add(key, new List<Trip>() { trip
+                    });
+                }
+                else
+                {
+                    orgTrips[key].Add(trip);
+                }
+            });
+
+            return orgTrips;
+        }
 
         //private Dictionary<bool, List<StopTripDataModel>> Order(Dictionary<bool, List<StopTripDataModel>> groupedByDirection)
         //{
@@ -28,7 +51,7 @@
 
         //            orderedList.Insert(0, mainRoute);                    
         //        }
-                
+
         //        orderedDictionary.Add(direction.Key, orderedList);
         //    }
 

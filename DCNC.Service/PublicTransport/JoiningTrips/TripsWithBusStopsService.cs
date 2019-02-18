@@ -10,10 +10,12 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 {
     public class TripsWithBusStopsService
     {
+        private readonly Organizer _organizer;
         private readonly StopHelper _stopHelper;
 
         public TripsWithBusStopsService()
         {
+            _organizer = new Organizer();
             _stopHelper = new StopHelper();
         }
 
@@ -86,29 +88,16 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 
                 distinctRoutes.ForEach(route =>
                 {
-                    var busLineTrips = day.Trips.Where(trip => trip.BusLineName.Equals(route.RouteShortName)).ToList();
-                    var orgTrip = new OrganizedTrips()
+                    var busLineTrips = day.Trips
+                                          .Where(trip => trip.BusLineName.Equals(route.RouteShortName))
+                                          .ToList();
+
+                    organizedTrips.Add(new OrganizedTrips()
                     {
                         Day = day.Day,
                         BusLineName = route.RouteShortName,
-                        Trips = new Dictionary<bool, List<Trip>>()
-                    };
-
-                    busLineTrips.ForEach(trip =>
-                    {
-                        var key = trip.DirectionId == 1;
-
-                        if (!orgTrip.Trips.ContainsKey(key))
-                        {
-                            orgTrip.Trips.Add(key, new List<Trip>() { trip });
-                        }
-                        else
-                        {
-                            orgTrip.Trips[key].Add(trip);
-                        }
+                        Trips = _organizer.GetTrips(busLineTrips)
                     });
-
-                    organizedTrips.Add(orgTrip);
                 });
             });
 

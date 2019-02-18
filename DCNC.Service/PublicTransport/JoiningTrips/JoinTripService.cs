@@ -11,13 +11,13 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
     {
         readonly StopHelper _stopHelper;
         readonly JoinTripHelper _joinTripHelper;
-        readonly DictionaryOrganizer _dictionaryOrganizer;
+        readonly Organizer _dictionaryOrganizer;
 
         public JoinTripService()
         {
             _stopHelper = new StopHelper();
             _joinTripHelper = new JoinTripHelper();
-            _dictionaryOrganizer = new DictionaryOrganizer();
+            _dictionaryOrganizer = new Organizer();
         }
 
         //public List<JoinedTripsViewModel> JoinTrips(BusLineData busLineData, TripData tripData, StopInTripData stopInTripData, 
