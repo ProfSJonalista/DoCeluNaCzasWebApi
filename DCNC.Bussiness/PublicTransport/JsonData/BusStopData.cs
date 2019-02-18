@@ -6,7 +6,7 @@ namespace DCNC.Bussiness.PublicTransport.JsonData
 {
     public class BusStopData : Common
     {
-        public IList<Stop> Stops { get; set; }
+        public List<Stop> Stops { get; set; }
     }
 
     public class Stop

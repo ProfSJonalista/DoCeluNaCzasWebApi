@@ -6,7 +6,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Interfaces
 {
     internal interface IJsonDataService
     {
-        IEnumerable<T> GetMappedListAndCacheData<T>(JObject jsonDataAsJObject);
+        List<T> GetMappedListAndCacheData<T>(JObject jsonDataAsJObject, string cacheKey);
         IEnumerable<T> GetList<T>(JObject dataAsJObject);
         Common Converter(JToken dataAsJToken);
     }

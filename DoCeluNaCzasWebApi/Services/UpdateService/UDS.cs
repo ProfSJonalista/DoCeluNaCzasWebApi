@@ -3,11 +3,15 @@ using DCNC.DataAccess.Helpers;
 using DCNC.Service.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.UpdateData;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Services.PublicTransport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using DCNC.Service.PublicTransport.Caching;
+using DCNC.Service.PublicTransport.Caching.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
@@ -15,18 +19,16 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
     {
         private static TimeService _timeService;
         private static TripService _tripService;
+        private static CacheService _cacheService;
         private static BusStopService _busStopService;
         private static BusLineService _busLineService;
+        private static JoinTripService _joinTripService;
         private static ExpeditionService _expeditionService;
         private static StopInTripService _stopInTripService;
 
-        private static Timer _timer;
+        private static BusStopModelService _busStopModelService;
 
-        private static DateTime _lastTripsUpdate;
-        private static DateTime _lastBusStopUpdate;
-        private static DateTime _lastBusLineUpdate;
-        private static DateTime _lastExpeditionUpdate;
-        private static DateTime _lastStopsInTripUpdate;
+        private static Timer _timer;
 
         private static BusStopDataModel _busStopDataModel;
         private static List<JoinedTripsModel> _joinedTripsModelList;
@@ -35,17 +37,22 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         {
             InitializeServices();
 
-            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.TRIPS);
-            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.BUS_STOPS);
-            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.BUS_LINES);
-            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.EXPEDITION);
-            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.STOPS_IN_TRIPS);
+            var (tripsAsJObject, 
+                busStopsAsJObject, 
+                busLinesAsJObject, 
+                expeditionsAsJObject, 
+                stopsInTripsAsJObject) = await GetDataAsync();
 
-            var tripDataList = _tripService.GetMappedListAndCacheData<TripData>(tripsAsJObject);
-            var busStopDataList = _busStopService.GetMappedListAndCacheData<BusStopData>(busStopsAsJObject);
-            var busLineDataList = _busLineService.GetMappedListAndCacheData<BusLineData>(busLinesAsJObject);
-            var stopInTripDataList = _stopInTripService.GetMappedListAndCacheData<StopInTripData>(stopsInTripsAsJObject);
-            var expeditionObject = _expeditionService.GetMappedListAndCacheData<ExpeditionData>(expeditionsAsJObject).FirstOrDefault();
+            var tripDataList = _tripService.GetMappedListAndCacheData<TripData>(tripsAsJObject, CacheKeys.TRIP_DATA_LIST_KEY);
+            var busStopDataList = _busStopService.GetMappedListAndCacheData<BusStopData>(busStopsAsJObject, CacheKeys.BUS_STOP_DATA_LIST_KEY);
+            var busLineDataList = _busLineService.GetMappedListAndCacheData<BusLineData>(busLinesAsJObject, CacheKeys.BUS_LINE_DATA_LIST_KEY);
+            var stopInTripDataList = _stopInTripService.GetMappedListAndCacheData<StopInTripData>(stopsInTripsAsJObject, CacheKeys.STOP_IN_TRIP_DATA_LIST_KEY);
+            var expeditionData = _expeditionService.GetMappedListAndCacheData<ExpeditionData>(expeditionsAsJObject, CacheKeys.EXPEDITION_DATA_KEY).FirstOrDefault();
+
+            _busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
+
+            _joinedTripsModelList = _joinTripService.GetJoinedTripsModelList(tripDataList, busStopDataList,
+                busLineDataList, stopInTripDataList, expeditionData);
 
             SetTimer();
             /*
@@ -55,14 +62,34 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             */
         }
 
+        private static async Task<(
+                JObject tripsAsJObject, 
+                JObject busStopsAsJObject, 
+                JObject busLinesAsJObject, 
+                JObject expeditionsAsJObject, 
+                JObject stopsInTripsAsJObject
+                )> GetDataAsync()
+        {
+            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.TRIPS);
+            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.BUS_STOPS);
+            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.BUS_LINES);
+            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.EXPEDITION);
+            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.STOPS_IN_TRIPS);
+
+            return (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
+        }
+
         private static void InitializeServices()
         {
             _timeService = new TimeService();
             _tripService = new TripService();
+            _cacheService = new CacheService();
             _busStopService = new BusStopService();
             _busLineService = new BusLineService();
+            _joinTripService = new JoinTripService();
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
+            _busStopModelService = new BusStopModelService();
         }
 
         public static void SetTimer()

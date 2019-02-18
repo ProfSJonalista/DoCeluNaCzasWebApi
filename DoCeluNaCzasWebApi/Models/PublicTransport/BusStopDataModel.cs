@@ -8,10 +8,10 @@ namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
     public class BusStopDataModel : CommonModel
     {
-        private List<StopViewModel> Stops { get; set; }
+        public List<StopModel> Stops { get; set; }
     }
 
-    public class StopViewModel
+    public class StopModel
     {
         public int StopId { get; set; }
         public string StopCode { get; set; }

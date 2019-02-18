@@ -49,6 +49,9 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -75,6 +78,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PublicTransport\Caching\CacheService.cs" />
     <Compile Include="PublicTransport\JsonData\BusLineService.cs" />
     <Compile Include="PublicTransport\JsonData\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -83,15 +87,15 @@
     <Compile Include="PublicTransport\JsonData\Abstracts\DataAbstractService.cs" />
     <Compile Include="PublicTransport\JsonData\Interfaces\IJsonDataService.cs" />
     <Compile Include="PublicTransport\RouteSearch\RouteSearchService.cs" />
-    <Compile Include="PublicTransport\TimeTable\Helpers\MapperService.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\MapperService.cs" />
     <Compile Include="PublicTransport\JsonData\ExpeditionService.cs" />
-    <Compile Include="PublicTransport\Resources\CacheKeys.cs" />
+    <Compile Include="PublicTransport\Caching\Helpers\CacheKeys.cs" />
     <Compile Include="PublicTransport\JsonData\StopInTripService.cs" />
-    <Compile Include="PublicTransport\TimeTable\Helpers\DictionaryOrganizer.cs" />
-    <Compile Include="PublicTransport\TimeTable\Helpers\JoinTripHelper.cs" />
-    <Compile Include="PublicTransport\TimeTable\Helpers\StopHelper.cs" />
-    <Compile Include="PublicTransport\TimeTable\JoinTripService.cs" />
-    <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\DictionaryOrganizer.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\JoinTripHelper.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\StopHelper.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\JoinTripService.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStopsService.cs" />
     <Compile Include="PublicTransport\JsonData\TripService.cs" />
     <Compile Include="PublicTransport\UpdateData\TimeService.cs" />
   </ItemGroup>

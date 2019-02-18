@@ -18,6 +18,7 @@ namespace DCNC.Service.PublicTransport.JsonData
         {
             var expeditionData = new ExpeditionData()
             {
+                Day = DateTime.Today,
                 LastUpdate = expedition.Value<DateTime>("lastUpdate"),
                 Expeditions = new List<Expedition>()
             };

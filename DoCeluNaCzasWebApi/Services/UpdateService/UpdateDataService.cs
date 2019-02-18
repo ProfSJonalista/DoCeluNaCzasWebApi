@@ -1,19 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Service.PublicTransport.JoiningTrips;
+using DCNC.Service.PublicTransport.JsonData;
+using DoCeluNaCzasWebApi.Models.PublicTransport;
+using System.Collections.Generic;
 using System.Runtime.Caching;
 using System.Threading.Tasks;
 using System.Timers;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Service.PublicTransport;
-using DCNC.Service.PublicTransport.JsonData;
-using DCNC.Service.PublicTransport.Resources;
-using DCNC.Service.PublicTransport.TimeTable;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
     public static class UpdateDataService
     {
-        static GeneralData _generalData;
+        //static GeneralData _generalData;
         static Timer _timer;
         static TripData _trips;
         static BusLineData _busLines;
@@ -41,7 +39,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             await DownloadData();
             AllocateData();
 
-            _generalData = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
+            //_generalData = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
 
             UpdateJoinedTrips();
         }
@@ -58,8 +56,8 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         private static void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
-            if (_generalData.BusLineData == null || _generalData.BusStopData == null || _generalData.ExpeditionData == null ||
-                _generalData.TripData == null || _generalData.StopInTripData == null) return;
+            //if (_generalData.BusLineData == null || _generalData.BusStopData == null || _generalData.ExpeditionData == null ||
+            //    _generalData.TripData == null || _generalData.StopInTripData == null) return;
             if (!CheckForUpdates()) return;
             AllocateData();
             UpdateJoinedTrips();
@@ -67,12 +65,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         private static void UpdateJoinedTrips()
         {
-            _generalData.TripsWithBusStops = _tripService.TripsWithBusStopsMapper(_generalData.BusLineData, _generalData.TripData, 
-                                                                          _generalData.StopInTripData, _generalData.ExpeditionData, _generalData.BusStopData);
+            //_generalData.TripsWithBusStops = _tripService.TripsWithBusStopsMapper(_generalData.BusLineData, _generalData.TripData, 
+            //                                                              _generalData.StopInTripData, _generalData.ExpeditionData, _generalData.BusStopData);
             //_generalData.JoinedTrips = _joinTripService.JoinTrips(_generalData.BusLineData, _generalData.TripData, _generalData.StopInTripData, 
             //                                              _generalData.ExpeditionData, _generalData.BusStopData, _generalData.TripsWithBusStops);
 
-            UpdateCachedData(_generalData, CacheKeys.GENERAL_DATA_KEY);
+            //UpdateCachedData(_generalData, CacheKeys.GENERAL_DATA_KEY);
         }
 
         public static async Task DownloadData()
@@ -86,16 +84,16 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static void AllocateData()
         {
-            var dataToCache = new GeneralData()
-            {
-                TripData = _trips,
-                BusLineData = _busLines,
-                BusStopData = _busStops,
-                StopInTripData = _stopsInTrips,
-                ExpeditionData = _expeditionData
-            };
+            //var dataToCache = new GeneralData()
+            //{
+            //    TripData = _trips,
+            //    BusLineData = _busLines,
+            //    BusStopData = _busStops,
+            //    StopInTripData = _stopsInTrips,
+            //    ExpeditionData = _expeditionData
+            //};
 
-            UpdateCachedData(dataToCache, CacheKeys.GENERAL_DATA_KEY);
+            //UpdateCachedData(dataToCache, CacheKeys.GENERAL_DATA_KEY);
         }
 
         private static void UpdateCachedData<T>(T data, string cacheKey)
@@ -105,29 +103,29 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static bool CheckForUpdates()
         {
-            if (_generalData.TripData.Day < _trips.Day)
-                return true;
-            if (_generalData.BusLineData.Day < _busLines.Day)
-                return true;
-            if (_generalData.BusStopData.Day < _busStops.Day)
-                return true;
-            if (_generalData.StopInTripData.Day < _stopsInTrips.Day)
-                return true;
-            if (_generalData.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
-                return true;
+            //if (_generalData.TripData.Day < _trips.Day)
+            //    return true;
+            //if (_generalData.BusLineData.Day < _busLines.Day)
+            //    return true;
+            //if (_generalData.BusStopData.Day < _busStops.Day)
+            //    return true;
+            //if (_generalData.StopInTripData.Day < _stopsInTrips.Day)
+            //    return true;
+            //if (_generalData.ExpeditionData.LastUpdate < _expeditionData.LastUpdate)
+            //    return true;
 
             return false;
         }
         
-        public static BusLineData GetBusLines()
-        {
-            return _generalData.BusLineData;
-        }
+        //public static BusLineData GetBusLines()
+        //{
+        //    return _generalData.BusLineData;
+        //}
 
-        public static BusStopData GetBusStops()
-        {
-            return _generalData.BusStopData;
-        }
+        //public static BusStopData GetBusStops()
+        //{
+        //    return _generalData.BusStopData;
+        //}
 
         public static List<JoinedTripsModel> GetJoinedTrips()
         {
