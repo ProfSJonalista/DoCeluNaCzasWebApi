@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace DCNC.Bussiness.PublicTransport.JoiningTrips
 {
-    public class OrganizedTrips
+    public class CombinedTripModel
     {
-        public DateTime Day { get; set; }
         public string BusLineName { get; set; }
-        public Dictionary<int, List<Trip>> Trips { get; set; }
+        public List<Trip> Trips { get; set; }
     }
 }

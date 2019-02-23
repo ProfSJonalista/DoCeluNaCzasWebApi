@@ -3,7 +3,6 @@ using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Trip = DCNC.Bussiness.PublicTransport.JoiningTrips.Trip;
 
 namespace DCNC.Service.PublicTransport.JoiningTrips

@@ -1,28 +1,27 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.DataAccess.Helpers;
+using DCNC.Service.PublicTransport.Caching;
+using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.UpdateData;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
 using DoCeluNaCzasWebApi.Services.PublicTransport;
-using System;
+using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using DCNC.Service.PublicTransport.Caching;
-using DCNC.Service.PublicTransport.Caching.Helpers;
-using Newtonsoft.Json.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
     public static class UDS
     {
+        private static Joiner _joiner;
         private static TimeService _timeService;
         private static TripService _tripService;
         private static CacheService _cacheService;
         private static BusStopService _busStopService;
         private static BusLineService _busLineService;
-        private static JoinTripService _joinTripService;
         private static ExpeditionService _expeditionService;
         private static StopInTripService _stopInTripService;
 
@@ -51,7 +50,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
             _busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
 
-            _joinedTripsModelList = _joinTripService.GetJoinedTripsModelList(tripDataList, busStopDataList,
+            _joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList,
                 busLineDataList, stopInTripDataList, expeditionData);
 
             SetTimer();
@@ -81,12 +80,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         private static void InitializeServices()
         {
+            _joiner = new Joiner();
             _timeService = new TimeService();
             _tripService = new TripService();
             _cacheService = new CacheService();
             _busStopService = new BusStopService();
             _busLineService = new BusLineService();
-            _joinTripService = new JoinTripService();
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
             _busStopModelService = new BusStopModelService();
@@ -116,12 +115,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static List<JoinedTripsModel> GetJoinedTrips()
         {
-            return _joinedTripsModelList;
+            return _joinedTripsModelList; //zwracać z cache service?
         }
 
         public static BusStopDataModel GetBusStops()
         {
-            return _busStopDataModel;
+            return _busStopDataModel;     //zwracać z cache service?
         }
     }
 }
