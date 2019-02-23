@@ -10,24 +10,37 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
     {
         public BusStopDataModel JoinBusStopData(List<BusStopData> busStopDataList)
         {
+            //TODO - check this in client apps
             var firstResult = busStopDataList.FirstOrDefault();
+            var stopList = busStopDataList.SelectMany(x => x.Stops)
+                                          .GroupBy(x => new
+                                          {
+                                              x.StopId,
+                                              x.StopLat,
+                                              x.StopLon,
+                                              x.StopDesc
+                                          })
+                                          .Select(x => x.FirstOrDefault())
+                                          .ToList();
 
-            var joinedBusStopModel = new BusStopDataModel()
+            return new BusStopDataModel()
             {
                 Day = firstResult.Day,
                 LastUpdate = firstResult.LastUpdate,
-                Stops = new List<StopModel>()
+                Stops = StopMapper.GetMappedStopList(stopList)
             };
 
-            var joinedStopList = busStopDataList.FirstOrDefault().Stops;
+            //var joinedStopList = busStopDataList.FirstOrDefault().Stops;
 
-            busStopDataList.ForEach(
-                busStopData => 
-                    joinedStopList.Union(busStopData.Stops, new StopComparer()));
+            //var stopComparer = new StopComparer();
 
-            joinedBusStopModel.Stops = StopMapper.GetMappedStopList(joinedStopList);
+            //busStopDataList.ForEach(
+            //    busStopData => 
+            //        joinedStopList.Union(busStopData.Stops, stopComparer));
 
-            return joinedBusStopModel;
+            //joinedBusStopModel.Stops = StopMapper.GetMappedStopList(joinedStopList);
+
+            //return joinedBusStopModel;
         }
 
     }

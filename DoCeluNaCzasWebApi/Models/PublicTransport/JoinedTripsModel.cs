@@ -5,23 +5,23 @@ namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
     public class JoinedTripsModel
     {
-        public DateTime Day { get; set; }
         public string BusLineName { get; set; }
         public bool ContainsMultiplyTrips { get; set; }
-        public List<TripsWithStopsDataModel> JoinedTrips { get; set; }
+        public List<JoinedTripModel> JoinedTrips { get; set; }
     }
 
-    public class TripsWithStopsDataModel
+    public class JoinedTripModel
     {
         public string BusLineName { get; set; }
         public string FirstStopName { get; set; }
         public string DestinationStopName { get; set; }
         public bool MainRoute { get; set; }
+        public bool TechnicalTrip { get; set; }
         public DateTime ActivationDate { get; set; }
-        public List<StopTripModel> Stops { get; set; }
+        public List<JoinedStopModel> Stops { get; set; }
     }
 
-    public class StopTripModel
+    public class JoinedStopModel
     {
         public int RouteId { get; set; }
         public int TripId { get; set; }

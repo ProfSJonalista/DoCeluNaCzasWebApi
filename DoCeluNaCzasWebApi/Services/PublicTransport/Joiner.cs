@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.JoiningTrips;
-using DCNC.Service.PublicTransport.TimeTable;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
+using System;
+using System.Collections.Generic;
+using DCNC.Service.PublicTransport.JsonData;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport
 {
-    public class JoinTripService
+    public class Joiner
     {
+        private readonly BusLineService _busLineService;
+        private readonly CombineTripService _combineTripService;
         private readonly TripsWithBusStopsService _tripsWithBusStopsService;
 
-        public JoinTripService()
+        public Joiner()
         {
+            _busLineService = new BusLineService();
+            _combineTripService = new CombineTripService();
             _tripsWithBusStopsService = new TripsWithBusStopsService();
         }
 
@@ -28,10 +29,11 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
         {
             var tripsWithBusStops = _tripsWithBusStopsService.GetTripsWithBusStops(tripDataList,
                 busStopDataList, busLineDataList, stopInTripDataList, expeditionObject);
-
             var organizedTrips = _tripsWithBusStopsService.OrganizeTrips(tripsWithBusStops, busLineDataList);
+            var joinedDistinctBusLineList = _busLineService.JoinBusLines(busLineDataList);
+            var joinedTripList = _combineTripService.JoinTrips(organizedTrips, joinedDistinctBusLineList);
 
-            throw new NotImplementedException();
+            return new List<JoinedTripsModel>();
         }
     }
 }

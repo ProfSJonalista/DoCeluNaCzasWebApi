@@ -23,7 +23,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         static TripService _tripService;
         static BusLineService _busLineService;
         static BusStopService _busStopService;
-        static JoinTripService _joinTripService;
+        static CombineTripService _joinTripService;
         static ExpeditionService _expeditionService;
         static StopInTripService _stopInTripService;
 
@@ -32,7 +32,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             _tripService = new TripService();
             _busLineService = new BusLineService();
             _busStopService = new BusStopService();
-            _joinTripService = new JoinTripService();
+            _joinTripService = new CombineTripService();
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
 
