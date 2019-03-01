@@ -78,6 +78,9 @@
   <ItemGroup>
     <Compile Include="PublicTransport\Caching\CacheService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Combiner.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\CombineHelper.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\StopComparer.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\TripKey.cs" />
     <Compile Include="PublicTransport\JsonData\BusLineService.cs" />
     <Compile Include="PublicTransport\JsonData\BusStopService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,7 +94,6 @@
     <Compile Include="PublicTransport\Caching\Helpers\CacheKeys.cs" />
     <Compile Include="PublicTransport\JsonData\StopInTripService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\Organizer.cs" />
-    <Compile Include="PublicTransport\JoiningTrips\Helpers\JoinTripHelper.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\StopHelper.cs" />
     <Compile Include="PublicTransport\JoiningTrips\CombineTripService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStopsService.cs" />

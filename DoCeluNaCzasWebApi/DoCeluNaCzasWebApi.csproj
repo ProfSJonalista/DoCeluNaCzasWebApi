@@ -265,8 +265,10 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Services\PublicTransport\BusStopModelService.cs" />
+    <Compile Include="Services\PublicTransport\Helpers\JoinTripHelper.cs" />
     <Compile Include="Services\PublicTransport\Helpers\StopMapper.cs" />
     <Compile Include="Services\PublicTransport\Joiner.cs" />
+    <Compile Include="Services\PublicTransport\JoinTripMappingService.cs" />
     <Compile Include="Services\UpdateService\UDS.cs" />
     <Compile Include="Services\UpdateService\UpdateDataService.cs" />
     <Compile Include="Startup.cs" />

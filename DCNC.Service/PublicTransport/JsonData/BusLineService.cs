@@ -44,16 +44,6 @@ namespace DCNC.Service.PublicTransport.JsonData
 
         public List<Route> JoinBusLines(List<BusLineData> busLineDataList)
         {
-            //var routeList = busLineDataList.FirstOrDefault().Routes;
-            //var routeComparer = new RouteComparer();
-
-            //busLineDataList.ForEach(busLineData =>
-            //    {
-            //        routeList = routeList.Union(busLineData.Routes, routeComparer).ToList();
-            //    });
-
-            //return routeList.OrderBy(x => x.RouteShortName).ToList();
-
             return busLineDataList.SelectMany(x => x.Routes)
                                   .Distinct()
                                   .GroupBy(x => x.RouteShortName)
