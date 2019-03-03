@@ -26,5 +26,6 @@ namespace DCNC.Bussiness.PublicTransport.JoiningTrips
         public bool? OnDemand { get; set; }
         public string ZoneName { get; set; }
         public int StopSequence { get; set; }
+        public bool MainTrip { get; set; }
     }
-}
+} 

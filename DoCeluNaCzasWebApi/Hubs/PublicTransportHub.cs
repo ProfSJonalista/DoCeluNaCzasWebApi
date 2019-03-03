@@ -1,47 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Caching;
-using System.Web;
-using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
+using DoCeluNaCzasWebApi.Models.PublicTransport;
 using Microsoft.AspNet.SignalR;
 
 namespace DoCeluNaCzasWebApi.Hubs
 {
     public class PublicTransportHub : Hub
     {
-        static readonly ObjectCache _cache = MemoryCache.Default;
+        private readonly CacheService _cacheService;
 
-        #region BUS STOPS
+        public PublicTransportHub()
+        {
+            _cacheService = new CacheService();
+        }
 
-        //public List<BusStopData> GetBusStopDataList()
-        //{
-        //    return _cache[CacheKeys.BUS_STOP_DATA_LIST_KEY] as List<BusStopData>;
-        //}
-
-        //public BusStopData GetBusStopData()
-        //{
-        //    var data = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
-        //    return data.BusStopData;
-        //}
-
-        #endregion
-
-        #region BUS LINES
-
-        //public List<BusLineData> GetBusLineDataList()
-        //{
-        //    return _cache[CacheKeys.BUS_LINE_DATA_LIST_KEY] as List<BusLineData>;
-        //}
-
-        //public BusLineData GetBusLineData()
-        //{
-        //    var data = _cache[CacheKeys.GENERAL_DATA_KEY] as GeneralData;
-        //    return data.BusLineData;
-        //}
-
-        #endregion
+        public BusStopDataModel GetBusStopData()
+        {
+            return _cacheService.GetData<BusStopDataModel>(CacheKeys.JOINED_BUS_STOPS);
+        }
     }
 }

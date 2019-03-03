@@ -1,9 +1,7 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DoCeluNaCzasWebApi.Models.PublicTransport;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
 {

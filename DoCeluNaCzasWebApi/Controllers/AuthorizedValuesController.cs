@@ -1,11 +1,4 @@
-﻿using DCNC.Bussiness;
-using DCNC.DataAccess;
-using DCNC.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
 
 namespace DoCeluNaCzasWebApi.Controllers
@@ -30,7 +23,7 @@ namespace DoCeluNaCzasWebApi.Controllers
         public void Put(int id, [FromBody]string value)
         {
         }
-        
+
         public void Delete(int id)
         {
         }

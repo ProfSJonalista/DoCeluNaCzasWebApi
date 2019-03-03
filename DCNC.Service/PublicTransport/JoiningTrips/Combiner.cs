@@ -1,5 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using System;
+using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,60 +7,51 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 {
     public class Combiner
     {
+
+        private readonly CombineHelper _combineHelper;
+
+        public Combiner()
+        {
+            _combineHelper = new CombineHelper();
+        }
+
         public CombinedTripModel CombineForEveryOption(List<OrganizedTrips> trips)
         {
-            var containsOneWay = trips.Any(x => x.Trips.Values.Count == 1);
-            var bothWayTrip = trips.Any(x => x.Trips.Values.Count > 1);
-            var bus = trips.FirstOrDefault().BusLineName;
-            var tripModel = containsOneWay
-                ? CombineForOneWay(trips.Where(x => x.Trips.Values.Count == 1).ToList())
-                : new CombinedTripModel();
-            
-            return tripModel;
+            var oneWayModel = CombineForOneWay(trips.Where(x => x.Trips.ContainsKey(TripKey.START)).ToList());
+            var bothWayModel = CombineForBothWays(trips.Where(x => x.Trips.ContainsKey(TripKey.START) && x.Trips.ContainsKey(TripKey.RETURN)).ToList());
+
+            var stopsToJoin = oneWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
+            var startStops = bothWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
+            bothWayModel.Trips[TripKey.START].Stops = _combineHelper.GetStops(startStops, startStops, stopsToJoin);
+
+            return bothWayModel;
         }
 
         public CombinedTripModel CombineForBothWays(List<OrganizedTrips> trips)
         {
-            var tripModel = new CombinedTripModel();
+            var firstMainStartTrip = _combineHelper.GetMainRoute(trips, TripKey.START);
+            var firstMainReturnTrip = _combineHelper.GetMainRoute(trips, TripKey.RETURN);
 
+            firstMainStartTrip.Stops = _combineHelper.GetJoinedStops(trips.Where(x => x.Trips.ContainsKey(TripKey.START)).ToList(), firstMainStartTrip.Stops, TripKey.START);
+            firstMainReturnTrip.Stops = _combineHelper.GetJoinedStops(trips.Where(x => x.Trips.ContainsKey(TripKey.RETURN)).ToList(), firstMainReturnTrip.Stops, TripKey.RETURN);
 
-
-            return tripModel;
+            return new CombinedTripModel()
+            {
+                BusLineName = firstMainStartTrip.BusLineName,
+                Trips = new List<Trip>() { firstMainStartTrip, firstMainReturnTrip }
+            };
         }
 
         public CombinedTripModel CombineForOneWay(List<OrganizedTrips> trips)
         {
-            var firstTripDictionary = trips
-                            .FirstOrDefault()
-                            .Trips
-                            .FirstOrDefault();
-            var firstDayTripList = firstTripDictionary.Value;
+            var firstMainTrip = _combineHelper.GetMainRoute(trips, TripKey.START);
+            firstMainTrip.Stops = _combineHelper.GetJoinedStops(trips.Where(x => x.Trips.ContainsKey(TripKey.START)).ToList(), firstMainTrip.Stops, TripKey.START);
 
-            var containsMainRoute = firstDayTripList.Any(x => x.MainRoute);
-
-            var firstTrip = containsMainRoute
-                ? firstDayTripList.FirstOrDefault(x => x.MainRoute)
-                : firstDayTripList.FirstOrDefault();
-
-            var combinedTripModel = new CombinedTripModel()
+            return new CombinedTripModel()
             {
-                BusLineName = firstTrip.BusLineName,
-                Trips = new List<Trip>()
+                BusLineName = firstMainTrip.BusLineName,
+                Trips = new List<Trip>() { firstMainTrip }
             };
-
-            trips.ForEach(trip =>
-            {
-                foreach (var tripsValue in trip.Trips.Values)
-                {
-                    tripsValue.ForEach(x =>
-                    {
-
-                    });
-                }
-            });
-
-
-            return combinedTripModel;
         }
     }
 }

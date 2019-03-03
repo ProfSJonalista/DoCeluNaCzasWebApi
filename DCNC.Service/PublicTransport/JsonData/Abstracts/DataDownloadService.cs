@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using DCNC.DataAccess.PublicTransport;
+﻿using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.PublicTransport.JsonData.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
 
 namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {

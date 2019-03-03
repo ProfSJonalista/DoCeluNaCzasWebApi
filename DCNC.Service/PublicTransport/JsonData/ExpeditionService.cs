@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData
 {
     public class ExpeditionService : DataAbstractService
     {
-        public override IEnumerable<T> GetList<T>(JObject dataAsJObject)
+        public override List<T> GetList<T>(JObject dataAsJObject)
         {
             return new List<T> { (T)(object)Converter(dataAsJObject) };
         }

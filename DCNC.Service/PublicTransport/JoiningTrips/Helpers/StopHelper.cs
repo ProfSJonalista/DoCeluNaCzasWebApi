@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using DCNC.Bussiness.PublicTransport.JsonData;
 using Stop = DCNC.Bussiness.PublicTransport.JoiningTrips.Stop;
 
 namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
@@ -13,7 +12,6 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
             return stopsInTrip.Select(stopInTrip =>
             {
                 var stop = stops.FirstOrDefault(x => x.StopId == stopInTrip.StopId);
-
                 {
                     return new Stop()
                     {
@@ -26,15 +24,12 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
                         TicketZoneBorder = stop.TicketZoneBorder ?? false,
                         OnDemand = stop.OnDemand ?? false,
                         ZoneName = stop.ZoneName,
-                        StopSequence = stopInTrip.StopSequence
+                        StopSequence = stopInTrip.StopSequence,
+                        MainTrip = expeditionMainRoute
                     };
                 }
-            }).ToList();
+            }).OrderBy(x => x.StopSequence)
+              .ToList();
         }
-
-        //internal bool CheckIfStopsAreTheSame(StopTripModel stop, StopTripModel stopToCheck)
-        //{
-        //    return stop.RouteShortName.Equals(stopToCheck.RouteShortName) && stop.StopLat == stopToCheck.StopLat && stop.StopLon == stopToCheck.StopLon;
-        //}
     }
 }

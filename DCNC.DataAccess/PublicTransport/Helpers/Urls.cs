@@ -1,4 +1,4 @@
-﻿namespace DCNC.DataAccess.Helpers
+﻿namespace DCNC.DataAccess.PublicTransport.Helpers
 {
     public class Urls
     {

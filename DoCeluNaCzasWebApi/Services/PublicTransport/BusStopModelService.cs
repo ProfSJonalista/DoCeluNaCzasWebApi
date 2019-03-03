@@ -29,19 +29,6 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
                 LastUpdate = firstResult.LastUpdate,
                 Stops = StopMapper.GetMappedStopList(stopList)
             };
-
-            //var joinedStopList = busStopDataList.FirstOrDefault().Stops;
-
-            //var stopComparer = new StopComparer();
-
-            //busStopDataList.ForEach(
-            //    busStopData => 
-            //        joinedStopList.Union(busStopData.Stops, stopComparer));
-
-            //joinedBusStopModel.Stops = StopMapper.GetMappedStopList(joinedStopList);
-
-            //return joinedBusStopModel;
         }
-
     }
 }
