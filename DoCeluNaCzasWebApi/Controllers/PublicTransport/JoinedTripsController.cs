@@ -9,7 +9,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
     {
         public List<JoinedTripsModel> Get()
         {
-            return UDS.GetJoinedTrips();
+            return UpdateDataService.GetJoinedTrips();
         }
     }
 }

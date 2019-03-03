@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
+﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport
 {
@@ -18,11 +16,11 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
         public List<JoinedTripsModel> Map(List<CombinedTripModel> joinedTripList)
         {
             return joinedTripList.Select(trip => new JoinedTripsModel()
-                {
-                    BusLineName = trip.BusLineName,
-                    ContainsMultiplyTrips = trip.Trips.Count > 1,
-                    JoinedTrips = GetMappedTrips(trip.Trips)
-                }).OrderBy(x => x.BusLineName)
+            {
+                BusLineName = trip.BusLineName,
+                ContainsMultiplyTrips = trip.Trips.Count > 1,
+                JoinedTrips = GetMappedTrips(trip.Trips)
+            }).OrderBy(x => x.BusLineName)
                   .ToList();
         }
 

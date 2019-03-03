@@ -1,12 +1,8 @@
-﻿using DCNC.Service.PublicTransport.RouteSearch;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
+using DCNC.Service.PublicTransport.RouteSearch;
 
-namespace DoCeluNaCzasWebApi.Controllers
+namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class RouteSearchController : ApiController
     {

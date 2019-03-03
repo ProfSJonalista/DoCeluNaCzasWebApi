@@ -21,8 +21,7 @@ namespace DoCeluNaCzasWebApi
             ConfigureAuth(app);
             app.MapSignalR();
             
-            await UDS.Init();
-            UDS.SetTimer();
+            await UpdateDataService.Init();
         }
     }
 }

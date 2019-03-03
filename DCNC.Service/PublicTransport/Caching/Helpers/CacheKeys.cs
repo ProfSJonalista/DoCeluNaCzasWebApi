@@ -2,10 +2,21 @@
 {
     public static class CacheKeys
     {
-        public static string TRIP_DATA_LIST_KEY = "TripDataList";
-        public static string BUS_LINE_DATA_LIST_KEY = "BusLineDataList";
-        public static string BUS_STOP_DATA_LIST_KEY = "BusStopDataList";
-        public static string EXPEDITION_DATA_KEY = "ExpeditionDataList";
-        public static string STOP_IN_TRIP_DATA_LIST_KEY = "StopInTripDataList";
+        #region Last updates
+
+        public static string TRIP_DATA_LAST_UPDATE = "TripDataLastUpdate";
+        public static string EXPEDITION_LAST_UPDATE = "ExpeditionLastUpdate";
+        public static string BUS_LINE_DATA_LAST_UPDATE = "BusLineDataLastUpdate";
+        public static string BUS_STOP_DATA_LAST_UPDATE = "BusStopDataLastUpdate";
+        public static string STOP_IN_TRIP_DATA_LAST_UPDATE = "StopInTripDataLastUpdate";
+        
+        #endregion
+
+        #region Data to share
+
+        public static string JOINED_TRIP_MODEL_LIST = "JoinedTripModelList";
+        public static string JOINED_BUS_STOPS = "JoinedBusStops";
+
+        #endregion
     }
 }

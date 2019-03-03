@@ -1,8 +1,6 @@
-﻿using System;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport.Shared;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DoCeluNaCzasWebApi.Models.PublicTransport.Shared;
 
 namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
+﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
+using System.Collections.Generic;
 
 namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
 {

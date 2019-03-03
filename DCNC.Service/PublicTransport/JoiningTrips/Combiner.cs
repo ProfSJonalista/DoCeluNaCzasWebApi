@@ -46,7 +46,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
             return new CombinedTripModel()
             {
                 BusLineName = firstMainTrip.BusLineName,
-                Trips = new List<Trip>() {firstMainTrip}
+                Trips = new List<Trip>() { firstMainTrip }
             };
         }
     }

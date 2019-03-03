@@ -1,4 +1,5 @@
-﻿using System.Runtime.Caching;
+﻿using System;
+using System.Runtime.Caching;
 
 namespace DCNC.Service.PublicTransport.Caching
 {
@@ -14,6 +15,11 @@ namespace DCNC.Service.PublicTransport.Caching
         public T GetData<T>(string cacheKey) where T : class
         {
             return _cache[cacheKey] as T;
+        }
+
+        public DateTime GetData(string cacheKey)
+        {
+            return _cache[cacheKey] is DateTime ? (DateTime)_cache[cacheKey] : new DateTime();
         }
     }
 }

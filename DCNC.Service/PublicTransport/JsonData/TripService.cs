@@ -1,12 +1,9 @@
-﻿using DCNC.Bussiness.PublicTransport;
-using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Bussiness.PublicTransport.JsonData.Shared;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
-using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
 
 namespace DCNC.Service.PublicTransport.JsonData
 {
@@ -20,15 +17,15 @@ namespace DCNC.Service.PublicTransport.JsonData
                 Trips = new List<Trip>()
             };
 
-            foreach (JObject item in trips.Children<JObject>())
+            foreach (var item in trips.Children<JObject>())
             {
                 tripData.LastUpdate = item.Value<DateTime>("lastUpdate");
 
                 var tripList = item.Value<JArray>("trips");
 
-                foreach (JObject trip in tripList.Children<JObject>())
+                foreach (var trip in tripList.Children<JObject>())
                 {
-                    Trip tripToAdd = new Trip()
+                    var tripToAdd = new Trip()
                     {
                         Id = trip.Value<string>("id"),
                         TripId = trip.Value<int>("tripId"),

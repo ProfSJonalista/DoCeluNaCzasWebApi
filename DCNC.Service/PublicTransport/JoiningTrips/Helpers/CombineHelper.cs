@@ -1,5 +1,4 @@
-﻿using System;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
+﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using System.Collections.Generic;
 using System.Linq;
 
