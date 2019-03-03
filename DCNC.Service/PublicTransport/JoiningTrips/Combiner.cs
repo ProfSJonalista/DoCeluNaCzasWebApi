@@ -20,6 +20,10 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
             var oneWayModel = CombineForOneWay(trips.Where(x => x.Trips.ContainsKey(TripKey.START)).ToList());
             var bothWayModel = CombineForBothWays(trips.Where(x => x.Trips.ContainsKey(TripKey.START) && x.Trips.ContainsKey(TripKey.RETURN)).ToList());
 
+            var stopsToJoin = oneWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
+            var startStops = bothWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
+            bothWayModel.Trips[TripKey.START].Stops = _combineHelper.GetStops(startStops, startStops, stopsToJoin);
+
             return bothWayModel;
         }
 

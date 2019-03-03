@@ -58,8 +58,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             var expeditionData = _expeditionService.GetList<ExpeditionData>(expeditionsAsJObject).FirstOrDefault();
 
             var busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
-            var joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList,
-                busLineDataList, stopInTripDataList, expeditionData);
+            var joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);
 
             _cacheService.CacheData(busStopDataModel, CacheKeys.JOINED_BUS_STOPS);
             _cacheService.CacheData(joinedTripsModelList, CacheKeys.JOINED_TRIP_MODEL_LIST);

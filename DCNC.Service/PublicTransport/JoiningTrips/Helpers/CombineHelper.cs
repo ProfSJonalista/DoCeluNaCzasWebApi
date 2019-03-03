@@ -1,4 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -37,27 +38,34 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
             {
                 organizedTrip.Trips[key].ForEach(trip =>
                 {
-                    mainTripStopList.ForEach(stop =>
+                    stopListToReturn = GetStops(stopListToReturn, mainTripStopList, trip.Stops);
+                });
+            });
+
+            return stopListToReturn;
+        }
+
+        public List<Stop> GetStops(List<Stop> stopListToReturn, List<Stop> mainStops, List<Stop> stopsToJoin)
+        {
+            mainStops.ForEach(stop =>
+            {
+                stopsToJoin.ForEach(possibleStopToAdd =>
+                {
+                    var alreadyExists = stopListToReturn.Contains(possibleStopToAdd, _stopComparer);
+
+                    if (alreadyExists) return;
+
+                    if (stopListToReturn.Count > 0)
                     {
-                        trip.Stops.ForEach(possibleStopToAdd =>
-                        {
-                            var alreadyExists = stopListToReturn.Contains(possibleStopToAdd, _stopComparer);
+                        var index = stopsToJoin.IndexOf(possibleStopToAdd);
 
-                            if (alreadyExists) return;
-
-                            if (stopListToReturn.Count > 0)
-                            {
-                                var index = trip.Stops.IndexOf(possibleStopToAdd);
-
-                                if (index > stopListToReturn.Count)
-                                    stopListToReturn.Add(possibleStopToAdd);
-                                else
-                                    stopListToReturn.Insert(index, possibleStopToAdd);
-                            }
-                            else
-                                stopListToReturn.Add(possibleStopToAdd);
-                        });
-                    });
+                        if (index > stopListToReturn.Count)
+                            stopListToReturn.Add(possibleStopToAdd);
+                        else
+                            stopListToReturn.Insert(index, possibleStopToAdd);
+                    }
+                    else
+                        stopListToReturn.Add(possibleStopToAdd);
                 });
             });
 
