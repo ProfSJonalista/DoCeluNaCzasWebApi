@@ -7,7 +7,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
 {
     public class JoinedTripsController : ApiController
     {
-        public List<JoinedTripsModel> Get()
+        public List<GroupedJoinedModel> Get()
         {
             return UpdateDataService.GetJoinedTrips();
         }

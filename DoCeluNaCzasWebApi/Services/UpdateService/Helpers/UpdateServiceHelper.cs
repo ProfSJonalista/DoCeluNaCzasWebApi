@@ -17,6 +17,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly CacheService _cacheService;
 
         private readonly Joiner _joiner;
+        private readonly Grouper _grouper;
         private readonly TripService _tripService;
         private readonly BusStopService _busStopService;
         private readonly BusLineService _busLineService;
@@ -27,6 +28,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         public UpdateServiceHelper(CacheService cacheService, TimeService timeService)
         {
             _joiner = new Joiner();
+            _grouper = new Grouper();
             _timeService = timeService;
             _cacheService = cacheService;
             _tripService = new TripService();
@@ -59,9 +61,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 
             var busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
             var joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);
-
+            var groupedJoinedTrips = _grouper.Group(joinedTripsModelList);
+            
             _cacheService.CacheData(busStopDataModel, CacheKeys.JOINED_BUS_STOPS);
-            _cacheService.CacheData(joinedTripsModelList, CacheKeys.JOINED_TRIP_MODEL_LIST);
+
+            _cacheService.CacheData(groupedJoinedTrips, CacheKeys.JOINED_TRIP_MODEL_LIST);
+
             _timeService.CacheLastUpdates(tripDataList.FirstOrDefault().LastUpdate,
                                         busStopDataList.FirstOrDefault().LastUpdate,
                                         busStopDataList.FirstOrDefault().LastUpdate,

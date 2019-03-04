@@ -7,6 +7,7 @@ namespace DCNC.Bussiness.PublicTransport.JoiningTrips
         public string Id { get; set; }
         public int TripId { get; set; }
         public int RouteId { get; set; }
+        public int AgencyId { get; set; }
         public string BusLineName { get; set; }
         public bool MainRoute { get; set; }
         public string TripHeadsign { get; set; }

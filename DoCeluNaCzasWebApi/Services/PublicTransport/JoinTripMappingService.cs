@@ -21,7 +21,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
                 ContainsMultiplyTrips = trip.Trips.Count > 1,
                 JoinedTrips = GetMappedTrips(trip.Trips)
             }).OrderBy(x => x.BusLineName)
-                  .ToList();
+              .ToList();
         }
 
         private List<JoinedTripModel> GetMappedTrips(List<Trip> trips)
@@ -31,6 +31,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
                 BusLineName = x.BusLineName,
                 TripId = x.TripId,
                 RouteId = x.RouteId,
+                AgencyId = x.AgencyId,
                 FirstStopName = _joinTripHelper.GetFirstStopName(x.TripHeadsign),
                 DestinationStopName = _joinTripHelper.GetDestinationStopName(x.TripHeadsign),
                 MainRoute = x.MainRoute,
