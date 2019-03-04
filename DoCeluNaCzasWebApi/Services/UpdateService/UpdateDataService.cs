@@ -45,9 +45,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             if(updateNeeded) _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
         }
 
-        public static List<JoinedTripsModel> GetJoinedTrips()
+        public static List<GroupedJoinedModel> GetJoinedTrips()
         {
-            return _cacheService.GetData<List<JoinedTripsModel>>(CacheKeys.JOINED_TRIP_MODEL_LIST);
+            return _cacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.JOINED_TRIP_MODEL_LIST);
         }
 
         public static BusStopDataModel GetBusStops()

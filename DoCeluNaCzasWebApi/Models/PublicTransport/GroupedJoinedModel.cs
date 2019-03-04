@@ -2,6 +2,17 @@
 
 namespace DoCeluNaCzasWebApi.Models.PublicTransport
 {
+    public class GroupedJoinedModel
+    {
+        public Group Group { get; set; }
+        public List<JoinedTripsModel> JoinedTripModels { get; set; }
+    }
+
+    public enum Group
+    {
+        Buses, Trams, Trolleys
+    }
+
     public class JoinedTripsModel
     {
         public string BusLineName { get; set; }
@@ -14,6 +25,7 @@ namespace DoCeluNaCzasWebApi.Models.PublicTransport
         public string BusLineName { get; set; }
         public int TripId { get; set; }
         public int RouteId { get; set; }
+        public int AgencyId { get; set; }
         public string FirstStopName { get; set; }
         public string DestinationStopName { get; set; }
         public bool MainRoute { get; set; }

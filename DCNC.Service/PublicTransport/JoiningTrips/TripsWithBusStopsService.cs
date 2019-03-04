@@ -61,6 +61,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
                             Id = tripByRouteId.Id,
                             TripId = tripByRouteId.TripId,
                             RouteId = tripByRouteId.RouteId,
+                            AgencyId = route.AgencyId,
                             BusLineName = route.RouteShortName,
                             MainRoute = expedition.MainRoute,
                             TripHeadsign = tripByRouteId.TripHeadsign,
