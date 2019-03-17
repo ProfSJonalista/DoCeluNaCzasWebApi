@@ -19,7 +19,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
             return jsonDataList;
         }
 
-        public virtual Common Converter(JToken dataAsJToken)
+        public virtual object Converter(JToken dataAsJToken)
         {
             return new Common();
         }

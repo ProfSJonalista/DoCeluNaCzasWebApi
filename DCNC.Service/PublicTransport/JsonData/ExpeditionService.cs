@@ -14,7 +14,7 @@ namespace DCNC.Service.PublicTransport.JsonData
             return new List<T> { (T)(object)Converter(dataAsJObject) };
         }
 
-        public override Common Converter(JToken expedition)
+        public override object Converter(JToken expedition)
         {
             var expeditionData = new ExpeditionData()
             {

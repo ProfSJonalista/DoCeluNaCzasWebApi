@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData
 {
     public class BusStopService : DataAbstractService
     {
-        public override Common Converter(JToken busStop)
+        public override object Converter(JToken busStop)
         {
             var busStopData = new BusStopData()
             {

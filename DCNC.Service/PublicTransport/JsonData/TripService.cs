@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData
 {
     public class TripService : DataAbstractService
     {
-        public override Common Converter(JToken trips)
+        public override object Converter(JToken trips)
         {
             var tripData = new TripData()
             {
