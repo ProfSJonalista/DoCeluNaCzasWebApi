@@ -24,7 +24,8 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
-            //_updateServiceHelper.SetStopTimes();
+
+            await _updateServiceHelper.SetTimeTables();
 
             SetTimer();
         }
@@ -43,7 +44,10 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             var updateNeeded = _timeService.CheckForUpdates(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
 
-            if(updateNeeded) _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
+            if (!updateNeeded) return;
+
+            _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
+            await _updateServiceHelper.SetTimeTables();
         }
 
         public static List<GroupedJoinedModel> GetJoinedTrips()

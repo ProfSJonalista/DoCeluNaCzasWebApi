@@ -1,5 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
 using System.Collections.Generic;
 using System.Linq;
 

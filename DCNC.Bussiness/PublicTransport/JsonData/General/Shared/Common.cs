@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DCNC.Bussiness.PublicTransport.JsonData.Shared
+namespace DCNC.Bussiness.PublicTransport.JsonData.General.Shared
 {
     public class Common
     {

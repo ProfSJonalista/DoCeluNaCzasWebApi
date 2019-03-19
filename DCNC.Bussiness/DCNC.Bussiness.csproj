@@ -81,13 +81,14 @@
     <Compile Include="PublicTransport\JoiningTrips\OrganizedTrips.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Trip.cs" />
     <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStops.cs" />
-    <Compile Include="PublicTransport\JsonData\BusLineData.cs" />
-    <Compile Include="PublicTransport\JsonData\BusStopData.cs" />
-    <Compile Include="PublicTransport\JsonData\ExpeditionData.cs" />
-    <Compile Include="PublicTransport\JsonData\Shared\Common.cs" />
+    <Compile Include="PublicTransport\JsonData\General\BusLineData.cs" />
+    <Compile Include="PublicTransport\JsonData\General\BusStopData.cs" />
+    <Compile Include="PublicTransport\JsonData\General\ExpeditionData.cs" />
+    <Compile Include="PublicTransport\JsonData\General\Shared\Common.cs" />
+    <Compile Include="PublicTransport\JsonData\TimeTable\StopTime.cs" />
     <Compile Include="PublicTransport\RouteSearch\Change.cs" />
-    <Compile Include="PublicTransport\JsonData\StopInTripData.cs" />
-    <Compile Include="PublicTransport\JsonData\TripData.cs" />
+    <Compile Include="PublicTransport\JsonData\General\StopInTripData.cs" />
+    <Compile Include="PublicTransport\JsonData\General\TripData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

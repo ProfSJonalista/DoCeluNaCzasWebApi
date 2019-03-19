@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General.Shared;
+using System;
 using System.Collections.Generic;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
 
-namespace DCNC.Bussiness.PublicTransport.JsonData
+namespace DCNC.Bussiness.PublicTransport.JsonData.General
 {
     public class ExpeditionData : Common
     {

@@ -7,7 +7,10 @@ using DoCeluNaCzasWebApi.Services.PublicTransport;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
+using DCNC.Service.PublicTransport.JsonData.General;
+using DCNC.Service.PublicTransport.TimeTable;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {
@@ -25,6 +28,8 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly StopInTripService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
 
+        private readonly TimeTableService _timeTableService;
+
         public UpdateServiceHelper(CacheService cacheService, TimeService timeService)
         {
             _joiner = new Joiner();
@@ -37,16 +42,18 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
             _busStopModelService = new BusStopModelService();
+
+            _timeTableService = new TimeTableService();
         }
 
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject,
             JObject expeditionsAsJObject, JObject stopsInTripsAsJObject)> GetDataAsync()
         {
-            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.TRIPS);
-            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.BUS_STOPS);
-            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.BUS_LINES);
-            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.EXPEDITION);
-            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.STOPS_IN_TRIPS);
+            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.Trips);
+            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.Stops);
+            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.Lines);
+            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.Expedition);
+            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.StopsInTrips);
 
             return (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
         }
@@ -72,6 +79,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
                                         busStopDataList.FirstOrDefault().LastUpdate,
                                       stopInTripDataList.FirstOrDefault().LastUpdate,
                                                     expeditionData.LastUpdate);
+        }
+
+
+        public async Task SetTimeTables()
+        {
+            await _timeTableService.SetTimeTables();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.Shared;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 
 namespace DCNC.Service.PublicTransport.JsonData.Interfaces

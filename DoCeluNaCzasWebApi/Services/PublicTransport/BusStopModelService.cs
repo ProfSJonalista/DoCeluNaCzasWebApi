@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
 using System.Collections.Generic;
