@@ -99,7 +99,7 @@
     <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStopsService.cs" />
     <Compile Include="PublicTransport\JsonData\General\TripService.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
-    <Compile Include="PublicTransport\UpdateData\TimeService.cs" />
+    <Compile Include="PublicTransport\Time\TimeService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

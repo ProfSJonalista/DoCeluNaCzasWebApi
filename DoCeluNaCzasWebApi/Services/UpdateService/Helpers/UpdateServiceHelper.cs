@@ -2,7 +2,6 @@
 using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData;
-using DCNC.Service.PublicTransport.UpdateData;
 using DoCeluNaCzasWebApi.Services.PublicTransport;
 using Newtonsoft.Json.Linq;
 using System.Linq;
@@ -10,6 +9,7 @@ using System.Threading.Tasks;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.PublicTransport.JsonData.General;
+using DCNC.Service.PublicTransport.Time;
 using DCNC.Service.PublicTransport.TimeTable;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
@@ -43,7 +43,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             _stopInTripService = new StopInTripService();
             _busStopModelService = new BusStopModelService();
 
-            _timeTableService = new TimeTableService();
+            _timeTableService = new TimeTableService(_timeService);
         }
 
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject,

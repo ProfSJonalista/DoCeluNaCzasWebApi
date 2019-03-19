@@ -1,11 +1,11 @@
 ﻿using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
-using DCNC.Service.PublicTransport.UpdateData;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using DCNC.Service.PublicTransport.Time;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
