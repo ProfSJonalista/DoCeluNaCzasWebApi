@@ -18,7 +18,8 @@ namespace DoCeluNaCzasWebApi
 
             WebApiConfig.Register(config);
             app.UseWebApi(config);
-            ConfigureAuth(app);
+            //TODO - fix auth - UserManager appears to be null
+            //ConfigureAuth(app);
             app.MapSignalR();
             
             await UpdateDataService.Init();

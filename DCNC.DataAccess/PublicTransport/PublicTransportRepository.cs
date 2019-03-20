@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DCNC.DataAccess.PublicTransport
@@ -10,6 +12,11 @@ namespace DCNC.DataAccess.PublicTransport
         public static async Task<string> DownloadData(string url)
         {
             return await Client.GetStringAsync(url);
+        }
+
+        public async Task<string> DownloadData(string url, HttpClient client)
+        {
+            return await client.GetStringAsync(url);
         }
     }
 }

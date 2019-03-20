@@ -5,9 +5,9 @@ using System.Web;
 
 namespace DCNC.Bussiness.PublicTransport.TimeTable
 {
-    public class InitialTimeTable
+    public class TimeTableJson
     {
         public int RouteId { get; set; }
-        public List<string> UrlsWithTimeTables { get; set; }
+        public string Json { get; set; }
     }
 }
