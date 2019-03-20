@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DocumentStoreHolder.cs" />
+    <Compile Include="Database\DocumentStoreRepository.cs" />
     <Compile Include="PublicTransport\Helpers\Urls.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicTransport\PublicTransportRepository.cs" />

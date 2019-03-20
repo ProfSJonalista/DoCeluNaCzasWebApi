@@ -10,10 +10,12 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public class DownloadHelper
     {
+        private readonly DocumentStoreRepository _documentStoreRepository;
         private readonly PublicTransportRepository _publicTransportRepository;
 
         public DownloadHelper()
         {
+            _documentStoreRepository = new DocumentStoreRepository();
             _publicTransportRepository = new PublicTransportRepository();
         }
 
@@ -23,24 +25,23 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             {
                 using (var client = new HttpClient())
                 {
-                    using (var session = DocumentStoreHolder.Store.OpenSession())
+                    var objectsToSaveInDb = new List<TimeTableJson>();
+
+                    foreach (var url in stopTime.Urls)
                     {
-                        foreach (var url in stopTime.Urls)
+                        var json = await _publicTransportRepository.DownloadData(url, client);
+
+                        if (!string.IsNullOrEmpty(json))
                         {
-                            var json = await _publicTransportRepository.DownloadData(url, client);
-
-                            if (!string.IsNullOrEmpty(json))
+                            objectsToSaveInDb.Add(new TimeTableJson()
                             {
-                                session.Store(new TimeTableJson()
-                                {
-                                    RouteId = stopTime.RouteId,
-                                    Json = json
-                                });
-                            }
+                                RouteId = stopTime.RouteId,
+                                Json = json
+                            });
                         }
-
-                        session.SaveChanges();
                     }
+
+                    _documentStoreRepository.MassSave(objectsToSaveInDb);
                 }
             }
         }
