@@ -54,7 +54,7 @@ namespace DCNC.Service.PublicTransport.Time
                    : _cacheService.GetData(key);
         }
 
-        public List<StopTime> FilterStopTimes(List<StopTime> convertedStopTimes)
+        public List<StopTimeUrl> FilterStopTimes(List<StopTimeUrl> convertedStopTimes)
         {
             convertedStopTimes.ForEach(stopTime =>
             {

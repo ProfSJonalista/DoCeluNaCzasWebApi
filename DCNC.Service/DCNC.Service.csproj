@@ -103,6 +103,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\DocumentStoreHolder.cs" />
+    <Compile Include="Database\DocumentStoreRepository.cs" />
     <Compile Include="PublicTransport\Caching\CacheService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Combiner.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\CombineHelper.cs" />
@@ -125,6 +127,8 @@
     <Compile Include="PublicTransport\JoiningTrips\CombineTripService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStopsService.cs" />
     <Compile Include="PublicTransport\JsonData\General\TripService.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\Converter.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\ConvertingHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\DownloadHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
     <Compile Include="PublicTransport\Time\TimeService.cs" />

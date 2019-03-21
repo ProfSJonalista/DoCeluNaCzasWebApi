@@ -1,7 +1,7 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
-using DCNC.DataAccess.Database;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.Database;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,13 +13,13 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
         private readonly DocumentStoreRepository _documentStoreRepository;
         private readonly PublicTransportRepository _publicTransportRepository;
 
-        public DownloadHelper()
+        public DownloadHelper(DocumentStoreRepository documentStoreRepository)
         {
-            _documentStoreRepository = new DocumentStoreRepository();
+            _documentStoreRepository = documentStoreRepository;
             _publicTransportRepository = new PublicTransportRepository();
         }
 
-        public async Task MassDownloadAndSaveToDb(List<StopTime> convertedStopTimes)
+        public async Task MassDownloadAndSaveToDb(List<StopTimeUrl> convertedStopTimes)
         {
             foreach (var stopTime in convertedStopTimes)
             {
@@ -41,7 +41,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                         }
                     }
 
-                    _documentStoreRepository.MassSave(objectsToSaveInDb);
+                    _documentStoreRepository.Save(objectsToSaveInDb);
                 }
             }
         }

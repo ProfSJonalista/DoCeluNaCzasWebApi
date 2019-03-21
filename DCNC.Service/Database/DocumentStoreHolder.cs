@@ -1,7 +1,7 @@
-﻿using Raven.Client.Documents;
-using System;
+﻿using System;
+using Raven.Client.Documents;
 
-namespace DCNC.DataAccess.Database
+namespace DCNC.Service.Database
 {
     public class DocumentStoreHolder
     {
@@ -22,9 +22,6 @@ namespace DCNC.DataAccess.Database
             return documentStore;
         }
 
-        public static IDocumentStore Store
-        {
-            get { return _store.Value; }
-        }
+        public static IDocumentStore Store => _store.Value;
     }
 }

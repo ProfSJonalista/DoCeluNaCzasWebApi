@@ -2,7 +2,7 @@
 
 namespace DCNC.Bussiness.PublicTransport.JsonData.TimeTable
 {
-    public class StopTime
+    public class StopTimeUrl
     {
         public int RouteId { get; set; }
         public List<string> Urls { get; set; }
