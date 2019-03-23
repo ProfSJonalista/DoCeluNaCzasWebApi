@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
 
 namespace DCNC.Bussiness.PublicTransport.TimeTable
 {
-    public class TimeTableData
+    public class TimeTableData : Common
     {
-        public string Id { get; set; }
         public DateTime LastUpdate { get; set; }
         public List<StopTime> StopTimes { get; set; }
     }

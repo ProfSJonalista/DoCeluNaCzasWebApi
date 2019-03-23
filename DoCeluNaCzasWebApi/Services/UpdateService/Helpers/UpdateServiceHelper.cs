@@ -39,11 +39,10 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             _tripService = new TripService();
             _busStopService = new BusStopService();
             _busLineService = new BusLineService();
+            _timeTableService = new TimeTableService();
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
             _busStopModelService = new BusStopModelService();
-
-            _timeTableService = new TimeTableService(_timeService);
         }
 
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject,

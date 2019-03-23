@@ -1,12 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using DCNC.Bussiness.PublicTransport.TimeTable;
+using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
+using System.Collections.Generic;
 using System.Linq;
-using DCNC.Bussiness.PublicTransport.TimeTable;
-using Raven.Client.Documents;
 
 namespace DCNC.Service.Database
 {
     public class DocumentStoreRepository
     {
+        public void Save<T>(T objectToSave)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                session.Store(objectToSave);
+                session.SaveChanges();
+            }
+        }
+
         public void Save<T>(List<T> objectsToSave)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -26,7 +35,17 @@ namespace DCNC.Service.Database
             }
         }
 
-        public void Delete(List<TimeTableJson> objectsToDelete)
+        public List<TimeTableData> GetTimeTableDataByRouteId(int routeId)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<TimeTableData>()
+                    .Where(x => x.StopTimes.Any(y => y.RouteId == routeId))
+                    .ToList();
+            }
+        }
+
+        public void Delete(List<Common> objectsToDelete)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {

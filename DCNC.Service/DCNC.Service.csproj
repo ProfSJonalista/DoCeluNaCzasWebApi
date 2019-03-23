@@ -130,6 +130,8 @@
     <Compile Include="PublicTransport\TimeTable\Helpers\Converter.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\ConvertingHelper.cs" />
     <Compile Include="PublicTransport\TimeTable\Helpers\DownloadHelper.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\FilterHelper.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\TimeService.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableService.cs" />
     <Compile Include="PublicTransport\Time\TimeService.cs" />
   </ItemGroup>

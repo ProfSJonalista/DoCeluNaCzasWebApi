@@ -10,17 +10,21 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public class DownloadHelper
     {
+        private readonly TimeService _timeService;
         private readonly DocumentStoreRepository _documentStoreRepository;
         private readonly PublicTransportRepository _publicTransportRepository;
 
-        public DownloadHelper(DocumentStoreRepository documentStoreRepository)
+        public DownloadHelper(DocumentStoreRepository documentStoreRepository, TimeService timeService)
         {
+            _timeService = timeService;
             _documentStoreRepository = documentStoreRepository;
             _publicTransportRepository = new PublicTransportRepository();
         }
 
-        public async Task MassDownloadAndSaveToDb(List<StopTimeUrl> convertedStopTimes)
+        public async Task<List<TimeTableDateTime>> MassDownloadAndSaveToDb(List<StopTimeUrl> convertedStopTimes)
         {
+            var entitiesThatWerentDownloaded = new List<TimeTableDateTime>();
+
             foreach (var stopTime in convertedStopTimes)
             {
                 using (var client = new HttpClient())
@@ -39,11 +43,21 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                                 Json = json
                             });
                         }
+                        else
+                        {
+                            entitiesThatWerentDownloaded.Add(new TimeTableDateTime()
+                            {
+                                RouteId = stopTime.RouteId,
+                                Date = _timeService.GetDateFromUrl(url)
+                            });
+                        }
                     }
 
                     _documentStoreRepository.Save(objectsToSaveInDb);
                 }
             }
+
+            return entitiesThatWerentDownloaded;
         }
     }
 }

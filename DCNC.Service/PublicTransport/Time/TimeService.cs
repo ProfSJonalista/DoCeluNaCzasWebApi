@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
-using DCNC.Service.PublicTransport.Caching;
+﻿using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using Newtonsoft.Json.Linq;
+using System;
 
 namespace DCNC.Service.PublicTransport.Time
 {
@@ -52,22 +49,6 @@ namespace DCNC.Service.PublicTransport.Time
             return jObject.HasValues
                    ? jObject[DateTime.Now.ToString("yyyy-MM-dd")].Value<DateTime>("lastUpdate")
                    : _cacheService.GetData(key);
-        }
-
-        public List<StopTimeUrl> FilterStopTimes(List<StopTimeUrl> convertedStopTimes)
-        {
-            convertedStopTimes.ForEach(stopTime =>
-            {
-                stopTime.Urls = stopTime.Urls
-                                        .Select(str => new { str, dt = DateTime.Parse(str.Substring(38, 10)) })
-                                        .Where(x => x.dt.Date >= DateTime.Now.Date)
-                                        .OrderBy(x => x.dt)
-                                        .Select(x => x.str)
-                                        .Take(7)
-                                        .ToList();
-            });
-
-            return convertedStopTimes;
         }
     }
 }

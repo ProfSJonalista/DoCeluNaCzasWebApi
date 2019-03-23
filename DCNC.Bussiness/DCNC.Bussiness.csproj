@@ -89,7 +89,9 @@
     <Compile Include="PublicTransport\RouteSearch\Change.cs" />
     <Compile Include="PublicTransport\JsonData\General\StopInTripData.cs" />
     <Compile Include="PublicTransport\JsonData\General\TripData.cs" />
+    <Compile Include="PublicTransport\TimeTable\Shared\Common.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableData.cs" />
+    <Compile Include="PublicTransport\TimeTable\TimeTableDateTime.cs" />
     <Compile Include="PublicTransport\TimeTable\TimeTableJson.cs" />
   </ItemGroup>
   <ItemGroup>
