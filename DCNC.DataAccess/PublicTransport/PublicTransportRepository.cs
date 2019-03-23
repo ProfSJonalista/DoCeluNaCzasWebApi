@@ -16,6 +16,7 @@ namespace DCNC.DataAccess.PublicTransport
             }
             catch (Exception e)
             {
+                //TODO create logs
                 return string.Empty;
             }
         }
@@ -28,6 +29,7 @@ namespace DCNC.DataAccess.PublicTransport
             }
             catch (Exception e)
             {
+                //TODO create logs
                 return string.Empty;
             }
         }
