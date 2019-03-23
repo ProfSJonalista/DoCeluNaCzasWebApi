@@ -292,6 +292,7 @@
     <Compile Include="Services\PublicTransport\JoinTripMappingService.cs" />
     <Compile Include="Services\UpdateService\Helpers\UpdateServiceHelper.cs" />
     <Compile Include="Services\UpdateService\UpdateDataService.cs" />
+    <Compile Include="Services\UpdateService\UpdateTimeTableService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

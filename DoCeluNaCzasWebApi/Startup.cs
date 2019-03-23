@@ -1,7 +1,7 @@
-﻿using Microsoft.Owin;
+﻿using DoCeluNaCzasWebApi.Services.UpdateService;
+using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
-using DoCeluNaCzasWebApi.Services.UpdateService;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -9,7 +9,7 @@ namespace DoCeluNaCzasWebApi
 {
     public partial class Startup
     {
-        public async void Configuration(IAppBuilder app)
+        public void Configuration(IAppBuilder app)
         {
             var config = new HttpConfiguration
             {
@@ -22,7 +22,8 @@ namespace DoCeluNaCzasWebApi
             //ConfigureAuth(app);
             app.MapSignalR();
             
-            await UpdateDataService.Init();
+            UpdateDataService.Init();
+            UpdateTimeTableService.Init();
         }
     }
 }

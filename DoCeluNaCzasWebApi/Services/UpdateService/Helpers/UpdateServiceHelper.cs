@@ -28,7 +28,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly StopInTripService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
 
-        private readonly TimeTableService _timeTableService;
+        
 
         public UpdateServiceHelper(CacheService cacheService, TimeService timeService)
         {
@@ -39,7 +39,6 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             _tripService = new TripService();
             _busStopService = new BusStopService();
             _busLineService = new BusLineService();
-            _timeTableService = new TimeTableService();
             _expeditionService = new ExpeditionService();
             _stopInTripService = new StopInTripService();
             _busStopModelService = new BusStopModelService();
@@ -78,12 +77,6 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
                                         busStopDataList.FirstOrDefault().LastUpdate,
                                       stopInTripDataList.FirstOrDefault().LastUpdate,
                                                     expeditionData.LastUpdate);
-        }
-
-
-        public async Task SetTimeTables()
-        {
-            await _timeTableService.SetTimeTables();
         }
     }
 }
