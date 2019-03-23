@@ -3,7 +3,7 @@ using DCNC.Service.PublicTransport.Caching.Helpers;
 using Newtonsoft.Json.Linq;
 using System;
 
-namespace DCNC.Service.PublicTransport.UpdateData
+namespace DCNC.Service.PublicTransport.Time
 {
     public class TimeService
     {

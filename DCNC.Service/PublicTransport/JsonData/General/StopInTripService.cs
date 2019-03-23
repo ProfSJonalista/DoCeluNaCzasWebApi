@@ -1,15 +1,14 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace DCNC.Service.PublicTransport.JsonData
+namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class StopInTripService : DataAbstractService
     {
-        public override Common Converter(JToken stops)
+        public override object Converter(JToken stops)
         {
             var stopInTripData = new StopInTripData()
             {

@@ -1,8 +1,8 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General.Shared;
 using System;
 using System.Collections.Generic;
 
-namespace DCNC.Bussiness.PublicTransport.JsonData
+namespace DCNC.Bussiness.PublicTransport.JsonData.General
 {
     public class BusStopData : Common
     {

@@ -1,10 +1,9 @@
 ﻿using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
-using DCNC.Service.PublicTransport.UpdateData;
+using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Models.PublicTransport;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
@@ -16,7 +15,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         private static CacheService _cacheService;
         private static UpdateServiceHelper _updateServiceHelper;
 
-        public static async Task Init()
+        public static async void Init()
         {
             _cacheService = new CacheService();
             _timeService = new TimeService(_cacheService);
@@ -42,7 +41,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             var updateNeeded = _timeService.CheckForUpdates(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
 
-            if(updateNeeded) _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
+            if (!updateNeeded) return;
+
+            _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
         }
 
         public static List<GroupedJoinedModel> GetJoinedTrips()

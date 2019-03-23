@@ -2,12 +2,15 @@
 using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData;
-using DCNC.Service.PublicTransport.UpdateData;
 using DoCeluNaCzasWebApi.Services.PublicTransport;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Threading.Tasks;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
+using DCNC.Service.PublicTransport.JsonData.General;
+using DCNC.Service.PublicTransport.Time;
+using DCNC.Service.PublicTransport.TimeTable;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {
@@ -24,6 +27,8 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly ExpeditionService _expeditionService;
         private readonly StopInTripService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
+
+        
 
         public UpdateServiceHelper(CacheService cacheService, TimeService timeService)
         {
@@ -42,11 +47,11 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject,
             JObject expeditionsAsJObject, JObject stopsInTripsAsJObject)> GetDataAsync()
         {
-            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.TRIPS);
-            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.BUS_STOPS);
-            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.BUS_LINES);
-            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.EXPEDITION);
-            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.STOPS_IN_TRIPS);
+            var tripsAsJObject = await _tripService.GetDataAsJObjectAsync(Urls.Trips);
+            var busStopsAsJObject = await _busStopService.GetDataAsJObjectAsync(Urls.Stops);
+            var busLinesAsJObject = await _busLineService.GetDataAsJObjectAsync(Urls.Lines);
+            var expeditionsAsJObject = await _expeditionService.GetDataAsJObjectAsync(Urls.Expedition);
+            var stopsInTripsAsJObject = await _stopInTripService.GetDataAsJObjectAsync(Urls.StopsInTrips);
 
             return (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
         }

@@ -1,11 +1,10 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
-namespace DCNC.Service.PublicTransport.JsonData
+namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class ExpeditionService : DataAbstractService
     {
@@ -14,7 +13,7 @@ namespace DCNC.Service.PublicTransport.JsonData
             return new List<T> { (T)(object)Converter(dataAsJObject) };
         }
 
-        public override Common Converter(JToken expedition)
+        public override object Converter(JToken expedition)
         {
             var expeditionData = new ExpeditionData()
             {

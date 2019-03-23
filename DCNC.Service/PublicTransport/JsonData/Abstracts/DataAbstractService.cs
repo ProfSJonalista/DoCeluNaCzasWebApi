@@ -1,7 +1,7 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.Shared;
-using DCNC.Service.PublicTransport.JsonData.Interfaces;
+﻿using DCNC.Service.PublicTransport.JsonData.Interfaces;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JsonData.General.Shared;
 
 namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {
@@ -19,7 +19,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
             return jsonDataList;
         }
 
-        public virtual Common Converter(JToken dataAsJToken)
+        public virtual object Converter(JToken dataAsJToken)
         {
             return new Common();
         }

@@ -1,16 +1,15 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Bussiness.PublicTransport.JsonData.Shared;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DCNC.Service.PublicTransport.JsonData
+namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusLineService : DataAbstractService
     {
-        public override Common Converter(JToken busLine)
+        public override object Converter(JToken busLine)
         {
             var busLineData = new BusLineData()
             {

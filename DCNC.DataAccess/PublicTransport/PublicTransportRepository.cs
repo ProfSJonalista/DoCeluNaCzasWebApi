@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DCNC.DataAccess.PublicTransport
@@ -9,7 +10,28 @@ namespace DCNC.DataAccess.PublicTransport
 
         public static async Task<string> DownloadData(string url)
         {
-            return await Client.GetStringAsync(url);
+            try
+            {
+                return await Client.GetStringAsync(url);
+            }
+            catch (Exception e)
+            {
+                //TODO create logs
+                return string.Empty;
+            }
+        }
+
+        public async Task<string> DownloadData(string url, HttpClient client)
+        {
+            try
+            {
+                return await client.GetStringAsync(url);
+            }
+            catch (Exception e)
+            {
+                //TODO create logs
+                return string.Empty;
+            }
         }
     }
 }

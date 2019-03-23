@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using System.Collections.Generic;
 using System.Linq;
 using Stop = DCNC.Bussiness.PublicTransport.JoiningTrips.Stop;
@@ -7,7 +7,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
 {
     public class StopHelper
     {
-        public List<Stop> GetStopList(Trip tripByRouteId, List<StopInTrip> stopsInTrip, bool expeditionMainRoute, List<Bussiness.PublicTransport.JsonData.Stop> stops)
+        public List<Stop> GetStopList(Trip tripByRouteId, List<StopInTrip> stopsInTrip, bool expeditionMainRoute, List<Bussiness.PublicTransport.JsonData.General.Stop> stops)
         {
             return stopsInTrip.Select(stopInTrip =>
             {
