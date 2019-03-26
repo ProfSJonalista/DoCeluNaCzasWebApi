@@ -1,5 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,8 +1,8 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport.Shared;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General.Shared;
 using System;
 using System.Collections.Generic;
 
-namespace DoCeluNaCzasWebApi.Models.PublicTransport
+namespace DoCeluNaCzasWebApi.Models.PublicTransport.General
 {
     public class BusStopDataModel : CommonModel
     {

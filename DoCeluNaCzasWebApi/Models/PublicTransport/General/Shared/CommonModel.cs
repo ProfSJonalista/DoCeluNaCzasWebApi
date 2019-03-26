@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DoCeluNaCzasWebApi.Models.PublicTransport.Shared
+namespace DoCeluNaCzasWebApi.Models.PublicTransport.General.Shared
 {
     public class CommonModel
     {

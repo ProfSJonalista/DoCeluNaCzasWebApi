@@ -1,4 +1,6 @@
-﻿using DCNC.Service.PublicTransport.TimeTable;
+﻿using DCNC.Bussiness.PublicTransport.TimeTable;
+using DCNC.Service.PublicTransport.TimeTable;
+using System.Collections.Generic;
 using System.Timers;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
@@ -28,6 +30,11 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         private static async void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
             await _timeTableService.SetTimeTables();
+        }
+
+        public static List<TimeTableData> GetTimeTableData(int routeId)
+        {
+            return _timeTableService.GetTimeTableDataByRouteId(routeId);
         }
     }
 }

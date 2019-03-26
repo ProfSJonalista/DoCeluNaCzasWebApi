@@ -6,6 +6,9 @@ namespace DCNC.Bussiness.PublicTransport.TimeTable
 {
     public class TimeTableData : Common
     {
+        public int RouteId { get; set; }
+        public int TripId { get; set; }
+        public DateTime Date { get; set; }
         public DateTime LastUpdate { get; set; }
         public List<StopTime> StopTimes { get; set; }
     }

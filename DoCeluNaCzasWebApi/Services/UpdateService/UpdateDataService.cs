@@ -1,7 +1,7 @@
 ﻿using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.Time;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using System.Collections.Generic;
 using System.Timers;

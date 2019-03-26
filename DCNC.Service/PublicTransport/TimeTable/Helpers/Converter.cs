@@ -29,7 +29,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                     TopologyVersionId = stopTime.Value<int>("topologyVersionId"),
                     ArrivalTime = stopTime.Value<DateTime>("arrivalTime"),
                     DepartureTime = stopTime.Value<DateTime>("departureTime"),
-                    StopId = stopTime.Value<int>("stopId "),
+                    StopId = stopTime.Value<int>("stopId"),
                     StopSequence = stopTime.Value<int>("stopSequence"),
                     Date = stopTime.Value<DateTime>("date"),
                     BusServiceName = stopTime.Value<string>("busServiceName"),
@@ -38,6 +38,12 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 
                 timeTableData.StopTimes.Add(stopTimeToAdd);
             }
+
+            var firstStopTime = timeTableData.StopTimes.FirstOrDefault();
+
+            timeTableData.RouteId = firstStopTime.RouteId;
+            timeTableData.TripId = firstStopTime.TripId;
+            timeTableData.Date = firstStopTime.Date;
 
             return timeTableData;
         }

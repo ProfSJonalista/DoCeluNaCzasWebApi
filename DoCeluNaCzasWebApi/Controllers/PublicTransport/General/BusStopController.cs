@@ -1,8 +1,8 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService;
 using System.Web.Http;
 
-namespace DoCeluNaCzasWebApi.Controllers
+namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.General
 {
     public class BusStopController : ApiController
     {

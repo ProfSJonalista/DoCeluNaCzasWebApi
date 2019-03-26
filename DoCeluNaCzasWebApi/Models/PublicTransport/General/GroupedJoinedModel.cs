@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DoCeluNaCzasWebApi.Models.PublicTransport
+namespace DoCeluNaCzasWebApi.Models.PublicTransport.General
 {
     public class GroupedJoinedModel
     {

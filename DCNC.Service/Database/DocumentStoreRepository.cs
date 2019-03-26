@@ -1,7 +1,9 @@
 ﻿using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using Sparrow.Json;
 
 namespace DCNC.Service.Database
 {
@@ -40,7 +42,7 @@ namespace DCNC.Service.Database
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
                 return session.Query<TimeTableData>()
-                    .Where(x => x.StopTimes.Any(y => y.RouteId == routeId))
+                    .Where(x => x.RouteId == routeId)
                     .ToList();
             }
         }

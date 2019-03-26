@@ -1,4 +1,4 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,9 +23,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
 
             return new List<GroupedJoinedModel>()
             {
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.Group.Buses, JoinedTripModels = buses },
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.Group.Trams, JoinedTripModels = trams },
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.Group.Trolleys, JoinedTripModels = trolleys}
+                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Buses, JoinedTripModels = buses },
+                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Trams, JoinedTripModels = trams },
+                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Trolleys, JoinedTripModels = trolleys}
             };
         }
     }

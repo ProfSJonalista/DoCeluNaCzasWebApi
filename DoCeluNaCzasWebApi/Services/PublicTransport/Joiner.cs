@@ -1,7 +1,7 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JsonData.General;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using System.Collections.Generic;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport

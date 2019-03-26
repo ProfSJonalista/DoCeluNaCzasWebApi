@@ -1,5 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DoCeluNaCzasWebApi.Models.PublicTransport;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
 using System.Collections.Generic;
 using System.Linq;
