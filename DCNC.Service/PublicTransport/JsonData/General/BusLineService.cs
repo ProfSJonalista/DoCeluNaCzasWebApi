@@ -4,11 +4,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusLineService : DataAbstractService
     {
+        public BusLineService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public override object Converter(JToken busLine)
         {
             var busLineData = new BusLineData()

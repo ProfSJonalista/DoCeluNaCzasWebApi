@@ -3,12 +3,15 @@ using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using Sparrow.Json;
 
 namespace DCNC.Service.Database
 {
     public class DocumentStoreRepository
     {
+        #region SaveEntities
+
         public void Save<T>(T objectToSave)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -26,6 +29,32 @@ namespace DCNC.Service.Database
                 session.SaveChanges();
             }
         }
+
+        #endregion
+
+        #region DeleteEntities
+
+        public void Delete(string idToDelete)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                session.Delete(idToDelete);
+                session.SaveChanges();
+            }
+        }
+
+        public void Delete(List<string> objectsIdToDelete)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                objectsIdToDelete.ForEach(item => session.Delete(item));
+                session.SaveChanges();
+            }
+        }
+
+        #endregion
+
+        #region GetEntities
 
         public List<TimeTableJson> GetJsonsByRouteId(int routeId)
         {
@@ -47,13 +76,14 @@ namespace DCNC.Service.Database
             }
         }
 
-        public void Delete(List<Common> objectsToDelete)
+        public DbJson GetDbJson(JsonType type)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
-                objectsToDelete.ForEach(item => session.Delete(item.Id));
-                session.SaveChanges();
+                return session.Query<DbJson>().FirstOrDefault(x => x.Type == type);
             }
         }
+
+        #endregion
     }
 }

@@ -3,11 +3,14 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class ExpeditionService : DataAbstractService
     {
+        public ExpeditionService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public override List<T> GetList<T>(JObject dataAsJObject)
         {
             return new List<T> { (T)(object)Converter(dataAsJObject) };

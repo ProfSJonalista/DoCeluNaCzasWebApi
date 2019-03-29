@@ -3,6 +3,7 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
@@ -41,5 +42,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 
             return tripData;
         }
+
+        public TripService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
     }
 }

@@ -46,8 +46,8 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                 }
                 
                 _documentStoreRepository.Save(timeTableDataList);
-                _documentStoreRepository.Delete(jsonsToConvert.Cast<Common>().ToList());
-                _documentStoreRepository.Delete(entitiesToDelete.Cast<Common>().ToList());
+                _documentStoreRepository.Delete(jsonsToConvert.Select(x => x.Id).ToList());
+                _documentStoreRepository.Delete(entitiesToDelete.Select(x => x.Id).ToList());
             }
         }
     }

@@ -13,9 +13,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
         private readonly JoinTripMappingService _joinTripMappingService;
         private readonly TripsWithBusStopsService _tripsWithBusStopsService;
 
-        public Joiner()
+        public Joiner(BusLineService busLineService)
         {
-            _busLineService = new BusLineService();
+            _busLineService = busLineService;
             _combineTripService = new CombineTripService();
             _joinTripMappingService = new JoinTripMappingService();
             _tripsWithBusStopsService = new TripsWithBusStopsService();

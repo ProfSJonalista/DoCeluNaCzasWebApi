@@ -34,6 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -85,6 +87,7 @@
     <Compile Include="PublicTransport\JsonData\General\BusStopData.cs" />
     <Compile Include="PublicTransport\JsonData\General\ExpeditionData.cs" />
     <Compile Include="PublicTransport\JsonData\General\Shared\Common.cs" />
+    <Compile Include="PublicTransport\JsonData\DbJson.cs" />
     <Compile Include="PublicTransport\JsonData\TimeTable\StopTimeUrl.cs" />
     <Compile Include="PublicTransport\RouteSearch\Change.cs" />
     <Compile Include="PublicTransport\JsonData\General\StopInTripData.cs" />
