@@ -3,11 +3,14 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.TimeTable
 {
     public class StopTimesService : DataAbstractService
     {
+        public StopTimesService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public override object Converter(JToken stopTimes)
         {
             var stopTimeList = new List<StopTimeUrl>();

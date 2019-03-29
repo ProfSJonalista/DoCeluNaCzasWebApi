@@ -2,6 +2,7 @@
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using DCNC.Service.Database;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -21,9 +22,9 @@ namespace DoCeluNaCzasWebApi
             //TODO - fix auth - UserManager appears to be null
             //ConfigureAuth(app);
             app.MapSignalR();
-            
-            UpdateDataService.Init();
-            UpdateTimeTableService.Init();
+            var dsr = new DocumentStoreRepository();
+            UpdateDataService.Init(dsr);
+            UpdateTimeTableService.Init(dsr);
         }
     }
 }

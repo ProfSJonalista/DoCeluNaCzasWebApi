@@ -2,6 +2,7 @@
 using DCNC.Service.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Timers;
+using DCNC.Service.Database;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
@@ -10,9 +11,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         private static Timer _timer;
         private static TimeTableService _timeTableService;
 
-        public static async void Init()
+        public static async void Init(DocumentStoreRepository dsr)
         {
-            _timeTableService = new TimeTableService();
+            _timeTableService = new TimeTableService(dsr);
             await _timeTableService.SetTimeTables();
 
             SetTimer();

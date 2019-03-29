@@ -3,11 +3,14 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class StopInTripService : DataAbstractService
     {
+        public StopInTripService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public override object Converter(JToken stops)
         {
             var stopInTripData = new StopInTripData()

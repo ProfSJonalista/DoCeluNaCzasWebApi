@@ -2,11 +2,14 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using DCNC.Bussiness.PublicTransport.JsonData.General.Shared;
+using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {
     public abstract class DataAbstractService : DataDownloadService, IJsonDataService
     {
+        protected DataAbstractService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public virtual List<T> GetList<T>(JObject dataAsJObject)
         {
             var jsonDataList = new List<T>();
