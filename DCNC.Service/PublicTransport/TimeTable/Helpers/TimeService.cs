@@ -14,7 +14,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             {
                 stopTime.Urls = stopTime.Urls
                     .Select(url => new { url, dt = GetDateFromUrl(url) })
-                    .Where(x => x.dt.Date >= DateTime.Now.Date)
+                    .Where(x => x.dt.Date >= DateTime.Today)
                     .OrderBy(x => x.dt)
                     .Select(x => x.url)
                     .Take(7)

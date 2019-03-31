@@ -9,5 +9,7 @@
         public const string StopsInTrips = "https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/3115d29d-b763-4af5-93f6-763b835967d6/download/stopsintrips.json";
 
         public const string StopTimes = "https://ckan.multimediagdansk.pl/dataset/c24aa637-3619-4dc2-a171-a23eec8f2172/resource/a023ceb0-8085-45f6-8261-02e6fcba7971/download/stoptimes.json";
+
+        public const string Delays = "http://87.98.237.99:88/delays?stopId={0}";
     }
 }

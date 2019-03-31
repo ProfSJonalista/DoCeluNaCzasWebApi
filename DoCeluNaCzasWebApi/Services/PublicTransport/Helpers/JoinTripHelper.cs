@@ -2,12 +2,12 @@
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
 {
-    public class JoinTripHelper
+    public static class JoinTripHelper
     {
         private static readonly char[] CharactersToDeleteFromString = { ' ', '+' };
         private const string PARENTHESIS_TO_DELETE = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
 
-        public string GetFirstStopName(string tripHeadsign)
+        public static string GetFirstStopName(string tripHeadsign)
         {
             var belongsToGdynia = tripHeadsign.Contains(">");
             var index = 0;
@@ -24,7 +24,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
             return Regex.Replace(input, PARENTHESIS_TO_DELETE, "");
         }
 
-        public string GetDestinationStopName(string tripHeadsign)
+        public static string GetDestinationStopName(string tripHeadsign)
         {
             var belongsToGdynia = tripHeadsign.Contains(">");
             var index = 0;

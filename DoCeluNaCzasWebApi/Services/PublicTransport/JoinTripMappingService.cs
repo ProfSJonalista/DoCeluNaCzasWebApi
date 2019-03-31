@@ -8,11 +8,6 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
 {
     public class JoinTripMappingService
     {
-        private readonly JoinTripHelper _joinTripHelper;
-        public JoinTripMappingService()
-        {
-            _joinTripHelper = new JoinTripHelper();
-        }
         public List<JoinedTripsModel> Map(List<CombinedTripModel> joinedTripList)
         {
             return joinedTripList.Select(trip => new JoinedTripsModel()
@@ -32,8 +27,8 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
                 TripId = x.TripId,
                 RouteId = x.RouteId,
                 AgencyId = x.AgencyId,
-                FirstStopName = _joinTripHelper.GetFirstStopName(x.TripHeadsign),
-                DestinationStopName = _joinTripHelper.GetDestinationStopName(x.TripHeadsign),
+                FirstStopName = JoinTripHelper.GetFirstStopName(x.TripHeadsign),
+                DestinationStopName = JoinTripHelper.GetDestinationStopName(x.TripHeadsign),
                 MainRoute = x.MainRoute,
                 DirectionId = x.DirectionId,
                 Stops = GetMappedStops(x.Stops)

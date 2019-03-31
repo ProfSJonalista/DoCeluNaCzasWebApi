@@ -8,6 +8,8 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {
     public abstract class DataAbstractService : DataDownloadService, IJsonDataService
     {
+        protected DataAbstractService() { }
+
         protected DataAbstractService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public virtual List<T> GetList<T>(JObject dataAsJObject)

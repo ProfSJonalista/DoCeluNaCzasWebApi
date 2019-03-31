@@ -1,4 +1,5 @@
-﻿using DoCeluNaCzasWebApi.Services.UpdateService;
+﻿using System.Threading.Tasks;
+using DoCeluNaCzasWebApi.Services.UpdateService;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
@@ -22,6 +23,7 @@ namespace DoCeluNaCzasWebApi
             //TODO - fix auth - UserManager appears to be null
             //ConfigureAuth(app);
             app.MapSignalR();
+
             var dsr = new DocumentStoreRepository();
             UpdateDataService.Init(dsr);
             UpdateTimeTableService.Init(dsr);
