@@ -13,6 +13,8 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
     {
         private readonly DocumentStoreRepository _documentStoreRepository;
 
+        protected DataDownloadService() { }
+
         protected DataDownloadService(DocumentStoreRepository documentStoreRepository)
         {
             _documentStoreRepository = documentStoreRepository;
@@ -22,13 +24,16 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         {
             var json = await PublicTransportRepository.DownloadData(url);
 
+            if (type == JsonType.Delay) return JsonConvert.DeserializeObject<JObject>(json);
+
             if (!string.IsNullOrEmpty(json))
             {
                 var oldJson = _documentStoreRepository.GetDbJson(type);
 
-                if(oldJson != null && !string.IsNullOrEmpty(oldJson.Id)) _documentStoreRepository.Delete(oldJson.Id); 
+                if (oldJson != null && !string.IsNullOrEmpty(oldJson.Id))
+                    _documentStoreRepository.Delete(oldJson.Id);
 
-                _documentStoreRepository.Save(new DbJson() { Json = json, Type = type });
+                _documentStoreRepository.Save(new DbJson() {Json = json, Type = type});
             }
             else
             {

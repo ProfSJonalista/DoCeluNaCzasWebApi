@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData;
@@ -12,6 +13,7 @@ using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.Time;
 using DCNC.Service.PublicTransport.TimeTable;
+using DoCeluNaCzasWebApi.Services.Delays;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {
@@ -69,9 +71,14 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             var busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
             var joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);
             var groupedJoinedTrips = _grouper.Group(joinedTripsModelList);
-            
-            _cacheService.CacheData(busStopDataModel, CacheKeys.JOINED_BUS_STOPS);
 
+            DelayService.BusLineData = busLineDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
+            DelayService.TripData = tripDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
+
+            _cacheService.CacheData(tripDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today), CacheKeys.TRIP_DATA);
+            _cacheService.CacheData(busLineDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today), CacheKeys.BUS_LINE_DATA);
+
+            _cacheService.CacheData(busStopDataModel, CacheKeys.JOINED_BUS_STOPS);
             _cacheService.CacheData(groupedJoinedTrips, CacheKeys.JOINED_TRIP_MODEL_LIST);
 
             _timeService.CacheLastUpdates(tripDataList.FirstOrDefault().LastUpdate,

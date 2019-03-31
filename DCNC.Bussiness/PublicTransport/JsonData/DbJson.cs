@@ -9,6 +9,6 @@
 
     public enum JsonType
     {
-        BusLine, BusStop, Expedition, StopInTrip, Trip, StopTime
+        BusLine, BusStop, Expedition, StopInTrip, Trip, StopTime, Delay
     }
 }

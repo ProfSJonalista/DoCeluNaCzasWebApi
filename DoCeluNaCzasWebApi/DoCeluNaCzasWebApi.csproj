@@ -277,10 +277,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Hubs\DelaysHub.cs" />
     <Compile Include="Hubs\PublicTransportHub.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\PublicTransport\Delay\DelayModel.cs" />
     <Compile Include="Models\PublicTransport\General\BusStopDataModel.cs" />
     <Compile Include="Models\PublicTransport\General\GroupedJoinedModel.cs" />
     <Compile Include="Models\PublicTransport\General\Shared\CommonModel.cs" />
@@ -295,6 +297,7 @@
     <Compile Include="Services\PublicTransport\JoinTripMappingService.cs" />
     <Compile Include="Services\UpdateService\Helpers\UpdateServiceHelper.cs" />
     <Compile Include="Services\UpdateService\UpdateDataService.cs" />
+    <Compile Include="Services\Delays\DelayService.cs" />
     <Compile Include="Services\UpdateService\UpdateTimeTableService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -408,6 +411,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Services\Delays\Helpers\" />
     <Folder Include="Views\AuthorizedValues\" />
     <Folder Include="Views\PublicTransportMVC\" />
     <Folder Include="Views\Raven\" />

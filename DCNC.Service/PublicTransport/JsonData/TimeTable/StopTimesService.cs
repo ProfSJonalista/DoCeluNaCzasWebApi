@@ -1,9 +1,9 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
-using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.TimeTable
 {

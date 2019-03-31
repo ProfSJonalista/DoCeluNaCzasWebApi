@@ -18,5 +18,12 @@
         public static string JOINED_BUS_STOPS = "JoinedBusStops";
 
         #endregion
+
+        #region Delays
+
+        public static string TRIP_DATA = "TripData";
+        public static string BUS_LINE_DATA = "BusLineData";
+
+        #endregion
     }
 }
