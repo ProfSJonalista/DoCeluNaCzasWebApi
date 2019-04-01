@@ -4,6 +4,7 @@ using DCNC.Service.PublicTransport.JsonData.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
+using DCNC.Bussiness.PublicTransport.Delays;
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Service.Database;
 
@@ -24,7 +25,12 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         {
             var json = await PublicTransportRepository.DownloadData(url);
 
-            if (type == JsonType.Delay) return JsonConvert.DeserializeObject<JObject>(json);
+            if (type == JsonType.Delay)
+            {
+                var cos = JsonConvert.DeserializeObject<DelayData>(json);
+
+                return JsonConvert.DeserializeObject<JObject>(json);
+            }
 
             if (!string.IsNullOrEmpty(json))
             {

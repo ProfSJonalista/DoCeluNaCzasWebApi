@@ -13,8 +13,9 @@ namespace DoCeluNaCzasWebApi.Controllers
         }
 
         // GET api/values/5
-        public string Get(int id)
+        public async Task<string> Get(int id)
         {
+            var cos = await new DelayService().GetDelays(30129);
             return "Pamparampampam";
         }
 

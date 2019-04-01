@@ -31,7 +31,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
             if (!jObject.HasValues) return delayModelList;
 
-            var data = (DelayData)_delayJsonService.Converter(jObject);
+            var data = _delayJsonService.GetList<DelayData>(jObject).FirstOrDefault();
 
             foreach (var item in data.Delays)
             {

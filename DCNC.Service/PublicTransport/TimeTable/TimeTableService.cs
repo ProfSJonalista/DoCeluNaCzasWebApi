@@ -34,7 +34,7 @@ namespace DCNC.Service.PublicTransport.TimeTable
 
             if(!stopTimes.HasValues) return;
 
-            var convertedStopTimes = (List<StopTimeUrl>) _stopTimesService.Converter(stopTimes);
+            var convertedStopTimes = _stopTimesService.GetList<StopTimeUrl>(stopTimes);
             convertedStopTimes = _timeService.FilterStopTimesByDate(convertedStopTimes);
 
             var entitiesThatWerentDownloaded = await _downloadHelper.MassDownloadAndSaveToDb(convertedStopTimes);
