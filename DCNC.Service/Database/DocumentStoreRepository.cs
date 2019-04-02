@@ -1,14 +1,11 @@
-﻿using DCNC.Bussiness.PublicTransport.TimeTable;
-using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
-using System;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using Sparrow.Json;
 
 namespace DCNC.Service.Database
 {
-    public class DocumentStoreRepository
+    public class DocumentStoreRepository : IDocumentStoreRepository
     {
         #region SaveEntities
 

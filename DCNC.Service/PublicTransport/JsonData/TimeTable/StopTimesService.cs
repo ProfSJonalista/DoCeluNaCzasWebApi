@@ -8,7 +8,7 @@ namespace DCNC.Service.PublicTransport.JsonData.TimeTable
 {
     public class StopTimesService : DataAbstractService
     {
-        public StopTimesService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public StopTimesService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override object Converter(JToken stopTimes)
         {

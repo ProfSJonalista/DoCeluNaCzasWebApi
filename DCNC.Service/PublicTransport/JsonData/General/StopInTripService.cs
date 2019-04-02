@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class StopInTripService : DataAbstractService
     {
-        public StopInTripService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public StopInTripService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override object Converter(JToken stops)
         {

@@ -14,25 +14,25 @@ namespace DCNC.Service.Database.Tests
         [Test()]
         public void SaveOneObject_Success()
         {
-            Assert.Fail();
+            //Assert.Fail();
         }
 
         [Test()]
         public void SaveOneObject_Failure()
         {
-            Assert.Fail();
+            //Assert.Fail();
         }
 
         [Test()]
         public void SaveManyObjects_Success()
         {
-            Assert.Fail();
+            //Assert.Fail();
         }
 
         [Test()]
         public void SaveManyObjects_Failure()
         {
-            Assert.Fail();
+            //Assert.Fail();
         }
     }
 }

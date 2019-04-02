@@ -11,12 +11,9 @@ namespace DCNC.Service.PublicTransport.JsonData.Delays
 {
     public class DelayJsonService : DataAbstractService
     {
-        public DelayJsonService()
-        {
-            
-        }
+        public DelayJsonService() { }
 
-        public DelayJsonService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public DelayJsonService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override object Converter(JToken delaysJToken)
         {

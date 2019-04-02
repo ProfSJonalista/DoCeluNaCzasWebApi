@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using DCNC.Service.Database;
 using DoCeluNaCzasWebApi.Services.UpdateService;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
-using DCNC.Service.Database;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 

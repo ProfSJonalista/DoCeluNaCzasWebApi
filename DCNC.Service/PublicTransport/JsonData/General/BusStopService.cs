@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusStopService : DataAbstractService
     {
-        public BusStopService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public BusStopService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override object Converter(JToken busStop)
         {

@@ -1,19 +1,18 @@
-﻿using System;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Service.PublicTransport.Caching;
-using DCNC.Service.PublicTransport.Caching.Helpers;
-using DCNC.Service.PublicTransport.JsonData;
-using DoCeluNaCzasWebApi.Services.PublicTransport;
-using Newtonsoft.Json.Linq;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Database;
+using DCNC.Service.PublicTransport.Caching;
+using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.General;
+using DCNC.Service.PublicTransport.JsonData.Interfaces;
 using DCNC.Service.PublicTransport.Time;
-using DCNC.Service.PublicTransport.TimeTable;
 using DoCeluNaCzasWebApi.Services.Delays;
+using DoCeluNaCzasWebApi.Services.PublicTransport;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {
@@ -24,17 +23,16 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 
         private readonly Joiner _joiner;
         private readonly Grouper _grouper;
-        private readonly TripService _tripService;
-        private readonly BusStopService _busStopService;
-        private readonly BusLineService _busLineService;
-        private readonly ExpeditionService _expeditionService;
-        private readonly StopInTripService _stopInTripService;
+        private readonly IJsonDataService _tripService;
+        private readonly IJsonDataService _busStopService;
+        private readonly IJsonDataService _busLineService;
+        private readonly IJsonDataService _expeditionService;
+        private readonly IJsonDataService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
-
         
-
-        public UpdateServiceHelper(CacheService cacheService, TimeService timeService, DocumentStoreRepository dsr)
+        public UpdateServiceHelper(CacheService cacheService, TimeService timeService, IDocumentStoreRepository dsr)
         {
+            _joiner = new Joiner();
             _grouper = new Grouper();
             _timeService = timeService;
             _cacheService = cacheService;
@@ -44,8 +42,6 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             _expeditionService = new ExpeditionService(dsr);
             _stopInTripService = new StopInTripService(dsr);
             _busStopModelService = new BusStopModelService();
-
-            _joiner = new Joiner(_busLineService);
         }
 
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject,

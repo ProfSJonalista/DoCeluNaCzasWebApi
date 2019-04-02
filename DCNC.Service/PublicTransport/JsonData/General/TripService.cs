@@ -9,6 +9,8 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class TripService : DataAbstractService
     {
+        public TripService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+
         public override object Converter(JToken trips)
         {
             var tripData = new TripData()
@@ -42,7 +44,5 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 
             return tripData;
         }
-
-        public TripService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
     }
 }

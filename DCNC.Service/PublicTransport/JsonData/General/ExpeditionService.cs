@@ -9,7 +9,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class ExpeditionService : DataAbstractService
     {
-        public ExpeditionService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public ExpeditionService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override List<T> GetList<T>(JObject dataAsJObject)
         {

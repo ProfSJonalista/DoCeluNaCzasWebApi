@@ -10,7 +10,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusLineService : DataAbstractService
     {
-        public BusLineService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public BusLineService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
         public override object Converter(JToken busLine)
         {
@@ -42,15 +42,6 @@ namespace DCNC.Service.PublicTransport.JsonData.General
             }
 
             return busLineData;
-        }
-
-        public List<Route> JoinBusLines(List<BusLineData> busLineDataList)
-        {
-            return busLineDataList.SelectMany(x => x.Routes)
-                                  .Distinct()
-                                  .GroupBy(x => x.RouteShortName)
-                                  .Select(x => x.FirstOrDefault())
-                                  .ToList();
         }
     }
 }
