@@ -15,7 +15,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Delays
 
         public DelayJsonService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken delaysJToken)
+        protected override object Converter(JToken delaysJToken)
         {
             if (!delaysJToken.HasValues) return new DelayData();
 

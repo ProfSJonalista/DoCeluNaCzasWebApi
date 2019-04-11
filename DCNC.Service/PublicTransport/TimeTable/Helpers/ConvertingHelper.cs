@@ -44,7 +44,9 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                     var jsonAsJObject = JsonConvert.DeserializeObject<JObject>(item.Json);
                     timeTableDataList.Add(_converter.Deserialize(jsonAsJObject));
                 }
-                
+
+                timeTableDataList = timeTableDataList.Where(x => x.StopTimes.Count > 0).ToList();
+
                 _documentStoreRepository.Save(timeTableDataList);
                 _documentStoreRepository.Delete(jsonsToConvert.Select(x => x.Id).ToList());
                 _documentStoreRepository.Delete(entitiesToDelete.Select(x => x.Id).ToList());

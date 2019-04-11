@@ -11,12 +11,12 @@ namespace DCNC.Service.PublicTransport.JsonData.General
     {
         public ExpeditionService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override List<T> GetList<T>(JObject dataAsJObject)
+        public override List<T> GetData<T>(JObject dataAsJObject)
         {
             return new List<T> { (T)(object)Converter(dataAsJObject) };
         }
 
-        public override object Converter(JToken expedition)
+        protected override object Converter(JToken expedition)
         {
             var expeditionData = new ExpeditionData()
             {

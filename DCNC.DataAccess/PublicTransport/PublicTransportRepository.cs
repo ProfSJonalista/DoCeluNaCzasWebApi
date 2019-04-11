@@ -8,7 +8,7 @@ namespace DCNC.DataAccess.PublicTransport
     {
         private static readonly HttpClient Client = new HttpClient();
 
-        public static async Task<string> DownloadData(string url)
+        public async Task<string> DownloadData(string url)
         {
             try
             {

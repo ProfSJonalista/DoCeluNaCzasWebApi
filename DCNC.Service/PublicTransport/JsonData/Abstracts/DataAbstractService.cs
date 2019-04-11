@@ -1,7 +1,7 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
-using DCNC.Service.PublicTransport.JsonData.Interfaces;
+using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -12,17 +12,19 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
     public abstract class DataAbstractService : IJsonDataService
     {
         private readonly IDocumentStoreRepository _documentStoreRepository;
+        private readonly PublicTransportRepository _publicTransportRepository;
 
         protected DataAbstractService() { }
 
         protected DataAbstractService(IDocumentStoreRepository documentStoreRepository)
         {
             _documentStoreRepository = documentStoreRepository;
+            _publicTransportRepository = new PublicTransportRepository();
         }
 
         public async Task<JObject> GetDataAsJObjectAsync(string url, JsonType type)
         {
-            var json = await PublicTransportRepository.DownloadData(url);
+            var json = await _publicTransportRepository.DownloadData(url);
 
             if (type == JsonType.Delay) return JsonConvert.DeserializeObject<JObject>(json);
 
@@ -43,7 +45,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
             return JsonConvert.DeserializeObject<JObject>(json);
         }
 
-        public virtual List<T> GetList<T>(JObject dataAsJObject)
+        public virtual List<T> GetData<T>(JObject dataAsJObject)
         {
             var jsonDataList = new List<T>();
 
@@ -55,6 +57,6 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
             return jsonDataList;
         }
 
-        public abstract object Converter(JToken dataAsJToken);
+        protected abstract object Converter(JToken dataAsJToken);
     }
 }

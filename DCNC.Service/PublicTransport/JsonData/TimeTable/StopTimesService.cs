@@ -10,7 +10,7 @@ namespace DCNC.Service.PublicTransport.JsonData.TimeTable
     {
         public StopTimesService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken stopTimes)
+        protected override object Converter(JToken stopTimes)
         {
             return new StopTimeUrl()
             {

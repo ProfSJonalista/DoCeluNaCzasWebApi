@@ -11,7 +11,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
     {
         public StopInTripService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken stops)
+        protected override object Converter(JToken stops)
         {
             var stopInTripData = new StopInTripData()
             {

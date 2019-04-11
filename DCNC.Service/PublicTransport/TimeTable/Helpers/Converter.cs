@@ -19,6 +19,8 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 
             var stopTimeList = jsonAsJObject.Value<JArray>("stopTimes");
 
+            if (!stopTimeList.HasValues) return timeTableData;
+
             foreach (var stopTime in stopTimeList.Children<JObject>())
             {
                 var stopTimeToAdd = new StopTime()

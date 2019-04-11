@@ -12,7 +12,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
     {
         public BusLineService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken busLine)
+        protected override object Converter(JToken busLine)
         {
             var busLineData = new BusLineData()
             {

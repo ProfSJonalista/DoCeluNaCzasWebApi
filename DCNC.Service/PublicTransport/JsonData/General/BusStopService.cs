@@ -11,7 +11,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
     {
         public BusStopService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken busStop)
+        protected override object Converter(JToken busStop)
         {
             var busStopData = new BusStopData()
             {

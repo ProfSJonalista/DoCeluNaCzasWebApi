@@ -12,6 +12,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
             return stopsInTrip.Select(stopInTrip =>
             {
                 var stop = stops.FirstOrDefault(x => x.StopId == stopInTrip.StopId);
+                if (stop == null) return new Stop();
                 {
                     return new Stop()
                     {
@@ -28,7 +29,8 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
                         MainTrip = expeditionMainRoute
                     };
                 }
-            }).OrderBy(x => x.StopSequence)
+            }).Where(x => x.StopId != 0)
+              .OrderBy(x => x.StopSequence)
               .ToList();
         }
     }

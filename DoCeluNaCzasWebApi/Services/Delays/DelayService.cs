@@ -1,13 +1,14 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
+﻿using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
+using DCNC.DataAccess.PublicTransport.Helpers;
+using DCNC.Service.PublicTransport.JsonData.Delays;
 using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
+using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.Delays;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
+// ReSharper disable PossibleNullReferenceException
 
 namespace DoCeluNaCzasWebApi.Services.Delays
 {
@@ -31,7 +32,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
             if (!jObject.HasValues) return delayModelList;
 
-            var data = _delayJsonService.GetList<DelayData>(jObject).FirstOrDefault();
+            var data = _delayJsonService.GetData<DelayData>(jObject).FirstOrDefault();
 
             foreach (var item in data.Delays)
             {

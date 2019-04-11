@@ -11,7 +11,7 @@ namespace DCNC.Service.PublicTransport.JsonData.General
     {
         public TripService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
 
-        public override object Converter(JToken trips)
+        protected override object Converter(JToken trips)
         {
             var tripData = new TripData()
             {
