@@ -9,9 +9,9 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
     {
         private readonly Combiner _combiner;
 
-        public CombineTripService()
+        public CombineTripService(Combiner combiner)
         {
-            _combiner = new Combiner();
+            _combiner = combiner;
         }
 
         public List<CombinedTripModel> JoinTrips(List<OrganizedTrips> organizedTrips, List<Route> routes)

@@ -1,11 +1,9 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
-using DCNC.Service.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Services.Delays;
 using DoCeluNaCzasWebApi.Services.PublicTransport;
@@ -30,18 +28,22 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly IJsonDataService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
         
-        public UpdateServiceHelper(CacheService cacheService, TimeService timeService, IDocumentStoreRepository dsr)
+        public UpdateServiceHelper(Joiner joiner, Grouper grouper, TimeService timeService, CacheService cacheService, 
+                                   IJsonDataService tripService, IJsonDataService busStopService, IJsonDataService busLineService, 
+                                   IJsonDataService expeditionService, IJsonDataService stopInTripService, BusStopModelService busStopModelService)
         {
-            _joiner = new Joiner();
-            _grouper = new Grouper();
+            _joiner = joiner;
+            _grouper = grouper;
             _timeService = timeService;
             _cacheService = cacheService;
-            _tripService = new TripService(dsr);
-            _busStopService = new BusStopService(dsr);
-            _busLineService = new BusLineService(dsr);
-            _expeditionService = new ExpeditionService(dsr);
-            _stopInTripService = new StopInTripService(dsr);
-            _busStopModelService = new BusStopModelService();
+
+            _tripService = tripService;
+            _busStopService = busStopService;
+            _busLineService = busLineService;
+            _expeditionService = expeditionService;
+            _stopInTripService = stopInTripService;
+
+            _busStopModelService = busStopModelService;
         }
 
         public async Task<(JObject tripsAsJObject, JObject busStopsAsJObject, JObject busLinesAsJObject, JObject expeditionsAsJObject, JObject stopsInTripsAsJObject)> GetDataAsync()

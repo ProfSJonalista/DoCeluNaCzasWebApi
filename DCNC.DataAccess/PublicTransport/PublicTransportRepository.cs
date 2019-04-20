@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DCNC.DataAccess.PublicTransport
 {
-    public class PublicTransportRepository
+    public class PublicTransportRepository : IPublicTransportRepository
     {
         private static readonly HttpClient Client = new HttpClient();
 
@@ -14,9 +14,12 @@ namespace DCNC.DataAccess.PublicTransport
             {
                 return await Client.GetStringAsync(url);
             }
-            catch (Exception e)
+            catch (HttpRequestException httpRequestException)
             {
-                //TODO create logs
+                return string.Empty;
+            }
+            catch (Exception exception)
+            {
                 return string.Empty;
             }
         }
@@ -27,9 +30,12 @@ namespace DCNC.DataAccess.PublicTransport
             {
                 return await client.GetStringAsync(url);
             }
-            catch (Exception e)
+            catch (HttpRequestException httpRequestException)
             {
-                //TODO create logs
+                return string.Empty;
+            }
+            catch (Exception exception)
+            {
                 return string.Empty;
             }
         }

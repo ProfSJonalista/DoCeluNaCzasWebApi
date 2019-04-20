@@ -16,7 +16,7 @@ namespace DCNC.Service.PublicTransport.JsonData.TimeTable.Tests
         [Test]
         public void cos()
         {
-            _jsonDataService = new Mock<StopTimesService>(MockBehavior.Strict) { CallBase = true };
+            _jsonDataService = new Mock<StopTimesService>(MockBehavior.Default) { CallBase = true };
             //_jsonDataService.
             
         }

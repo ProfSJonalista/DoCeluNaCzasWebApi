@@ -1,4 +1,4 @@
-﻿namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
+﻿namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers.Keys
 {
     public class TripKey
     {

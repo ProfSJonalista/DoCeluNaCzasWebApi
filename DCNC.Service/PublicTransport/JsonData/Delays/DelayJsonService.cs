@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
@@ -13,7 +14,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Delays
     {
         public DelayJsonService() { }
 
-        public DelayJsonService(IDocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public DelayJsonService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository) : base(documentStoreRepository, publicTransportRepository) { }
 
         protected override object Converter(JToken delaysJToken)
         {

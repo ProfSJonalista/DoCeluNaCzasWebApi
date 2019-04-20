@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using DCNC.Service.PublicTransport.JsonData.Delays;
 using DoCeluNaCzasWebApi.Services.Delays;
 
 namespace DoCeluNaCzasWebApi.Controllers
@@ -15,7 +16,7 @@ namespace DoCeluNaCzasWebApi.Controllers
         // GET api/values/5
         public async Task<string> Get(int id)
         {
-            var cos = await new DelayService().GetDelays(30129);
+            var cos = await new DelayService(new DelayJsonService()).GetDelays(30129);
             return "Pamparampampam";
         }
 

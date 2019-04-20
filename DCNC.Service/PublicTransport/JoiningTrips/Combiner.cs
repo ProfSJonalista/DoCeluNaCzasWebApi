@@ -2,6 +2,7 @@
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.PublicTransport.JoiningTrips.Helpers.Keys;
 
 namespace DCNC.Service.PublicTransport.JoiningTrips
 {
@@ -10,9 +11,9 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 
         private readonly CombineHelper _combineHelper;
 
-        public Combiner()
+        public Combiner(CombineHelper combineHelper)
         {
-            _combineHelper = new CombineHelper();
+            _combineHelper = combineHelper;
         }
 
         public CombinedTripModel CombineForEveryOption(List<OrganizedTrips> trips)

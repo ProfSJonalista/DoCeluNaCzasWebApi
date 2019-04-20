@@ -1,6 +1,5 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JoiningTrips;
-using DCNC.Service.PublicTransport.JsonData.General;
 using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +12,11 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport
         private readonly JoinTripMappingService _joinTripMappingService;
         private readonly TripsWithBusStopsService _tripsWithBusStopsService;
 
-        public Joiner()
+        public Joiner(CombineTripService combineTripService, JoinTripMappingService joinTripMappingService, TripsWithBusStopsService tripsWithBusStopsService)
         {
-            _combineTripService = new CombineTripService();
-            _joinTripMappingService = new JoinTripMappingService();
-            _tripsWithBusStopsService = new TripsWithBusStopsService();
+            _combineTripService = combineTripService;
+            _joinTripMappingService = joinTripMappingService;
+            _tripsWithBusStopsService = tripsWithBusStopsService;
         }
 
         public List<JoinedTripsModel> GetJoinedTripsModelList(

@@ -5,7 +5,6 @@ using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using System.Collections.Generic;
 using System.Timers;
-using DCNC.Service.Database;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
@@ -16,11 +15,11 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         private static CacheService _cacheService;
         private static UpdateServiceHelper _updateServiceHelper;
 
-        public static async void Init(DocumentStoreRepository dsr)
+        public static async void Init(CacheService cacheService, TimeService timeService, UpdateServiceHelper updateServiceHelper)
         {
-            _cacheService = new CacheService();
-            _timeService = new TimeService(_cacheService);
-            _updateServiceHelper = new UpdateServiceHelper(_cacheService, _timeService, dsr);
+            _cacheService = cacheService;
+            _timeService = timeService;
+            _updateServiceHelper = updateServiceHelper;
 
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);

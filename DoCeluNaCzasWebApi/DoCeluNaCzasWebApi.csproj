@@ -412,7 +412,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Services\Delays\Helpers\" />
     <Folder Include="Views\AuthorizedValues\" />
     <Folder Include="Views\PublicTransportMVC\" />
     <Folder Include="Views\Raven\" />

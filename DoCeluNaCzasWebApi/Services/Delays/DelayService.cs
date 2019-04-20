@@ -19,42 +19,37 @@ namespace DoCeluNaCzasWebApi.Services.Delays
         private readonly DelayJsonService _delayJsonService;
 
 
-        public DelayService()
+        public DelayService(DelayJsonService delayJsonService)
         {
-            _delayJsonService = new DelayJsonService();
+            _delayJsonService = delayJsonService;
         }
 
         public async Task<List<DelayModel>> GetDelays(int stopId)
         {
             var url = string.Format(Urls.Delays, stopId);
             var jObject = await _delayJsonService.GetDataAsJObjectAsync(url, JsonType.Delay);
-            var delayModelList = new List<DelayModel>();
 
-            if (!jObject.HasValues) return delayModelList;
+            if (!jObject.HasValues) return new List<DelayModel>();
 
             var data = _delayJsonService.GetData<DelayData>(jObject).FirstOrDefault();
 
-            foreach (var item in data.Delays)
+            return data.Delays.Select(item =>
             {
                 var routeShortName = BusLineData.Routes.FirstOrDefault(x => x.RouteId == item.RouteId).RouteShortName;
                 var tripHeadsign = TripData.Trips.FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
-
                 var headsign = JoinTripHelper.GetDestinationStopName(tripHeadsign);
 
-                delayModelList.Add(
-                    new DelayModel()
-                    {
-                        RouteId = item.RouteId,
-                        TripId = item.TripId,
-                        BusLineName = routeShortName,
-                        Headsign = headsign,
-                        DelayInSeconds = item.DelayInSeconds,
-                        TheoreticalTime = item.TheoreticalTime,
-                        EstimatedTime = item.EstimatedTime
-                    });
-            }
-
-            return delayModelList;
+                return new DelayModel()
+                {
+                    RouteId = item.RouteId,
+                    TripId = item.TripId,
+                    BusLineName = routeShortName,
+                    Headsign = headsign,
+                    DelayInSeconds = item.DelayInSeconds,
+                    TheoreticalTime = item.TheoreticalTime,
+                    EstimatedTime = item.EstimatedTime
+                };
+            }).ToList();
         }
     }
 }

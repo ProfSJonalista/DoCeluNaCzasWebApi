@@ -8,7 +8,6 @@ namespace DCNC.Service.Database
     public class DocumentStoreRepository : IDocumentStoreRepository
     {
         #region SaveEntities
-
         public void Save<T>(T objectToSave)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -26,11 +25,9 @@ namespace DCNC.Service.Database
                 session.SaveChanges();
             }
         }
-
         #endregion
 
         #region DeleteEntities
-
         public void Delete(string idToDelete)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -48,11 +45,9 @@ namespace DCNC.Service.Database
                 session.SaveChanges();
             }
         }
-
         #endregion
 
         #region GetEntities
-
         public List<TimeTableJson> GetJsonsByRouteId(int routeId)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -80,7 +75,6 @@ namespace DCNC.Service.Database
                 return session.Query<DbJson>().FirstOrDefault(x => x.Type == type);
             }
         }
-
         #endregion
     }
 }

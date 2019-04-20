@@ -7,77 +7,45 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers.Tests
     {
         private const string TRIP_HEADSIGN_GDYNIA = "Karwiny Tuwima > Witomino Leśniczówka";
         private const string TRIP_HEADSIGN_GDANSK = "Jelitkowo(201) - Zajezdnia Wrzeszcz(9999)";
-
-        [TestCase(TRIP_HEADSIGN_GDYNIA)]
-        public void GetFirstStopName_Gdynia_Success(string tripHeadsign)
+            
+        [TestCase(TRIP_HEADSIGN_GDYNIA, "Karwiny Tuwima")]
+        [TestCase(TRIP_HEADSIGN_GDANSK, "Jelitkowo")]
+        public void GetFirstStopName_Gdynia_Success(string tripHeadsign, string expectedResult)
         {
             var result = JoinTripHelper.GetFirstStopName(tripHeadsign);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("Karwiny Tuwima", result);
+            Assert.AreEqual(expectedResult, result);
         }
 
-        [TestCase(TRIP_HEADSIGN_GDYNIA)]
-        public void GetFirstStopName_Gdynia_Failure(string tripHeadsign)
+        [TestCase(TRIP_HEADSIGN_GDYNIA, "Karwiny Tuwi")]
+        [TestCase(TRIP_HEADSIGN_GDANSK, "Jelitko")]
+        public void GetFirstStopName_Failure(string tripHeadsign, string expectedResult)
         {
             var result = JoinTripHelper.GetFirstStopName(tripHeadsign);
 
             Assert.IsNotNull(result);
-            Assert.AreNotEqual("Karwiny Tuwi", result);
+            Assert.AreNotEqual(expectedResult, result);
         }
 
-        [Test()]
-        public void GetFirstStopName_Gdansk_Success()
-        {
-            var result = JoinTripHelper.GetFirstStopName(TRIP_HEADSIGN_GDANSK);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Jelitkowo", result);
-        }
-
-        [Test()]
-        public void GetFirstStopName_Gdansk_Failure()
-        {
-            var result = JoinTripHelper.GetFirstStopName(TRIP_HEADSIGN_GDANSK);
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual("Jelitko", result);
-        }
-
-        [TestCase(TRIP_HEADSIGN_GDYNIA)]
-        public void GetDestinationStopName_Gdynia_Success(string tripHeadsign)
+        [TestCase(TRIP_HEADSIGN_GDYNIA, "Witomino Leśniczówka")]
+        [TestCase(TRIP_HEADSIGN_GDANSK, "Zajezdnia Wrzeszcz")]
+        public void GetDestinationStopName_Success(string tripHeadsign, string expectedResult)
         {
             var result = JoinTripHelper.GetDestinationStopName(tripHeadsign);
 
             Assert.IsNotNull(result);
-            Assert.AreEqual("Witomino Leśniczówka", result);
+            Assert.AreEqual(expectedResult, result);
         }
 
-        [TestCase(TRIP_HEADSIGN_GDYNIA)]
-        public void GetDestinationStopName_Gdynia_Failure(string tripHeadsign)
+        [TestCase(TRIP_HEADSIGN_GDYNIA, "Witomino Leśniczów")]
+        [TestCase(TRIP_HEADSIGN_GDANSK, "Zajezdnia Wrzesz")]
+        public void GetDestinationStopName_Failure(string tripHeadsign, string expectedResult)
         {
             var result = JoinTripHelper.GetDestinationStopName(tripHeadsign);
 
             Assert.IsNotNull(result);
-            Assert.AreNotEqual("Witomino Leśniczów", result);
-        }
-
-        [TestCase(TRIP_HEADSIGN_GDANSK)]
-        public void GetDestinationStopName_Gdansk_Success(string tripHeadsign)
-        {
-            var result = JoinTripHelper.GetDestinationStopName(tripHeadsign);
-
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Zajezdnia Wrzeszcz", result);
-        }
-
-        [TestCase(TRIP_HEADSIGN_GDANSK)]
-        public void GetDestinationStopName_Gdansk_Failure(string tripHeadsign)
-        {
-            var result = JoinTripHelper.GetDestinationStopName(tripHeadsign);
-
-            Assert.IsNotNull(result);
-            Assert.AreNotEqual("Zajezdnia Wrzesz", result);
+            Assert.AreNotEqual(expectedResult, result);
         }
     }
 }

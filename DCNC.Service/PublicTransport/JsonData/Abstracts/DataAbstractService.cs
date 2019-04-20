@@ -12,14 +12,14 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
     public abstract class DataAbstractService : IJsonDataService
     {
         private readonly IDocumentStoreRepository _documentStoreRepository;
-        private readonly PublicTransportRepository _publicTransportRepository;
+        private readonly IPublicTransportRepository _publicTransportRepository;
 
         protected DataAbstractService() { }
 
-        protected DataAbstractService(IDocumentStoreRepository documentStoreRepository)
+        protected DataAbstractService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository)
         {
             _documentStoreRepository = documentStoreRepository;
-            _publicTransportRepository = new PublicTransportRepository();
+            _publicTransportRepository = publicTransportRepository; //new PublicTransportRepository();
         }
 
         public async Task<JObject> GetDataAsJObjectAsync(string url, JsonType type)
@@ -51,7 +51,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 
             foreach (var item in dataAsJObject.Children())
             {
-                jsonDataList.Add((T)(object)Converter(item));
+                jsonDataList.Add((T)Converter(item));
             }
 
             return jsonDataList;

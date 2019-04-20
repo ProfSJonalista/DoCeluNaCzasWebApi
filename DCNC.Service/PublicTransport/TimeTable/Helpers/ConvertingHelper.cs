@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
-using DCNC.Bussiness.PublicTransport.TimeTable.Shared;
 using DCNC.Service.Database;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
@@ -15,16 +12,15 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
     {
         private readonly Converter _converter;
         private readonly FilterHelper _filterHelper;
-        private readonly DocumentStoreRepository _documentStoreRepository;
+        private readonly IDocumentStoreRepository _documentStoreRepository;
 
-        public ConvertingHelper(DocumentStoreRepository documentStoreRepository)
+        public ConvertingHelper(Converter converter, FilterHelper filterHelper, IDocumentStoreRepository documentStoreRepository)
         {
-            _converter = new Converter();
-            _filterHelper = new FilterHelper();
+            _converter = converter;
+            _filterHelper = filterHelper;
             _documentStoreRepository = documentStoreRepository;
         }
-
-
+        
         public void ChangeTimeTableJsonsToObjectsAndSaveToDb(List<StopTimeUrl> convertedStopTimes, List<TimeTableDateTime> entitiesThatWerentDownloaded)
         {
             foreach (var stopTime in convertedStopTimes)

@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DCNC.DataAccess.PublicTransport;
+using NUnit.Framework;
 
 namespace DCNC.DataAccessTest.PublicTransport
 {
