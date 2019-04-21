@@ -11,8 +11,11 @@ using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using DCNC.Service.PublicTransport.JsonData.Delays;
 using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
+using DoCeluNaCzasWebApi.Hubs;
+using DoCeluNaCzasWebApi.Services.Delays;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -41,6 +44,9 @@ namespace DoCeluNaCzasWebApi
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
 
+            var delayJsonService = new DelayJsonService(documentStoreRepository, publicTransportRepository);
+            DelaysHub.DelayService = new DelayService(delayJsonService);
+            
             var cacheService = new CacheService();
             var timeService = new DCNC.Service.PublicTransport.Time.TimeService(cacheService);
 

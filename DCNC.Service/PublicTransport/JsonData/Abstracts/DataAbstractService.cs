@@ -19,7 +19,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         protected DataAbstractService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository)
         {
             _documentStoreRepository = documentStoreRepository;
-            _publicTransportRepository = publicTransportRepository; //new PublicTransportRepository();
+            _publicTransportRepository = publicTransportRepository;
         }
 
         public async Task<JObject> GetDataAsJObjectAsync(string url, JsonType type)
