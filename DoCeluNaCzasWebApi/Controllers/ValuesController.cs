@@ -18,7 +18,7 @@ namespace DoCeluNaCzasWebApi.Controllers
         // GET api/values/5
         public async Task<string> Get(int id)
         {
-            var cos = await new DelayService(new DelayJsonService(new DocumentStoreRepository(), new PublicTransportRepository())).GetDelays(30129);
+            var cos = await new DelayService(new DelayJsonService(new PublicTransportRepository())).GetDelays(30129);
             return "Pamparampampam";
         }
 

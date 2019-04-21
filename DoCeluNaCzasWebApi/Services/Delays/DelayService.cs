@@ -28,11 +28,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
         public async Task<ObservableCollection<DelayModel>> GetDelays(int stopId)
         {
             var url = string.Format(Urls.Delays, stopId);
-            var jObject = await _delayJsonService.GetDataAsJObjectAsync(url, JsonType.Delay);
-
-            if (!jObject.HasValues) return new ObservableCollection<DelayModel>();
-
-            var data = _delayJsonService.GetData<DelayData>(jObject).FirstOrDefault();
+            var data = await _delayJsonService.GetData(url);
 
             var convertedData = data.Delays.Select(item =>
             {

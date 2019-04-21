@@ -44,7 +44,7 @@ namespace DoCeluNaCzasWebApi
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
 
-            var delayJsonService = new DelayJsonService(documentStoreRepository, publicTransportRepository);
+            var delayJsonService = new DelayJsonService(publicTransportRepository);
             DelaysHub.DelayService = new DelayService(delayJsonService);
             
             var cacheService = new CacheService();
