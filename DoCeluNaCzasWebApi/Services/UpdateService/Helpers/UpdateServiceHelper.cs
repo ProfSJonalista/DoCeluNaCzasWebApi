@@ -1,8 +1,8 @@
 ﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.PublicTransport.Caching;
-using DCNC.Service.PublicTransport.Caching.Helpers;
+using DCNC.Service.Caching;
+using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
 using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Services.Delays;
@@ -17,7 +17,6 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
     public class UpdateServiceHelper
     {
         private readonly TimeService _timeService;
-        private readonly CacheService _cacheService;
 
         private readonly Joiner _joiner;
         private readonly Grouper _grouper;
@@ -28,15 +27,13 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
         private readonly IJsonDataService _stopInTripService;
         private readonly BusStopModelService _busStopModelService;
         
-        public UpdateServiceHelper(Joiner joiner, Grouper grouper, TimeService timeService, CacheService cacheService, 
+        public UpdateServiceHelper(Joiner joiner, Grouper grouper, TimeService timeService, 
                                    IJsonDataService tripService, IJsonDataService busStopService, IJsonDataService busLineService, 
                                    IJsonDataService expeditionService, IJsonDataService stopInTripService, BusStopModelService busStopModelService)
         {
             _joiner = joiner;
             _grouper = grouper;
             _timeService = timeService;
-            _cacheService = cacheService;
-
             _tripService = tripService;
             _busStopService = busStopService;
             _busLineService = busLineService;
@@ -72,9 +69,10 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 
             DelayService.BusLineData = busLineDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
             DelayService.TripData = tripDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
+            DelayService.SetChooseBusStopModelCollection();
 
-            _cacheService.CacheData(busStopDataModel, CacheKeys.JOINED_BUS_STOPS);
-            _cacheService.CacheData(groupedJoinedTrips, CacheKeys.JOINED_TRIP_MODEL_LIST);
+            CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
+            CacheService.CacheData(groupedJoinedTrips, CacheKeys.GROUPED_JOINED_TRIPS);
             
             _timeService.CacheLastUpdates(tripDataList.FirstOrDefault().LastUpdate,
                                         busStopDataList.FirstOrDefault().LastUpdate,

@@ -1,21 +1,20 @@
 ﻿using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
-using DCNC.Service.PublicTransport.Caching;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
+using DCNC.Service.PublicTransport.JsonData.Delays;
 using DCNC.Service.PublicTransport.JsonData.General;
+using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable;
+using DCNC.Service.PublicTransport.TimeTable.Helpers;
+using DoCeluNaCzasWebApi.Hubs;
+using DoCeluNaCzasWebApi.Services.Delays;
 using DoCeluNaCzasWebApi.Services.PublicTransport;
 using DoCeluNaCzasWebApi.Services.UpdateService;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
-using DCNC.Service.PublicTransport.JsonData.Delays;
-using DCNC.Service.PublicTransport.JsonData.TimeTable;
-using DCNC.Service.PublicTransport.TimeTable.Helpers;
-using DoCeluNaCzasWebApi.Hubs;
-using DoCeluNaCzasWebApi.Services.Delays;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -47,8 +46,7 @@ namespace DoCeluNaCzasWebApi
             var delayJsonService = new DelayJsonService(publicTransportRepository);
             DelaysHub.DelayService = new DelayService(delayJsonService);
             
-            var cacheService = new CacheService();
-            var timeService = new DCNC.Service.PublicTransport.Time.TimeService(cacheService);
+            var timeService = new DCNC.Service.PublicTransport.Time.TimeService();
 
             var stopComparer = new StopComparer();
             var combineHelper = new CombineHelper(stopComparer);
@@ -71,9 +69,9 @@ namespace DoCeluNaCzasWebApi
             var stopInTripService = new StopInTripService(documentStoreRepository, publicTransportRepository);
             var busStopModelService = new BusStopModelService();
 
-            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService, cacheService,
+            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService,
             tripService, busStopService, busLineService, expeditionService, stopInTripService, busStopModelService);
-            UpdateDataService.Init(cacheService, timeService, updateServiceHelper);
+            UpdateDataService.Init(timeService, updateServiceHelper);
 
             var converter = new Converter();
             var filterHelper = new FilterHelper();

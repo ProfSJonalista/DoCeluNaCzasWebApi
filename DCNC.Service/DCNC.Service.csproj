@@ -108,7 +108,7 @@
     <Compile Include="Database\DocumentStoreHolder.cs" />
     <Compile Include="Database\DocumentStoreRepository.cs" />
     <Compile Include="Database\IDocumentStoreRepository.cs" />
-    <Compile Include="PublicTransport\Caching\CacheService.cs" />
+    <Compile Include="Caching\CacheService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Combiner.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\CombineHelper.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\StopComparer.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="PublicTransport\JsonData\TimeTable\StopTimesService.cs" />
     <Compile Include="PublicTransport\RouteSearch\RouteSearchService.cs" />
     <Compile Include="PublicTransport\JsonData\General\ExpeditionService.cs" />
-    <Compile Include="PublicTransport\Caching\Helpers\CacheKeys.cs" />
+    <Compile Include="Caching\Helpers\CacheKeys.cs" />
     <Compile Include="PublicTransport\JsonData\General\StopInTripService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\Organizer.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\StopHelper.cs" />

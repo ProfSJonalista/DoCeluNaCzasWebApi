@@ -1,24 +1,26 @@
-﻿using DCNC.Bussiness.PublicTransport.Delays;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Bussiness.PublicTransport.JsonData.General;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
+using DCNC.Service.Caching;
+using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.Delays;
 using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+
 // ReSharper disable PossibleNullReferenceException
 
 namespace DoCeluNaCzasWebApi.Services.Delays
 {
     public class DelayService
     {
-        public static BusLineData BusLineData { get; set; }
         public static TripData TripData { get; set; }
+        public static BusLineData BusLineData { get; set; }
         private readonly DelayJsonService _delayJsonService;
-
 
         public DelayService(DelayJsonService delayJsonService)
         {
@@ -51,6 +53,53 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             }).ToList();
 
             return new ObservableCollection<DelayModel>(convertedData);
+        }
+
+        public static void SetChooseBusStopModelCollection()
+        {
+            var busStopData = CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL);
+            var joinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_TRIPS);
+
+            var chooseBusStopCollection = busStopData.Stops.Select(stop =>
+            {
+                var busLineNamesStringBuilder = new StringBuilder();
+                var destinationsStringBuilder = new StringBuilder();
+
+                foreach (var groupedJoinedModel in joinedTrips)
+                {
+                    foreach (var joinedTripModel in groupedJoinedModel.JoinedTripModels)
+                    {
+                        var joinedTripModelList = joinedTripModel.JoinedTrips.Where(x => x.Stops.Any(y => y.StopId == stop.StopId)).ToList();
+
+                        foreach (var item in joinedTripModelList)
+                        {
+                            if (!destinationsStringBuilder.ToString().Contains(item.BusLineName))
+                                busLineNamesStringBuilder.Append(item.BusLineName + ", ");
+
+                            if (!destinationsStringBuilder.ToString().Contains(item.DestinationStopName))
+                                destinationsStringBuilder.Append(item.DestinationStopName + ", ");
+                        }
+                    }
+                }
+
+                var busLines = busLineNamesStringBuilder.ToString();
+                if (busLines.Length > 0)
+                    busLines = busLines.Substring(0, busLines.Length - 2);
+
+                var destinations = destinationsStringBuilder.ToString();
+                if (destinations.Length > 0)
+                    destinations = destinations.Substring(0, destinations.Length - 2); //removes extra ", " at the end of the string
+
+                return new ChooseBusStopModel
+                {
+                    StopId = stop.StopId,
+                    StopDesc = stop.StopDesc,
+                    BusLineNames = busLines,
+                    DestinationHeadsigns = destinations
+                };
+            }).ToList();
+
+            CacheService.CacheData(new ObservableCollection<ChooseBusStopModel>(chooseBusStopCollection), CacheKeys.CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION);
         }
     }
 }

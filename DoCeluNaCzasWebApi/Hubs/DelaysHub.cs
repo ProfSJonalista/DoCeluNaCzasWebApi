@@ -1,11 +1,10 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
+﻿using DCNC.Service.Caching;
+using DCNC.Service.Caching.Helpers;
+using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
 using DoCeluNaCzasWebApi.Services.Delays;
 using Microsoft.AspNet.SignalR;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using DCNC.Service.PublicTransport.JsonData.Delays;
-using Raven.Client.Documents.Operations.Attachments;
 
 namespace DoCeluNaCzasWebApi.Hubs
 {
@@ -16,6 +15,11 @@ namespace DoCeluNaCzasWebApi.Hubs
         public async Task<ObservableCollection<DelayModel>> GetDelays(int stopId)
         {
             return await DelayService.GetDelays(stopId);
+        }
+
+        public ObservableCollection<ChooseBusStopModel> GetChooseBusStopModelObservableCollection()
+        {
+            return CacheService.GetData<ObservableCollection<ChooseBusStopModel>>(CacheKeys.CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION);
         }
     }
 }

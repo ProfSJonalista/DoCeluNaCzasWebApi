@@ -1,4 +1,4 @@
-﻿namespace DCNC.Service.PublicTransport.Caching.Helpers
+﻿namespace DCNC.Service.Caching.Helpers
 {
     public static class CacheKeys
     {
@@ -9,15 +9,15 @@
         public static string BUS_LINE_DATA_LAST_UPDATE = "BusLineDataLastUpdate";
         public static string BUS_STOP_DATA_LAST_UPDATE = "BusStopDataLastUpdate";
         public static string STOP_IN_TRIP_DATA_LAST_UPDATE = "StopInTripDataLastUpdate";
-        
+
         #endregion
 
         #region Data to share
 
-        public static string JOINED_TRIP_MODEL_LIST = "JoinedTripModelList";
-        public static string JOINED_BUS_STOPS = "JoinedBusStops";
+        public static string BUS_STOP_DATA_MODEL = "BusStopDataModel";
+        public static string GROUPED_JOINED_TRIPS = "GroupedJoinedTrips";
+        public static string CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION = "ChooseBusStolModelObservableCollection";
 
         #endregion
-        
     }
 }
