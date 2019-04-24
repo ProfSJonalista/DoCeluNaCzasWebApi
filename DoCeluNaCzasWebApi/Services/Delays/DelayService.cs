@@ -55,17 +55,15 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             return new ObservableCollection<DelayModel>(convertedData);
         }
 
-        public static void SetChooseBusStopModelCollection()
-        {
-            var busStopData = CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL);
-            var joinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_TRIPS);
 
-            var chooseBusStopCollection = busStopData.Stops.Select(stop =>
+        public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
+        {
+            var chooseBusStopCollection = busStopDataModel.Stops.Select(stop =>
             {
                 var busLineNamesStringBuilder = new StringBuilder();
                 var destinationsStringBuilder = new StringBuilder();
 
-                foreach (var groupedJoinedModel in joinedTrips)
+                foreach (var groupedJoinedModel in groupedJoinedTrips)
                 {
                     foreach (var joinedTripModel in groupedJoinedModel.JoinedTripModels)
                     {

@@ -69,7 +69,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 
             DelayService.BusLineData = busLineDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
             DelayService.TripData = tripDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
-            DelayService.SetChooseBusStopModelCollection();
+            DelayService.SetChooseBusStopModelCollection(busStopDataModel, groupedJoinedTrips);
 
             CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
             CacheService.CacheData(groupedJoinedTrips, CacheKeys.GROUPED_JOINED_TRIPS);
