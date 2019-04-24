@@ -45,7 +45,8 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                     Headsign = headsign,
                     DelayInSeconds = item.DelayInSeconds,
                     TheoreticalTime = item.TheoreticalTime,
-                    EstimatedTime = item.EstimatedTime
+                    EstimatedTime = item.EstimatedTime,
+                    Timestamp = item.TimeStamp
                 };
             }).ToList();
 

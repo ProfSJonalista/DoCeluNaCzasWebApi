@@ -11,5 +11,6 @@ namespace DoCeluNaCzasWebApi.Models.PublicTransport.Delay
         public int DelayInSeconds { get; set; }
         public DateTime TheoreticalTime { get; set; }
         public DateTime EstimatedTime { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }
