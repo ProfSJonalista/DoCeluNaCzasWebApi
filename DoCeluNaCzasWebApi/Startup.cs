@@ -15,6 +15,7 @@ using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using Microsoft.AspNet.SignalR;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -33,7 +34,9 @@ namespace DoCeluNaCzasWebApi
             app.UseWebApi(config);
             //TODO - fix auth - UserManager appears to be null
             //ConfigureAuth(app);
-            app.MapSignalR();
+
+            var hubConfiguration = new HubConfiguration {EnableDetailedErrors = true};
+            app.MapSignalR(hubConfiguration);
 
             ConfigureServices();
         }

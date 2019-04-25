@@ -270,6 +270,7 @@
     <Compile Include="Controllers\AuthorizedValuesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicTransport\General\BusStopController.cs" />
+    <Compile Include="Controllers\PublicTransport\General\ChooseBusStopController.cs" />
     <Compile Include="Controllers\PublicTransport\General\JoinedTripsController.cs" />
     <Compile Include="Controllers\PublicTransport\RouteSearchController.cs" />
     <Compile Include="Controllers\PublicTransport\TimeTable\TimeTableController.cs" />
