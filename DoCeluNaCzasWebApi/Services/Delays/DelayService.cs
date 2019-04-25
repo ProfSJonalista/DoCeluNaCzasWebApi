@@ -38,6 +38,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 var tripHeadsign = TripData.Trips
                     .FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
                 var headsign = JoinTripHelper.GetDestinationStopName(tripHeadsign);
+                var delayMessage = GetDelayMessage(item.DelayInSeconds);
 
                 return new DelayModel()
                 {
@@ -45,7 +46,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                     TripId = item.TripId,
                     BusLineName = routeShortName,
                     Headsign = headsign,
-                    DelayInSeconds = item.DelayInSeconds,
+                    DelayMessage = delayMessage,
                     TheoreticalTime = item.TheoreticalTime,
                     EstimatedTime = item.EstimatedTime,
                     Timestamp = item.TimeStamp
@@ -53,6 +54,28 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             }).ToList();
 
             return new ObservableCollection<DelayModel>(convertedData);
+        }
+
+        private string GetDelayMessage(int itemDelayInSeconds)
+        {
+            if (itemDelayInSeconds >= 0)
+            {
+                var minutes = itemDelayInSeconds / 60;
+
+                if (minutes > 0) return minutes + "min";
+
+                var seconds = itemDelayInSeconds % 60;
+                return seconds > 10 ? "> 1 min" : "Teraz!";
+            }
+            else
+            {
+                var minutes = itemDelayInSeconds / 60;
+
+                if (minutes < 0) return minutes + "min";
+
+                var seconds = itemDelayInSeconds % 60;
+                return seconds < 10 ? "> 1 min" : "Teraz!";
+            }
         }
 
 
