@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
+﻿using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
 using DoCeluNaCzasWebApi.Services.Delays;
 using Microsoft.AspNet.SignalR;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace DoCeluNaCzasWebApi.Hubs
 {
     public class DelaysHub : Hub
     {
-        private readonly DelayService _delayService;
+        public static DelayService DelayService { get; set; }
 
-        public DelaysHub()
+        public async Task<ObservableCollection<DelayModel>> GetDelays(int stopId)
         {
-            _delayService = new DelayService();
-        }
-
-        public async Task<List<DelayModel>> GetDelays(int stopId)
-        {
-            return await _delayService.GetDelays(stopId);
+            return await DelayService.GetDelays(stopId);
         }
     }
 }

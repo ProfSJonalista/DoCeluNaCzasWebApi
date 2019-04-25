@@ -9,10 +9,11 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
     {
         private readonly StopComparer _stopComparer;
 
-        public CombineHelper()
+        public CombineHelper(StopComparer stopComparer)
         {
-            _stopComparer = new StopComparer();
+            _stopComparer = stopComparer;
         }
+
         public Trip GetMainRoute(List<OrganizedTrips> trips, int key)
         {
             var firstDayTripList = trips.FirstOrDefault(x => x.Trips.ContainsKey(key))?.Trips[key];

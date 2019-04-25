@@ -12,10 +12,10 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
         private readonly Organizer _organizer;
         private readonly StopHelper _stopHelper;
 
-        public TripsWithBusStopsService()
+        public TripsWithBusStopsService(Organizer organizer, StopHelper stopHelper)
         {
-            _organizer = new Organizer();
-            _stopHelper = new StopHelper();
+            _organizer = organizer;
+            _stopHelper = stopHelper;
         }
 
         public List<TripsWithBusStops> GetTripsWithBusStops(List<TripData> tripDataList, List<BusStopData> busStopDataList, List<BusLineData> busLineDataList, List<StopInTripData> stopInTripDataList, ExpeditionData expeditionObject)

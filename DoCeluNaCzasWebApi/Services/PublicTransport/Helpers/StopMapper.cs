@@ -12,19 +12,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
             return joinedStopList.Select(stop => new StopModel()
             {
                 StopId = stop.StopId,
-                StopCode = stop.StopCode,
-                StopName = stop.StopName,
-                StopShortName = stop.StopShortName,
                 StopDesc = stop.StopDesc,
-                SubName = stop.SubName,
-                Date = stop.Date,
                 StopLat = stop.StopLat,
                 StopLon = stop.StopLon,
-                ZoneId = stop.ZoneId,
-                ZoneName = stop.ZoneName,
-                VirtualBusStop = stop.VirtualBusStop,
-                NonPassenger = stop.NonPassenger,
-                Depot = stop.Depot,
                 TicketZoneBorder = stop.TicketZoneBorder,
                 OnDemand = stop.OnDemand,
                 ActivationDate = stop.ActivationDate

@@ -3,13 +3,16 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class TripService : DataAbstractService
     {
-        public override object Converter(JToken trips)
+        public TripService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository) : base(documentStoreRepository, publicTransportRepository) { }
+
+        protected override object Converter(JToken trips)
         {
             var tripData = new TripData()
             {
@@ -42,7 +45,5 @@ namespace DCNC.Service.PublicTransport.JsonData.General
 
             return tripData;
         }
-
-        public TripService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
     }
 }

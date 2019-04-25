@@ -4,15 +4,16 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusLineService : DataAbstractService
     {
-        public BusLineService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public BusLineService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository) : base(documentStoreRepository, publicTransportRepository) { }
 
-        public override object Converter(JToken busLine)
+        protected override object Converter(JToken busLine)
         {
             var busLineData = new BusLineData()
             {
@@ -42,15 +43,6 @@ namespace DCNC.Service.PublicTransport.JsonData.General
             }
 
             return busLineData;
-        }
-
-        public List<Route> JoinBusLines(List<BusLineData> busLineDataList)
-        {
-            return busLineDataList.SelectMany(x => x.Routes)
-                                  .Distinct()
-                                  .GroupBy(x => x.RouteShortName)
-                                  .Select(x => x.FirstOrDefault())
-                                  .ToList();
         }
     }
 }

@@ -2,29 +2,22 @@
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Linq;
+using DCNC.DataAccess.PublicTransport;
 
 namespace DCNC.Service.PublicTransport.JsonData.TimeTable
 {
     public class StopTimesService : DataAbstractService
     {
-        public StopTimesService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public StopTimesService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository) : base(documentStoreRepository, publicTransportRepository) { }
 
-        public override object Converter(JToken stopTimes)
+        protected override object Converter(JToken stopTimes)
         {
-            var stopTimeList = new List<StopTimeUrl>();
-
-            foreach (var item in stopTimes.Children())
+            return new StopTimeUrl()
             {
-                stopTimeList.Add(new StopTimeUrl()
-                {
-                    RouteId = int.Parse(item.Path),
-                    Urls = item.Values().Select(url => url.ToString()).ToList()
-                });
-            }
-
-            return stopTimeList;
+                RouteId = int.Parse(stopTimes.Path),
+                Urls = stopTimes.Values().Select(url => url.ToString()).ToList()
+            };
         }
     }
 }

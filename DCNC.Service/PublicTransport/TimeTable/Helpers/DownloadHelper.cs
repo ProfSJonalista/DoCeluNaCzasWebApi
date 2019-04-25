@@ -11,14 +11,14 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
     public class DownloadHelper
     {
         private readonly TimeService _timeService;
-        private readonly DocumentStoreRepository _documentStoreRepository;
-        private readonly PublicTransportRepository _publicTransportRepository;
+        private readonly IDocumentStoreRepository _documentStoreRepository;
+        private readonly IPublicTransportRepository _publicTransportRepository;
 
-        public DownloadHelper(DocumentStoreRepository documentStoreRepository, TimeService timeService)
+        public DownloadHelper(IDocumentStoreRepository documentStoreRepository, TimeService timeService, IPublicTransportRepository publicTransportRepository)
         {
             _timeService = timeService;
             _documentStoreRepository = documentStoreRepository;
-            _publicTransportRepository = new PublicTransportRepository();
+            _publicTransportRepository = publicTransportRepository; //new PublicTransportRepository();
         }
 
         public async Task<List<TimeTableDateTime>> MassDownloadAndSaveToDb(List<StopTimeUrl> convertedStopTimes)

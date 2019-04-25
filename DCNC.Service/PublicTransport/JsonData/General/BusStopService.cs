@@ -3,15 +3,16 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {
     public class BusStopService : DataAbstractService
     {
-        public BusStopService(DocumentStoreRepository documentStoreRepository) : base(documentStoreRepository) { }
+        public BusStopService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository) : base(documentStoreRepository, publicTransportRepository) { }
 
-        public override object Converter(JToken busStop)
+        protected override object Converter(JToken busStop)
         {
             var busStopData = new BusStopData()
             {

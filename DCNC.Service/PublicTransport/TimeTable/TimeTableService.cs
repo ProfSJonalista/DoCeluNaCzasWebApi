@@ -1,13 +1,12 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.Bussiness.PublicTransport.TimeTable;
 
 namespace DCNC.Service.PublicTransport.TimeTable
 {
@@ -17,15 +16,15 @@ namespace DCNC.Service.PublicTransport.TimeTable
         private readonly DownloadHelper _downloadHelper;
         private readonly ConvertingHelper _convertingHelper;
         private readonly StopTimesService _stopTimesService;
-        private readonly DocumentStoreRepository _documentStoreRepository;
+        private readonly IDocumentStoreRepository _documentStoreRepository;
 
-        public TimeTableService(DocumentStoreRepository dsr)
+        public TimeTableService(IDocumentStoreRepository dsr, TimeService timeService, ConvertingHelper convertingHelper, StopTimesService stopTimesService, DownloadHelper downloadHelper)
         {
             _documentStoreRepository = dsr;
-            _timeService = new TimeService();
-            _convertingHelper = new ConvertingHelper(dsr);
-            _stopTimesService = new StopTimesService(dsr);
-            _downloadHelper = new DownloadHelper(dsr, _timeService);
+            _timeService = timeService;
+            _convertingHelper = convertingHelper;
+            _stopTimesService = stopTimesService;
+            _downloadHelper = downloadHelper;
         }
 
         public async Task SetTimeTables()
@@ -34,7 +33,7 @@ namespace DCNC.Service.PublicTransport.TimeTable
 
             if(!stopTimes.HasValues) return;
 
-            var convertedStopTimes = (List<StopTimeUrl>) _stopTimesService.Converter(stopTimes);
+            var convertedStopTimes = _stopTimesService.GetData<StopTimeUrl>(stopTimes);
             convertedStopTimes = _timeService.FilterStopTimesByDate(convertedStopTimes);
 
             var entitiesThatWerentDownloaded = await _downloadHelper.MassDownloadAndSaveToDb(convertedStopTimes);

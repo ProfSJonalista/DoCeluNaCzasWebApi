@@ -1,8 +1,7 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
@@ -10,16 +9,15 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
     {
         public List<StopTimeUrl> FilterStopTimesByDate(List<StopTimeUrl> convertedStopTimes)
         {
-            convertedStopTimes.ForEach(stopTime =>
+            foreach (var stopTime in convertedStopTimes)
             {
                 stopTime.Urls = stopTime.Urls
                     .Select(url => new { url, dt = GetDateFromUrl(url) })
                     .Where(x => x.dt.Date >= DateTime.Today)
                     .OrderBy(x => x.dt)
                     .Select(x => x.url)
-                    .Take(7)
                     .ToList();
-            });
+            }
 
             return convertedStopTimes;
         }
