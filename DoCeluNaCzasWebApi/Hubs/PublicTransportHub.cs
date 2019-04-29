@@ -5,8 +5,6 @@ using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService;
 using Microsoft.AspNet.SignalR;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
 
 namespace DoCeluNaCzasWebApi.Hubs
 {
