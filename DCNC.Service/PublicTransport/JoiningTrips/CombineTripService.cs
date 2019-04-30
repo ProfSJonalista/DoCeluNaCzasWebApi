@@ -16,14 +16,13 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 
         public List<CombinedTripModel> JoinTrips(List<OrganizedTrips> organizedTrips, List<Route> routes)
         {
-            var combinedTripList = new List<CombinedTripModel>();
-
-            routes.ForEach(route => combinedTripList
-                                            .Add(Combine(organizedTrips
-                                            .Where(x => x.BusLineName.Equals(route.RouteShortName))
-                                            .ToList())));
-
-            return combinedTripList.OrderBy(x => x.BusLineName).ToList();
+            return routes.Select(route =>
+            {
+                var organizedList = organizedTrips.Where(x => x.BusLineName.Equals(route.RouteShortName)).ToList();
+                return Combine(organizedList);
+            })
+            .OrderBy(x => x.BusLineName)
+            .ToList();
         }
 
         private CombinedTripModel Combine(List<OrganizedTrips> trips)
@@ -33,10 +32,10 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 
             if (oneWayTrip && bothWayTrip)
                 return _combiner.CombineForEveryOption(trips);
-            else if (bothWayTrip)
-                return _combiner.CombineForBothWays(trips);
-            else
-                return _combiner.CombineForOneWay(trips);
+
+            return bothWayTrip
+                ? _combiner.CombineForBothWays(trips)
+                : _combiner.CombineForOneWay(trips);
         }
     }
 }

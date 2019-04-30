@@ -1,8 +1,8 @@
 ﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
+using DCNC.Service.PublicTransport.JoiningTrips.Helpers.Keys;
 using System.Collections.Generic;
 using System.Linq;
-using DCNC.Service.PublicTransport.JoiningTrips.Helpers.Keys;
 
 namespace DCNC.Service.PublicTransport.JoiningTrips
 {
