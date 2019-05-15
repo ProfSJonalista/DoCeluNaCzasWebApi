@@ -11,6 +11,7 @@ namespace DCNC.Service.Database
         void Delete(string idToDelete);
         void Delete(List<string> objectsIdToDelete);
         List<TimeTableJson> GetJsonsByRouteId(int routeId);
+        MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId);
         List<TimeTableData> GetTimeTableDataByRouteId(int routeId);
         DbJson GetDbJson(JsonType type);
     }

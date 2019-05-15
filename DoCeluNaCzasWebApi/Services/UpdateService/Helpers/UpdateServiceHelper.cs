@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {

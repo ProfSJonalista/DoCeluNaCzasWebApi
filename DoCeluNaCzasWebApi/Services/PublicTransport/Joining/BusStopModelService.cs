@@ -1,10 +1,10 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
-using DoCeluNaCzasWebApi.Services.PublicTransport.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
 
-namespace DoCeluNaCzasWebApi.Services.PublicTransport
+namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 {
     public class BusStopModelService
     {

@@ -1,9 +1,9 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.General;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JsonData.General;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 
-namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
+namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers
 {
     public class StopMapper
     {

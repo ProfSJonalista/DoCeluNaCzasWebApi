@@ -2,6 +2,7 @@
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
+using Sparrow.Platform.Posix.macOS;
 
 namespace DCNC.Service.Database
 {
@@ -65,6 +66,15 @@ namespace DCNC.Service.Database
                 return session.Query<TimeTableData>()
                     .Where(x => x.RouteId == routeId)
                     .ToList();
+            }
+        }
+
+        public MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<MinuteTimeTable>()
+                    .SingleOrDefault(x => x.StopId == stopId && x.RouteIds.Any(y => y == routeId));
             }
         }
 

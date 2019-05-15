@@ -15,6 +15,7 @@ using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
+using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
 using Microsoft.AspNet.SignalR;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]

@@ -5,7 +5,6 @@ using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DCNC.Service.PublicTransport.TimeTable
@@ -40,9 +39,9 @@ namespace DCNC.Service.PublicTransport.TimeTable
             _convertingHelper.ChangeTimeTableJsonsToObjectsAndSaveToDb(convertedStopTimes, entitiesThatWerentDownloaded);
         }
 
-        public List<TimeTableData> GetTimeTableDataByRouteId(int routeId)
+        public MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId)
         {
-            return _documentStoreRepository.GetTimeTableDataByRouteId(routeId);
+            return _documentStoreRepository.GetTimeTableDataByRouteIdAndStopId(routeId, stopId);
         }
     }
 }
