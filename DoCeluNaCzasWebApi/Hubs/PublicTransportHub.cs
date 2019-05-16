@@ -17,7 +17,7 @@ namespace DoCeluNaCzasWebApi.Hubs
 
         public MinuteTimeTable GetTimeTableDataByRouteId(int id, int stopId)
         {
-            return UpdateTimeTableService.GetTimeTableDataByRouteIdAndStopId(id, stopId);
+            return UpdateTimeTableService.GetMinuteTimeTableByRouteIdAndStopId(id, stopId);
         }
     }
 }

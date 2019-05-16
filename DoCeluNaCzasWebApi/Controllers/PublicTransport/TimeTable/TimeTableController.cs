@@ -9,7 +9,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.TimeTable
     {
         public MinuteTimeTable GetByRouteId(int id, int stopId)
         {
-            return UpdateTimeTableService.GetTimeTableDataByRouteIdAndStopId(id, stopId);
+            return UpdateTimeTableService.GetMinuteTimeTableByRouteIdAndStopId(id, stopId);
         }
     }
 }

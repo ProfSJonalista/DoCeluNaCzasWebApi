@@ -36,9 +36,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             await _timeTableService.SetTimeTables();
         }
 
-        public static MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId)
+        public static MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
-            return _timeTableService.GetTimeTableDataByRouteIdAndStopId(routeId, stopId);
+            return _timeTableService.GetMinuteTimeTableByRouteIdAndStopId(routeId, stopId);
         }
     }
 }

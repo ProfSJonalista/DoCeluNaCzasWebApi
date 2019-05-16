@@ -39,9 +39,9 @@ namespace DCNC.Service.PublicTransport.TimeTable
             _convertingHelper.ChangeTimeTableJsonsToObjectsAndSaveToDb(convertedStopTimes, entitiesThatWerentDownloaded);
         }
 
-        public MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId)
+        public MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
-            return _documentStoreRepository.GetTimeTableDataByRouteIdAndStopId(routeId, stopId);
+            return _documentStoreRepository.GetMinuteTimeTableByRouteIdAndStopId(routeId, stopId);
         }
     }
 }

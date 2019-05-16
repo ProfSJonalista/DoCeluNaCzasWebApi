@@ -59,6 +59,16 @@ namespace DCNC.Service.Database
             }
         }
 
+        public List<MinuteTimeTable> GetMinuteTimeTableListByBusLineName(string busLineName)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<MinuteTimeTable>()
+                    .Where(x => x.BusLineName.Equals(busLineName))
+                    .ToList();
+            }
+        }
+
         public List<TimeTableData> GetTimeTableDataByRouteId(int routeId)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -69,7 +79,7 @@ namespace DCNC.Service.Database
             }
         }
 
-        public MinuteTimeTable GetTimeTableDataByRouteIdAndStopId(int routeId, int stopId)
+        public MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
