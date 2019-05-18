@@ -134,6 +134,9 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PublicHoliday, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PublicHoliday.2.0.3\lib\net46\PublicHoliday.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Client, Version=4.1.4.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Client.4.1.4\lib\netstandard2.0\Raven.Client.dll</HintPath>
     </Reference>
@@ -298,6 +301,8 @@
     <Compile Include="Services\PublicTransport\Joining\Helpers\StopMapper.cs" />
     <Compile Include="Services\PublicTransport\Joining\Joiner.cs" />
     <Compile Include="Services\PublicTransport\Joining\JoinTripMappingService.cs" />
+    <Compile Include="Services\PublicTransport\TimeTable\Helpers\DateChecker.cs" />
+    <Compile Include="Services\PublicTransport\TimeTable\Helpers\MinuteTimeTableBuilder.cs" />
     <Compile Include="Services\PublicTransport\TimeTable\MinuteTimeTableService.cs" />
     <Compile Include="Services\UpdateService\Helpers\UpdateServiceHelper.cs" />
     <Compile Include="Services\UpdateService\UpdateDataService.cs" />

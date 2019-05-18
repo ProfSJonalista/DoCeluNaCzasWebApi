@@ -2,7 +2,6 @@
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
-using Sparrow.Platform.Posix.macOS;
 
 namespace DCNC.Service.Database
 {
@@ -22,7 +21,9 @@ namespace DCNC.Service.Database
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
-                objectsToSave.ForEach(item => session.Store(item));
+                if (objectsToSave.Count <= 0) return;
+
+                objectsToSave.ForEach(item => { if (item != null) session.Store(item); });
                 session.SaveChanges();
             }
         }
@@ -42,7 +43,9 @@ namespace DCNC.Service.Database
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
-                objectsIdToDelete.ForEach(item => session.Delete(item));
+                if (objectsIdToDelete.Count <= 0) return;
+
+                objectsIdToDelete.ForEach(item => { if (item != null) session.Delete(item); });
                 session.SaveChanges();
             }
         }

@@ -1,4 +1,5 @@
-﻿using DCNC.DataAccess.PublicTransport;
+﻿using System.Threading.Tasks;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
@@ -16,7 +17,10 @@ using Microsoft.Owin;
 using Owin;
 using System.Web.Http;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
+using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable;
+using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
 using Microsoft.AspNet.SignalR;
+using PublicHoliday;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -42,7 +46,7 @@ namespace DoCeluNaCzasWebApi
             ConfigureServices();
         }
 
-        void ConfigureServices()
+        async Task ConfigureServices()
         {
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
@@ -75,7 +79,6 @@ namespace DoCeluNaCzasWebApi
 
             var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService,
             tripService, busStopService, busLineService, expeditionService, stopInTripService, busStopModelService);
-            UpdateDataService.Init(timeService, updateServiceHelper);
 
             var converter = new Converter();
             var filterHelper = new FilterHelper();
@@ -85,7 +88,13 @@ namespace DoCeluNaCzasWebApi
             var downloadHelper = new DownloadHelper(documentStoreRepository, helperTimeService, publicTransportRepository);
             var timeTableService = new TimeTableService(documentStoreRepository, helperTimeService, convertingHelper, stopTimesService, downloadHelper);
 
-            UpdateTimeTableService.Init(timeTableService);
+            var polandPublicHoliday = new PolandPublicHoliday();
+            var dateChecker = new DateChecker(polandPublicHoliday);
+            var minuteTimeTableBuilder = new MinuteTimeTableBuilder(dateChecker);
+            var minuteTimeTableService = new MinuteTimeTableService(minuteTimeTableBuilder, documentStoreRepository);
+
+            await UpdateDataService.Init(timeService, updateServiceHelper);
+            UpdateTimeTableService.Init(timeTableService, minuteTimeTableService);
         }
     }
 }

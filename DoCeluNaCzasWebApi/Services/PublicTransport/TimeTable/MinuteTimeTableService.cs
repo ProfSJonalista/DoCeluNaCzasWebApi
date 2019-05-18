@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.TimeTable;
+﻿using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.Database;
 using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 {
     public class MinuteTimeTableService
     {
+        
+        private readonly MinuteTimeTableBuilder _minuteTimeTableBuilder;
         private readonly IDocumentStoreRepository _documentStoreRepository;
 
-        public MinuteTimeTableService(IDocumentStoreRepository documentStoreRepository)
+        public MinuteTimeTableService(MinuteTimeTableBuilder minuteTimeTableBuilder, IDocumentStoreRepository documentStoreRepository)
         {
+            _minuteTimeTableBuilder = minuteTimeTableBuilder;
             _documentStoreRepository = documentStoreRepository;
         }
 
-        public async Task SetMinuteTimeTables()
+        public void SetMinuteTimeTables()
         {
             var groupedJoinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_TRIPS);
 
@@ -28,12 +30,18 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
             {
                 foreach (var joinedTrip in group.JoinedTripModels)
                 {
+                    //todo move to different class
                     var minuteTimeTableList = _documentStoreRepository.GetMinuteTimeTableListByBusLineName(joinedTrip.BusLineName);
-                    //create entities to delete - entities to delete are the ones which does not have StopId equivalent in lists below
-                    //var existingStopIds = 
+                    var existingStopIds = joinedTrip.JoinedTrips.SelectMany(x => x.Stops.Select(y => y.StopId).ToList()).Distinct().OrderBy(x => x).ToList();
+                    minuteTimeTableList = minuteTimeTableList.Where(x => existingStopIds.Any(y => y == x.StopId)).ToList();
+
+                    var minutesTimeTablesToDelete = minuteTimeTableList.Where(x => existingStopIds.All(y => y != x.StopId)).Select(x => x.Id).ToList();
+                    _documentStoreRepository.Delete(minutesTimeTablesToDelete);
+                    //
+
                     foreach (var trip in joinedTrip.JoinedTrips)
                     {
-                        var timeTableData = _documentStoreRepository.GetTimeTableDataByRouteId(trip.RouteId);
+                        var timeTableDataList = _documentStoreRepository.GetTimeTableDataByRouteId(trip.RouteId);
 
                         foreach (var tripStop in trip.Stops)
                         {
@@ -49,29 +57,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 
                             foreach (var dayType in (DayType[])Enum.GetValues(typeof(DayType)))
                             {
-                                //tu pobrać odpowiedni rodzaj dnia
-                                //jeśli to weekday lub sobota, sprawdzić czy nie równa się niedzieli (i świętom)
-                                //jeśli weekday równa się niedzieli, pobrać inny dzień (inny z tego samego tygodnia/po nazwie dnia tygodnia) i ponownie sprawdzić
-                                //todo create something to differantiate days
-                                var day = timeTableData.FirstOrDefault();
-                                var hourAndMinuteDictionary = minuteTimeTable.MinuteDictionary.ContainsKey(dayType) ? minuteTimeTable.MinuteDictionary[dayType] : new Dictionary<int, List<int>>();
-
-                                for (var hour = 0; hour < 24; hour++)
-                                {
-                                    var containsHour = hourAndMinuteDictionary.ContainsKey(hour);
-                                    //todo handle when day is null
-                                    var stopTimesByHour = day.StopTimes.Where(x => x.StopId == tripStop.StopId && x.DepartureTime.Hour == hour).ToList();
-                                    var minuteList = stopTimesByHour.Select(x => x.DepartureTime.Minute).OrderBy(y => y).ToList();
-
-                                    if (!containsHour)
-                                    {
-                                        hourAndMinuteDictionary.Add(hour, new List<int>());
-                                    }
-
-                                    hourAndMinuteDictionary[hour] = minuteList;
-                                }
-
-                                minuteTimeTable.MinuteDictionary[dayType] = hourAndMinuteDictionary;
+                                minuteTimeTable.MinuteDictionary = _minuteTimeTableBuilder.Build(dayType, timeTableDataList, minuteTimeTable.MinuteDictionary, tripStop.StopId);
                             }
 
                             var minuteTimeTableIndex = minuteTimeTableList.FindIndex(x => x.Id == minuteTimeTable.Id);
@@ -81,12 +67,14 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
                             else
                                 minuteTimeTableList.Add(minuteTimeTable);
 
-                            //pobrać odpowiedni MinuteTimeTable po routeId i stopId
                             //jeśli nie jest nullem, porównać minuteTimeTableToSave wraz ze starym wynikiem
                             //jeśli się nie różnią, olać minuteTimeTableToSave
                             //jeśli się różnią LUB wynik z bazy jest nullem - zapisać w bazie
                         }
                     }
+
+                    _documentStoreRepository.Delete(minuteTimeTableList.Select(x => x.Id).ToList());
+                    _documentStoreRepository.Save(minuteTimeTableList);
                 }
             }
         }

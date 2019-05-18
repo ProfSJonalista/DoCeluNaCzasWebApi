@@ -4,6 +4,7 @@ using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
@@ -14,7 +15,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         private static TimeService _timeService;
         private static UpdateServiceHelper _updateServiceHelper;
 
-        public static async void Init(TimeService timeService, UpdateServiceHelper updateServiceHelper)
+        public static async Task Init(TimeService timeService, UpdateServiceHelper updateServiceHelper)
         {
             _timeService = timeService;
             _updateServiceHelper = updateServiceHelper;
