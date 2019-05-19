@@ -33,9 +33,30 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
 
         private TimeTableData GetWeekday(List<TimeTableData> timeTableDataList)
         {
-            var day = timeTableDataList.FirstOrDefault(x => x.Date.DayOfWeek != DayOfWeek.Saturday || x.Date.DayOfWeek != DayOfWeek.Sunday);
-            //todo check if this day does not equal to holiday or saturday
-            return day;
+            if (timeTableDataList.Count <= 0) return new TimeTableData();
+
+            var firstElement = timeTableDataList.FirstOrDefault();
+
+            if (firstElement == null) return new TimeTableData();
+
+            DateTime dateTime;
+
+            switch (firstElement.Date.DayOfWeek)
+            {
+                case DayOfWeek.Saturday:
+                    dateTime = firstElement.Date.AddDays(2);
+                    break;
+                case DayOfWeek.Sunday:
+                    dateTime = firstElement.Date.AddDays(1);
+                    break;
+                default:
+                    dateTime = firstElement.Date;
+                    break;
+            }
+
+            var elementToReturn = timeTableDataList.SingleOrDefault(x => x.Date.Date == dateTime.Date);
+            //todo check for holidays
+            return elementToReturn;
         }
 
         private TimeTableData GetSaturday(List<TimeTableData> timeTableDataList)

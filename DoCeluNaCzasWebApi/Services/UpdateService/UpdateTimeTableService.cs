@@ -16,7 +16,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             _timeTableService = timeTableService;
             _minuteTimeTableService = minuteTimeTableService;
 
-            await _timeTableService.SetTimeTables();
+            //await _timeTableService.SetTimeTables();
             _minuteTimeTableService.SetMinuteTimeTables();
 
             SetTimer();

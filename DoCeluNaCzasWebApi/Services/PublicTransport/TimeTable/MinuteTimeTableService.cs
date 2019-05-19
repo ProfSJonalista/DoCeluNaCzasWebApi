@@ -42,6 +42,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
                     foreach (var trip in joinedTrip.JoinedTrips)
                     {
                         var timeTableDataList = _documentStoreRepository.GetTimeTableDataByRouteId(trip.RouteId);
+                        var day = timeTableDataList.FirstOrDefault(x => x.Date.DayOfWeek != DayOfWeek.Saturday || x.Date.DayOfWeek != DayOfWeek.Sunday);
 
                         foreach (var tripStop in trip.Stops)
                         {
