@@ -7,9 +7,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
     public static class UpdateTimeTableService
     {
-        private static Timer _timer;
-        private static TimeTableService _timeTableService;
-        private static MinuteTimeTableService _minuteTimeTableService;
+        static Timer _timer;
+        static TimeTableService _timeTableService;
+        static MinuteTimeTableService _minuteTimeTableService;
 
         public static async void Init(TimeTableService timeTableService, MinuteTimeTableService minuteTimeTableService)
         {
@@ -31,7 +31,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             _timer.Enabled = true;
         }
 
-        private static async void UpdateDataEvent(object source, ElapsedEventArgs e)
+        static async void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
             await _timeTableService.SetTimeTables();
         }

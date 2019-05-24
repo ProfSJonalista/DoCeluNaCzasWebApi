@@ -37,7 +37,7 @@ namespace DCNC.Service.PublicTransport.Time
                    || tempStopInTripLu.Date > actStopInTripLu.Date;
         }
 
-        private DateTime GetLastUpdate(JObject jObject, string key)
+        static DateTime GetLastUpdate(JObject jObject, string key)
         {
             return jObject.HasValues
                    ? jObject[DateTime.Now.ToString("yyyy-MM-dd")].Value<DateTime>("lastUpdate")

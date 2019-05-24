@@ -19,14 +19,14 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
     {
         private readonly TimeService _timeService;
 
-        private readonly Joiner _joiner;
-        private readonly Grouper _grouper;
-        private readonly IJsonDataService _tripService;
-        private readonly IJsonDataService _busStopService;
-        private readonly IJsonDataService _busLineService;
-        private readonly IJsonDataService _expeditionService;
-        private readonly IJsonDataService _stopInTripService;
-        private readonly BusStopModelService _busStopModelService;
+        readonly Joiner _joiner;
+        readonly Grouper _grouper;
+        readonly IJsonDataService _tripService;
+        readonly IJsonDataService _busStopService;
+        readonly IJsonDataService _busLineService;
+        readonly IJsonDataService _expeditionService;
+        readonly IJsonDataService _stopInTripService;
+        readonly BusStopModelService _busStopModelService;
         
         public UpdateServiceHelper(Joiner joiner, Grouper grouper, TimeService timeService, 
                                    IJsonDataService tripService, IJsonDataService busStopService, IJsonDataService busLineService, 

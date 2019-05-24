@@ -2,12 +2,13 @@
 using DCNC.DataAccess.PublicTransport;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using DCNC.DataAccess.PublicTransport.Interfaces;
 
 namespace DCNC.Service.PublicTransport.JsonData.Delays
 {
     public class DelayJsonService
     {
-        private readonly IPublicTransportRepository _publicTransportRepository;
+        readonly IPublicTransportRepository _publicTransportRepository;
 
         public DelayJsonService(IPublicTransportRepository publicTransportRepository)
         {

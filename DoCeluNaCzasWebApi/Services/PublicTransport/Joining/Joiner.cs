@@ -8,9 +8,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 {
     public class Joiner
     {
-        private readonly CombineTripService _combineTripService;
-        private readonly JoinTripMappingService _joinTripMappingService;
-        private readonly TripsWithBusStopsService _tripsWithBusStopsService;
+        readonly CombineTripService _combineTripService;
+        readonly JoinTripMappingService _joinTripMappingService;
+        readonly TripsWithBusStopsService _tripsWithBusStopsService;
 
         public Joiner(CombineTripService combineTripService, JoinTripMappingService joinTripMappingService, TripsWithBusStopsService tripsWithBusStopsService)
         {
@@ -36,7 +36,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
             return mappedJoinedTripModels;
         }
 
-        private static List<Route> JoinBusLines(List<BusLineData> busLineDataList)
+        static List<Route> JoinBusLines(List<BusLineData> busLineDataList)
         {
             return busLineDataList.SelectMany(x => x.Routes)
                 .Distinct()

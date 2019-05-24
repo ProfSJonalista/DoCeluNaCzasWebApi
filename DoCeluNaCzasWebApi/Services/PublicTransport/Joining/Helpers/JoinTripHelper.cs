@@ -4,8 +4,8 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers
 {
     public static class JoinTripHelper
     {
-        private static readonly char[] CharactersToDeleteFromString = { ' ', '+' };
-        private const string PATTERN = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
+        static readonly char[] CharactersToDeleteFromString = { ' ', '+' };
+        const string PATTERN = "(\\[.*\\])|(\".*\")|('.*')|(\\(.*\\))";
 
         public static string GetFirstStopName(string tripHeadsign)
         {

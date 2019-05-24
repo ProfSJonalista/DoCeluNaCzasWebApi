@@ -5,21 +5,21 @@ namespace DCNC.Service.Caching
 {
     public static class CacheService
     {
-        static readonly ObjectCache _cache = MemoryCache.Default;
+        static readonly ObjectCache Cache = MemoryCache.Default;
 
         public static void CacheData<T>(T data, string cacheKey)
         {
-            _cache.Set(cacheKey, data, new CacheItemPolicy());
+            Cache.Set(cacheKey, data, new CacheItemPolicy());
         }
 
         public static T GetData<T>(string cacheKey) where T : class
         {
-            return _cache[cacheKey] as T;
+            return Cache[cacheKey] as T;
         }
 
         public static DateTime GetData(string cacheKey)
         {
-            return _cache[cacheKey] is DateTime ? (DateTime)_cache[cacheKey] : new DateTime();
+            return Cache[cacheKey] is DateTime ? (DateTime)Cache[cacheKey] : new DateTime();
         }
     }
 }

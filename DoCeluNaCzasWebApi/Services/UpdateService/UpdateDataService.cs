@@ -11,9 +11,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
     public static class UpdateDataService
     {
-        private static Timer _timer;
-        private static TimeService _timeService;
-        private static UpdateServiceHelper _updateServiceHelper;
+        static Timer _timer;
+        static TimeService _timeService;
+        static UpdateServiceHelper _updateServiceHelper;
 
         public static async Task Init(TimeService timeService, UpdateServiceHelper updateServiceHelper)
         {
@@ -35,7 +35,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             _timer.Enabled = true;
         }
 
-        private static async void UpdateDataEvent(object source, ElapsedEventArgs e)
+        static async void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             var updateNeeded = _timeService.CheckForUpdates(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);

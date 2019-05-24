@@ -5,14 +5,16 @@ using DCNC.Service.Database;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DCNC.DataAccess.PublicTransport.Interfaces;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public class DownloadHelper
     {
-        private readonly TimeService _timeService;
-        private readonly IDocumentStoreRepository _documentStoreRepository;
-        private readonly IPublicTransportRepository _publicTransportRepository;
+        readonly TimeService _timeService;
+        readonly IDocumentStoreRepository _documentStoreRepository;
+        readonly IPublicTransportRepository _publicTransportRepository;
 
         public DownloadHelper(IDocumentStoreRepository documentStoreRepository, TimeService timeService, IPublicTransportRepository publicTransportRepository)
         {

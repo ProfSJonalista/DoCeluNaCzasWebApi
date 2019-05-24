@@ -5,7 +5,7 @@ namespace DCNC.Service.Database
 {
     public class DocumentStoreHolder
     {
-        private static readonly Lazy<IDocumentStore> _store = new Lazy<IDocumentStore>(CreateDocumentStore);
+        static readonly Lazy<IDocumentStore> _store = new Lazy<IDocumentStore>(CreateDocumentStore);
 
         private static IDocumentStore CreateDocumentStore()
         {

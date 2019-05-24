@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using DCNC.DataAccess.PublicTransport.Interfaces;
 
 namespace DCNC.DataAccess.PublicTransport
 {
     public class PublicTransportRepository : IPublicTransportRepository
     {
-        private static readonly HttpClient Client = new HttpClient();
+        static readonly HttpClient Client = new HttpClient();
 
         public async Task<string> DownloadData(string url)
         {
