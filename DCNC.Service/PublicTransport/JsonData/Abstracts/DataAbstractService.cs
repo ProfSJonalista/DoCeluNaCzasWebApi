@@ -1,4 +1,4 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿ using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
@@ -25,7 +25,7 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         public async Task<JObject> GetDataAsJObjectAsync(string url, JsonType type)
         {
             var json = await _publicTransportRepository.DownloadData(url);
-
+            //todo usunąć linijkę 29 - implementacja w DelayJsonService
             if (type == JsonType.Delay) return JsonConvert.DeserializeObject<JObject>(json);
 
             if (!string.IsNullOrEmpty(json))

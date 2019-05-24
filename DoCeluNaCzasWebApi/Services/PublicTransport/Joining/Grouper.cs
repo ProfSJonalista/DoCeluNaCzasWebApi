@@ -1,8 +1,8 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 
-namespace DoCeluNaCzasWebApi.Services.PublicTransport
+namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 {
     public class Grouper
     {

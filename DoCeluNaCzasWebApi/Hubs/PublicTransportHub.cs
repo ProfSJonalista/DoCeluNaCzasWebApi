@@ -15,9 +15,9 @@ namespace DoCeluNaCzasWebApi.Hubs
             return CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL);
         }
 
-        public List<TimeTableData> GetTimeTableDataByRouteId(int id)
+        public MinuteTimeTable GetTimeTableDataByRouteId(int id, int stopId)
         {
-            return UpdateTimeTableService.GetTimeTableData(id);
+            return UpdateTimeTableService.GetMinuteTimeTableByRouteIdAndStopId(id, stopId);
         }
     }
 }

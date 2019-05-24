@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
+using NUnit.Framework;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers.Tests
 {

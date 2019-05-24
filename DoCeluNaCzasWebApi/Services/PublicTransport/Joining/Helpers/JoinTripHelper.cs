@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace DoCeluNaCzasWebApi.Services.PublicTransport.Helpers
+namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers
 {
     public static class JoinTripHelper
     {
