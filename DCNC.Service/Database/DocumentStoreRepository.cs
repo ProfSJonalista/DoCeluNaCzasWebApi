@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,6 +53,9 @@ namespace DCNC.Service.Database
         #endregion
 
         #region GetEntities
+
+        #region TimeTableJson
+
         public List<TimeTableJson> GetJsonsByRouteId(int routeId)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -62,22 +66,16 @@ namespace DCNC.Service.Database
             }
         }
 
+        #endregion
+
+        #region MinuteTimeTable
+
         public List<MinuteTimeTable> GetMinuteTimeTableListByBusLineName(string busLineName)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
                 return session.Query<MinuteTimeTable>()
                     .Where(x => x.BusLineName.Equals(busLineName))
-                    .ToList();
-            }
-        }
-
-        public List<TimeTableData> GetTimeTableDataByRouteId(int routeId)
-        {
-            using (var session = DocumentStoreHolder.Store.OpenSession())
-            {
-                return session.Query<TimeTableData>()
-                    .Where(x => x.RouteId == routeId)
                     .ToList();
             }
         }
@@ -91,6 +89,41 @@ namespace DCNC.Service.Database
             }
         }
 
+        #endregion
+
+        #region TimeTableData
+
+        public List<TimeTableData> GetTimeTableDataByRouteId(int routeId)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<TimeTableData>()
+                    .Where(x => x.RouteId == routeId)
+                    .ToList();
+            }
+        }
+
+        public List<TimeTableData> GetTimeTableDataByRouteId(List<int> routeIds)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var listToReturn = new List<TimeTableData>();
+
+                foreach (var id in routeIds)
+                {
+                    listToReturn.AddRange(session.Query<TimeTableData>()
+                        .Where(x => x.RouteId == id)
+                        .ToList());
+                }
+
+                return listToReturn;
+            }
+        }
+
+        #endregion
+
+        #region DbJson
+
         public DbJson GetDbJson(JsonType type)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -98,6 +131,9 @@ namespace DCNC.Service.Database
                 return session.Query<DbJson>().FirstOrDefault(x => x.Type == type);
             }
         }
+
+        #endregion
+
         #endregion
     }
 }

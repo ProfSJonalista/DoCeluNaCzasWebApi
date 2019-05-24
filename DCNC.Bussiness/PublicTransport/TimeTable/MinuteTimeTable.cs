@@ -13,6 +13,6 @@ namespace DCNC.Bussiness.PublicTransport.TimeTable
 
     public enum DayType
     {
-        Weekday, Saturday, SundayAndHoliday
+        Weekday, Saturday, Sunday
     }
 }

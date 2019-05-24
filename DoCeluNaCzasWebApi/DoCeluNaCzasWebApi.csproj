@@ -302,6 +302,7 @@
     <Compile Include="Services\PublicTransport\Joining\Joiner.cs" />
     <Compile Include="Services\PublicTransport\Joining\JoinTripMappingService.cs" />
     <Compile Include="Services\PublicTransport\TimeTable\Helpers\DateChecker.cs" />
+    <Compile Include="Services\PublicTransport\TimeTable\Helpers\StopTimesFetcher.cs" />
     <Compile Include="Services\PublicTransport\TimeTable\Helpers\MinuteTimeTableBuilder.cs" />
     <Compile Include="Services\PublicTransport\TimeTable\MinuteTimeTableService.cs" />
     <Compile Include="Services\UpdateService\Helpers\UpdateServiceHelper.cs" />

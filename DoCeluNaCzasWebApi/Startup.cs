@@ -46,7 +46,7 @@ namespace DoCeluNaCzasWebApi
             ConfigureServices();
         }
 
-        async Task ConfigureServices()
+        static async Task ConfigureServices()
         {
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
@@ -90,7 +90,8 @@ namespace DoCeluNaCzasWebApi
 
             var polandPublicHoliday = new PolandPublicHoliday();
             var dateChecker = new DateChecker(polandPublicHoliday);
-            var minuteTimeTableBuilder = new MinuteTimeTableBuilder(dateChecker);
+            var stopTimesFetcher = new StopTimesFetcher(dateChecker, documentStoreRepository);
+            var minuteTimeTableBuilder = new MinuteTimeTableBuilder(stopTimesFetcher);
             var minuteTimeTableService = new MinuteTimeTableService(minuteTimeTableBuilder, documentStoreRepository);
 
             await UpdateDataService.Init(timeService, updateServiceHelper);
