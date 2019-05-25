@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.TimeTable;
+﻿using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable;
 using System.Timers;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable;
@@ -7,9 +8,9 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
     public static class UpdateTimeTableService
     {
-        private static Timer _timer;
-        private static TimeTableService _timeTableService;
-        private static MinuteTimeTableService _minuteTimeTableService;
+        static Timer _timer;
+        static TimeTableService _timeTableService;
+        static MinuteTimeTableService _minuteTimeTableService;
 
         public static async void Init(TimeTableService timeTableService, MinuteTimeTableService minuteTimeTableService)
         {
@@ -31,7 +32,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             _timer.Enabled = true;
         }
 
-        private static async void UpdateDataEvent(object source, ElapsedEventArgs e)
+        static async void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
             await _timeTableService.SetTimeTables();
         }
@@ -39,6 +40,11 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         public static MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
             return _timeTableService.GetMinuteTimeTableByRouteIdAndStopId(routeId, stopId);
+        }
+
+        public static List<MinuteTimeTable> GetByBusLineName(string busLineName)
+        {
+            return _timeTableService.GetByBusLineName(busLineName);
         }
     }
 }

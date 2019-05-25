@@ -7,7 +7,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 {
     public class CombineTripService
     {
-        private readonly Combiner _combiner;
+        readonly Combiner _combiner;
 
         public CombineTripService(Combiner combiner)
         {
@@ -25,7 +25,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
             .ToList();
         }
 
-        private CombinedTripModel Combine(List<OrganizedTrips> trips)
+        CombinedTripModel Combine(List<OrganizedTrips> trips)
         {
             var bothWayTrip = trips.Any(x => x.Trips.Values.Count > 1);
             var oneWayTrip = trips.Any(x => x.Trips.Values.Count == 1);

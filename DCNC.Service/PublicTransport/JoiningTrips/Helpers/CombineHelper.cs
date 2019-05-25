@@ -6,7 +6,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
 {
     public class CombineHelper
     {
-        private readonly StopComparer _stopComparer;
+        readonly StopComparer _stopComparer;
 
         public CombineHelper(StopComparer stopComparer)
         {

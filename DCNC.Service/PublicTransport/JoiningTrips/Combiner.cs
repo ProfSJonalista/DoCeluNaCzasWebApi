@@ -8,8 +8,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 {
     public class Combiner
     {
-
-        private readonly CombineHelper _combineHelper;
+        readonly CombineHelper _combineHelper;
 
         public Combiner(CombineHelper combineHelper)
         {

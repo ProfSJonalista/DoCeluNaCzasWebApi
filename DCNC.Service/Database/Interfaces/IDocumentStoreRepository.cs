@@ -1,9 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
-using System.Collections.Generic;
 
-namespace DCNC.Service.Database
+namespace DCNC.Service.Database.Interfaces
 {
     public interface IDocumentStoreRepository
     {

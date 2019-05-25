@@ -275,7 +275,7 @@
     <Compile Include="Controllers\PublicTransport\General\BusStopController.cs" />
     <Compile Include="Controllers\PublicTransport\General\ChooseBusStopController.cs" />
     <Compile Include="Controllers\PublicTransport\General\JoinedTripsController.cs" />
-    <Compile Include="Controllers\PublicTransport\RouteSearchController.cs" />
+    <Compile Include="Controllers\PublicTransport\RouteSearch\RouteSearchController.cs" />
     <Compile Include="Controllers\PublicTransport\TimeTable\TimeTableController.cs" />
     <Compile Include="Controllers\RavenController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />

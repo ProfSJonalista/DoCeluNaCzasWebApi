@@ -20,7 +20,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
     {
         public static TripData TripData { get; set; }
         public static BusLineData BusLineData { get; set; }
-        private readonly DelayJsonService _delayJsonService;
+        readonly DelayJsonService _delayJsonService;
 
         public DelayService(DelayJsonService delayJsonService)
         {
@@ -56,7 +56,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             return new ObservableCollection<DelayModel>(convertedData);
         }
 
-        private string GetDelayMessage(int itemDelayInSeconds)
+        string GetDelayMessage(int itemDelayInSeconds)
         {
             if (itemDelayInSeconds >= 0)
             {
@@ -77,7 +77,6 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 return seconds < 10 ? "> 1 min" : "Teraz!";
             }
         }
-
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
         {

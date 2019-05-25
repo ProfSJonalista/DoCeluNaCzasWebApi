@@ -2,7 +2,7 @@
 using System.Web.Http;
 using DCNC.Service.PublicTransport.RouteSearch;
 
-namespace DoCeluNaCzasWebApi.Controllers.PublicTransport
+namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
 {
     public class RouteSearchController : ApiController
     {

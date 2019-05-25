@@ -6,13 +6,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+ using DCNC.DataAccess.PublicTransport.Interfaces;
+ using DCNC.Service.Database.Interfaces;
 
-namespace DCNC.Service.PublicTransport.JsonData.Abstracts
+ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {
     public abstract class DataAbstractService : IJsonDataService
     {
-        private readonly IDocumentStoreRepository _documentStoreRepository;
-        private readonly IPublicTransportRepository _publicTransportRepository;
+        readonly IDocumentStoreRepository _documentStoreRepository;
+        readonly IPublicTransportRepository _publicTransportRepository;
 
         protected DataAbstractService() { }
 

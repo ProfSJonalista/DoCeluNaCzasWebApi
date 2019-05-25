@@ -110,7 +110,7 @@
   <ItemGroup>
     <Compile Include="Database\DocumentStoreHolder.cs" />
     <Compile Include="Database\DocumentStoreRepository.cs" />
-    <Compile Include="Database\IDocumentStoreRepository.cs" />
+    <Compile Include="Database\Interfaces\IDocumentStoreRepository.cs" />
     <Compile Include="Caching\CacheService.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Combiner.cs" />
     <Compile Include="PublicTransport\JoiningTrips\Helpers\CombineHelper.cs" />

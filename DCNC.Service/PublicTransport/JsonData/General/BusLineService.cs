@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.DataAccess.PublicTransport.Interfaces;
 using DCNC.Service.Database;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.JsonData.General
 {

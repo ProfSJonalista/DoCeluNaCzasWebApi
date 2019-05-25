@@ -5,14 +5,15 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
     public class ConvertingHelper
     {
-        private readonly Converter _converter;
-        private readonly FilterHelper _filterHelper;
-        private readonly IDocumentStoreRepository _documentStoreRepository;
+        readonly Converter _converter;
+        readonly FilterHelper _filterHelper;
+        readonly IDocumentStoreRepository _documentStoreRepository;
 
         public ConvertingHelper(Converter converter, FilterHelper filterHelper, IDocumentStoreRepository documentStoreRepository)
         {

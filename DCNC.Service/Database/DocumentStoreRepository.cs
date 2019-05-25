@@ -3,6 +3,7 @@ using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.Database
 {

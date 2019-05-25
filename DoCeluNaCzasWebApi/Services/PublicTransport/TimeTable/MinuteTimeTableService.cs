@@ -5,13 +5,14 @@ using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Service.Database.Interfaces;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 {
     public class MinuteTimeTableService
     {
-        private readonly MinuteTimeTableBuilder _minuteTimeTableBuilder;
-        private readonly IDocumentStoreRepository _documentStoreRepository;
+        readonly MinuteTimeTableBuilder _minuteTimeTableBuilder;
+        readonly IDocumentStoreRepository _documentStoreRepository;
 
         public MinuteTimeTableService(MinuteTimeTableBuilder minuteTimeTableBuilder, IDocumentStoreRepository documentStoreRepository)
         {

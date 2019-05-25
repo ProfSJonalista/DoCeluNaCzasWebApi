@@ -19,7 +19,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
               .ToList();
         }
 
-        private List<JoinedTripModel> GetMappedTrips(List<Trip> trips)
+        List<JoinedTripModel> GetMappedTrips(List<Trip> trips)
         {
             return trips.Select(x => new JoinedTripModel()
             {
@@ -35,7 +35,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
             }).ToList();
         }
 
-        private List<JoinedStopModel> GetMappedStops(List<Stop> stops)
+        List<JoinedStopModel> GetMappedStops(List<Stop> stops)
         {
             return stops.Select(x => new JoinedStopModel()
             {

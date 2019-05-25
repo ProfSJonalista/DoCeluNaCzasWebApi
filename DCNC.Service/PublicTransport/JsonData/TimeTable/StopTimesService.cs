@@ -4,6 +4,8 @@ using DCNC.Service.PublicTransport.JsonData.Abstracts;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using DCNC.DataAccess.PublicTransport;
+using DCNC.DataAccess.PublicTransport.Interfaces;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.JsonData.TimeTable
 {

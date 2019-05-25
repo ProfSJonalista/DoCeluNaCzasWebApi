@@ -9,8 +9,8 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 {
     public class TripsWithBusStopsService
     {
-        private readonly Organizer _organizer;
-        private readonly StopHelper _stopHelper;
+        readonly Organizer _organizer;
+        readonly StopHelper _stopHelper;
 
         public TripsWithBusStopsService(Organizer organizer, StopHelper stopHelper)
         {
@@ -33,7 +33,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
             return tripsWithBusStops;
         }
 
-        private TripsWithBusStops Map(BusLineData busLine, ExpeditionData expeditionObject, TripData tripData, BusStopData busStopData, StopInTripData stopInTripData)
+        TripsWithBusStops Map(BusLineData busLine, ExpeditionData expeditionObject, TripData tripData, BusStopData busStopData, StopInTripData stopInTripData)
         {
             var tripsWithBusStops = new TripsWithBusStops()
             {

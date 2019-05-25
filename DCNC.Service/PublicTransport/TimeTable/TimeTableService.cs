@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.DataAccess.PublicTransport.Helpers;
@@ -6,16 +7,17 @@ using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using System.Threading.Tasks;
+using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.TimeTable
 {
     public class TimeTableService
     {
-        private readonly TimeService _timeService;
-        private readonly DownloadHelper _downloadHelper;
-        private readonly ConvertingHelper _convertingHelper;
-        private readonly StopTimesService _stopTimesService;
-        private readonly IDocumentStoreRepository _documentStoreRepository;
+        readonly TimeService _timeService;
+        readonly DownloadHelper _downloadHelper;
+        readonly ConvertingHelper _convertingHelper;
+        readonly StopTimesService _stopTimesService;
+        readonly IDocumentStoreRepository _documentStoreRepository;
 
         public TimeTableService(IDocumentStoreRepository dsr, TimeService timeService, ConvertingHelper convertingHelper, StopTimesService stopTimesService, DownloadHelper downloadHelper)
         {
@@ -42,6 +44,11 @@ namespace DCNC.Service.PublicTransport.TimeTable
         public MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
             return _documentStoreRepository.GetMinuteTimeTableByRouteIdAndStopId(routeId, stopId);
+        }
+
+        public List<MinuteTimeTable> GetByBusLineName(string busLineName)
+        {
+            return _documentStoreRepository.GetMinuteTimeTableListByBusLineName(busLineName);
         }
     }
 }
