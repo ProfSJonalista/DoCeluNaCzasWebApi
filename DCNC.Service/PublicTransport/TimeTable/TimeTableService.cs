@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.DataAccess.PublicTransport.Helpers;
@@ -43,6 +44,11 @@ namespace DCNC.Service.PublicTransport.TimeTable
         public MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)
         {
             return _documentStoreRepository.GetMinuteTimeTableByRouteIdAndStopId(routeId, stopId);
+        }
+
+        public List<MinuteTimeTable> GetByBusLineName(string busLineName)
+        {
+            return _documentStoreRepository.GetMinuteTimeTableListByBusLineName(busLineName);
         }
     }
 }
