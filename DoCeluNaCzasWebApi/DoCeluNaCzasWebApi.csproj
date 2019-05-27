@@ -290,7 +290,6 @@
     <Compile Include="Models\PublicTransport\Delay\ChooseBusStopModel.cs" />
     <Compile Include="Models\PublicTransport\Delay\DelayModel.cs" />
     <Compile Include="Models\PublicTransport\General\BusStopDataModel.cs" />
-    <Compile Include="Models\PublicTransport\General\GroupedJoinedModel.cs" />
     <Compile Include="Models\PublicTransport\General\Shared\CommonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />

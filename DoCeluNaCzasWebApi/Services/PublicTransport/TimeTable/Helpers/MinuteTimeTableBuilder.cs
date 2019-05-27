@@ -1,5 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.TimeTable;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,11 +69,6 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
         {
             for (var hour = 0; hour < 24; hour++)
             {
-                if (stopModel.RouteId == 10150 && stopModel.StopId == 30139)
-                {
-                    int i = 0;
-                }
-
                 if (stopTimes.Count <= 0) continue;
 
                 var containsHour = dayTypeDictionary.ContainsKey(hour);

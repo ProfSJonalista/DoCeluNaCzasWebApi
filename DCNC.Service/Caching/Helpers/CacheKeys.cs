@@ -15,7 +15,7 @@
         #region Data to share
 
         public static string BUS_STOP_DATA_MODEL = "BusStopDataModel";
-        public static string GROUPED_JOINED_TRIPS = "GroupedJoinedTrips";
+        public static string GROUPED_JOINED_MODEL_LIST = "GroupedJoinedTrips";
         public static string CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION = "ChooseBusStolModelObservableCollection";
 
         #endregion

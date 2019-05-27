@@ -66,14 +66,14 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 
             var busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
             var joinedTripsModelList = _joiner.GetJoinedTripsModelList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);
-            var groupedJoinedTrips = _grouper.Group(joinedTripsModelList);
+            var groupedJoinedTrips = _grouper.GroupTrips(joinedTripsModelList);
 
             DelayService.BusLineData = busLineDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
             DelayService.TripData = tripDataList.FirstOrDefault(x => x.Day.Date == DateTime.Today);
             DelayService.SetChooseBusStopModelCollection(busStopDataModel, groupedJoinedTrips);
 
             CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
-            CacheService.CacheData(groupedJoinedTrips, CacheKeys.GROUPED_JOINED_TRIPS);
+            CacheService.CacheData(groupedJoinedTrips, CacheKeys.GROUPED_JOINED_MODEL_LIST);
             
             _timeService.CacheLastUpdates(tripDataList.FirstOrDefault().LastUpdate,
                                         busStopDataList.FirstOrDefault().LastUpdate,

@@ -5,6 +5,7 @@ using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Service.Database.Interfaces;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
@@ -22,7 +23,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 
         public void SetMinuteTimeTables()
         {
-            var groupedJoinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_TRIPS);
+            var groupedJoinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
 
             foreach (var group in groupedJoinedTrips)
             {
