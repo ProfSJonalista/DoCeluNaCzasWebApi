@@ -1,4 +1,5 @@
-﻿using DCNC.Service.Caching;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Models.PublicTransport.General;
@@ -47,7 +48,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static List<GroupedJoinedModel> GetJoinedTrips()
         {
-            return CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_TRIPS);
+            return CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
         }
 
         public static BusStopDataModel GetBusStops()

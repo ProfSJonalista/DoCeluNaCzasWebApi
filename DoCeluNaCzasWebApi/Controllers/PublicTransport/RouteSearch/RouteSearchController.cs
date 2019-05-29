@@ -1,20 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Web.Http;
+﻿using DCNC.Bussiness.PublicTransport.RouteSearch;
 using DCNC.Service.PublicTransport.RouteSearch;
+using System;
+using System.Collections.Generic;
+using System.Web.Http;
+using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
 {
     public class RouteSearchController : ApiController
     {
-        RouteSearchService _routeSearchService;
+        readonly RouteSearchService _routeSearchService;
+
         public RouteSearchController()
         {
-            _routeSearchService = new RouteSearchService();
+            _routeSearchService = new RouteSearchService(new RouteSearcher());
         }
-        public List<string> Get(int startStopId, int destinationStopId)
+
+        public List<Route> Get(int startStopId, int destStopId, bool departure, DateTime time)
         {
-            //return _routeSearchService.SearchRoute(startStopId, destinationStopId);
-            return new List<string>();
+            return _routeSearchService.SearchRoute(startStopId, destStopId, departure, time);
         }
     }
 }

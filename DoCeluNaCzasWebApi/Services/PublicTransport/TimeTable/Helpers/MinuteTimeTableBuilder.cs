@@ -1,8 +1,9 @@
-﻿using DCNC.Bussiness.PublicTransport.TimeTable;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
 {
@@ -29,26 +30,34 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
                                   BusLineName = tripModel.BusLineName,
                                   StopId = stopModel.StopId,
                                   RouteIds = routeIds,
-                                  MinuteDictionary = new Dictionary<DayType, Dictionary<int, List<int>>>()
+                                  MinuteDictionary = new Dictionary<DayType, Dictionary<int, List<int>>>(),
+                                  ModMinuteDictionary = new Dictionary<DayType, Dictionary<int, string>>()
                               };
 
                     foreach (var dayType in (DayType[])Enum.GetValues(typeof(DayType)))
                     {
-                        var containsKey = mtt.MinuteDictionary.ContainsKey(dayType);
+                        var containsMdKey = mtt.MinuteDictionary.ContainsKey(dayType);
+                        var containsMmdKey = mtt.ModMinuteDictionary.ContainsKey(dayType);
 
-                        if (!containsKey)
+                        if (!containsMdKey)
                             mtt.MinuteDictionary.Add(dayType, new Dictionary<int, List<int>>());
+
+                        if (!containsMmdKey)
+                            mtt.ModMinuteDictionary.Add(dayType, new Dictionary<int, string>());
 
                         switch (dayType)
                         {
                             case DayType.Weekday:
                                 mtt.MinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType], stopModel, weekdayStopTimes);
+                                mtt.ModMinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType]);
                                 break;
                             case DayType.Saturday:
                                 mtt.MinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType], stopModel, saturdayStopTimes);
+                                mtt.ModMinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType]);
                                 break;
                             case DayType.Sunday:
                                 mtt.MinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType], stopModel, sundayStopTimes);
+                                mtt.ModMinuteDictionary[dayType] = Build(mtt.MinuteDictionary[dayType]);
                                 break;
                         }
                     }
@@ -65,15 +74,39 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
             return minuteTimeTableList;
         }
 
+        static Dictionary<int, string> Build(Dictionary<int, List<int>> hourAndMinuteDictionary)
+        {
+            var sb = new StringBuilder();
+            var modDic = new Dictionary<int, string>();
+
+            for (var hour = 0; hour < 24; hour++)
+            {
+                var minutes = hourAndMinuteDictionary[hour];
+
+                if (minutes.Count > 0)
+                {
+                    foreach (var item in minutes)
+                    {
+                        var itemAsString = item.ToString().PadLeft(2, '0');
+                        sb.Append(itemAsString);
+                        sb.Append("    "); //4 spaces
+                    }
+
+                    var index = sb.Length - 4;
+                    sb.Remove(index, 4);
+                }
+
+                modDic.Add(hour, sb.ToString());
+                sb.Clear();
+            }
+
+            return modDic;
+        }
+
         static Dictionary<int, List<int>> Build(Dictionary<int, List<int>> dayTypeDictionary, JoinedStopModel stopModel, IReadOnlyCollection<StopTime> stopTimes)
         {
             for (var hour = 0; hour < 24; hour++)
             {
-                if (stopModel.RouteId == 10150 && stopModel.StopId == 30139)
-                {
-                    int i = 0;
-                }
-
                 if (stopTimes.Count <= 0) continue;
 
                 var containsHour = dayTypeDictionary.ContainsKey(hour);

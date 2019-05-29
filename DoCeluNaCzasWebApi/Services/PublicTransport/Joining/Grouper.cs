@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using System.Collections.Generic;
 using System.Linq;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 {
     public class Grouper
     {
-        public List<GroupedJoinedModel> Group(List<JoinedTripsModel> joinedTripsModelList)
+        public List<GroupedJoinedModel> GroupTrips(List<JoinedTripsModel> joinedTripsModelList)
         {
             var buses = joinedTripsModelList.Where(x => x.JoinedTrips.Any(y => y.AgencyId == 1
                                                                                || y.AgencyId == 6
@@ -23,9 +23,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 
             return new List<GroupedJoinedModel>()
             {
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Buses, JoinedTripModels = buses },
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Trams, JoinedTripModels = trams },
-                new GroupedJoinedModel(){ Group = Models.PublicTransport.General.Group.Trolleys, JoinedTripModels = trolleys}
+                new GroupedJoinedModel(){ Group = Group.Buses, JoinedTripModels = buses },
+                new GroupedJoinedModel(){ Group = Group.Trams, JoinedTripModels = trams },
+                new GroupedJoinedModel(){ Group = Group.Trolleys, JoinedTripModels = trolleys}
             };
         }
     }
