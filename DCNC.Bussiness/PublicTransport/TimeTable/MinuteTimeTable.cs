@@ -9,6 +9,7 @@ namespace DCNC.Bussiness.PublicTransport.TimeTable
         public int StopId { get; set; }
         public List<int> RouteIds { get; set; }
         public Dictionary<DayType, Dictionary<int, List<int>>> MinuteDictionary { get; set; }
+        public Dictionary<DayType, Dictionary<int, string>> ModMinuteDictionary { get; set; }
     }
 
     public enum DayType

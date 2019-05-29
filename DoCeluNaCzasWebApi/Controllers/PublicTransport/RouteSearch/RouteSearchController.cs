@@ -3,6 +3,7 @@ using DCNC.Service.PublicTransport.RouteSearch;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
 {
@@ -12,7 +13,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
 
         public RouteSearchController()
         {
-            _routeSearchService = new RouteSearchService();
+            _routeSearchService = new RouteSearchService(new RouteSearcher());
         }
 
         public List<Route> Get(int startStopId, int destStopId, bool departure, DateTime time)

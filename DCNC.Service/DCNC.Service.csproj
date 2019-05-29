@@ -124,6 +124,7 @@
     <Compile Include="PublicTransport\JsonData\Abstracts\Interfaces\IJsonDataService.cs" />
     <Compile Include="PublicTransport\JsonData\TimeTable\StopTimesService.cs" />
     <Compile Include="PublicTransport\RouteSearch\Helpers\RouteMapper.cs" />
+    <Compile Include="PublicTransport\RouteSearch\Helpers\RouteSearcher.cs" />
     <Compile Include="PublicTransport\RouteSearch\RouteSearchService.cs" />
     <Compile Include="PublicTransport\JsonData\General\ExpeditionService.cs" />
     <Compile Include="Caching\Helpers\CacheKeys.cs" />
