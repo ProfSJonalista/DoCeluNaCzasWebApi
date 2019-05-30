@@ -42,6 +42,10 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                 {
                     foreach (var joinedTrip in group.JoinedTrips)
                     {
+                        var startStopIndex = joinedTrip.Stops.FindIndex(x => x.StopId == startStopId);
+
+                        if(startStopIndex < 0) continue;
+
 
                     }
                 }

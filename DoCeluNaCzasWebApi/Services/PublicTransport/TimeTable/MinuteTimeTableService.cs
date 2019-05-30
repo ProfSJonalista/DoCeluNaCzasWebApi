@@ -1,12 +1,10 @@
-﻿using DCNC.Service.Caching;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
-using DCNC.Service.Database;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+using DCNC.Service.Database.Interfaces;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Service.Database.Interfaces;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 {
@@ -33,6 +31,8 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
                     var minuteTimeTableList = _documentStoreRepository.GetMinuteTimeTableListByBusLineName(joinedTripModel.BusLineName);
                     var existingStopIds = joinedTripModel.JoinedTrips.SelectMany(x => x.Stops.Select(y => y.StopId).ToList()).Distinct().OrderBy(x => x).ToList();
                     var minuteTimeTableToDeleteList = minuteTimeTableList.Where(x => existingStopIds.All(y => y != x.StopId)).Select(x => x.Id).ToList();
+                    minuteTimeTableList = minuteTimeTableList.Where(x => minuteTimeTableToDeleteList.All(y => !y.Equals(x.Id))).ToList();
+
                     _documentStoreRepository.Delete(minuteTimeTableToDeleteList);
 
                     minuteTimeTableList = _minuteTimeTableBuilder.BuildList(minuteTimeTableList, routeIds, joinedTripModel.JoinedTrips);

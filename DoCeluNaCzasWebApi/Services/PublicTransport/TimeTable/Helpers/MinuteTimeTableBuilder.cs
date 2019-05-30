@@ -39,11 +39,8 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
                         var containsMdKey = mtt.MinuteDictionary.ContainsKey(dayType);
                         var containsMmdKey = mtt.ModMinuteDictionary.ContainsKey(dayType);
 
-                        if (!containsMdKey)
-                            mtt.MinuteDictionary.Add(dayType, new Dictionary<int, List<int>>());
-
-                        if (!containsMmdKey)
-                            mtt.ModMinuteDictionary.Add(dayType, new Dictionary<int, string>());
+                        if (!containsMdKey) mtt.MinuteDictionary.Add(dayType, new Dictionary<int, List<int>>());
+                        if (!containsMmdKey) mtt.ModMinuteDictionary.Add(dayType, new Dictionary<int, string>());
 
                         switch (dayType)
                         {
@@ -62,9 +59,12 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
                         }
                     }
 
-                    var minuteTimeTableIndex = minuteTimeTableList.FindIndex(x => x.Id == mtt.Id);
+                    int minuteTimeTableIndex;
 
-                    if (minuteTimeTableIndex > 0)
+                    if (mtt.Id == null) minuteTimeTableIndex = -1;
+                    else minuteTimeTableIndex = minuteTimeTableList.FindIndex(x => x.Id.Equals(mtt.Id));
+
+                    if (minuteTimeTableIndex >= 0)
                         minuteTimeTableList[minuteTimeTableIndex] = mtt;
                     else
                         minuteTimeTableList.Add(mtt);
@@ -107,12 +107,8 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
         {
             for (var hour = 0; hour < 24; hour++)
             {
+                if (!dayTypeDictionary.ContainsKey(hour)) dayTypeDictionary.Add(hour, new List<int>());
                 if (stopTimes.Count <= 0) continue;
-
-                var containsHour = dayTypeDictionary.ContainsKey(hour);
-
-                if (!containsHour)
-                    dayTypeDictionary.Add(hour, new List<int>());
 
                 var minutes = stopTimes
                     .Where(x =>

@@ -1,22 +1,18 @@
-﻿ using DCNC.Bussiness.PublicTransport.JsonData;
-using DCNC.DataAccess.PublicTransport;
-using DCNC.Service.Database;
+﻿using DCNC.Bussiness.PublicTransport.JsonData;
+using DCNC.DataAccess.PublicTransport.Interfaces;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
- using DCNC.DataAccess.PublicTransport.Interfaces;
- using DCNC.Service.Database.Interfaces;
 
- namespace DCNC.Service.PublicTransport.JsonData.Abstracts
+namespace DCNC.Service.PublicTransport.JsonData.Abstracts
 {
     public abstract class DataAbstractService : IJsonDataService
     {
         readonly IDocumentStoreRepository _documentStoreRepository;
         readonly IPublicTransportRepository _publicTransportRepository;
-
-        protected DataAbstractService() { }
 
         protected DataAbstractService(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository)
         {
