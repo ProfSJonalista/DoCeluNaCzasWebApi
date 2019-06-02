@@ -10,7 +10,6 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
     {
         public BusStopDataModel JoinBusStopData(List<BusStopData> busStopDataList)
         {
-            //TODO - check this in client apps
             var firstResult = busStopDataList.FirstOrDefault();
             var stopList = busStopDataList.SelectMany(x => x.Stops)
                                           .GroupBy(x => new

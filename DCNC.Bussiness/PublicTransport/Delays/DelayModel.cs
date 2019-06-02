@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DoCeluNaCzasWebApi.Models.PublicTransport.Delay
+namespace DCNC.Bussiness.PublicTransport.Delays
 {
     public class DelayModel
     {

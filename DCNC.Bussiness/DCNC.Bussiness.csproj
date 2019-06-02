@@ -80,6 +80,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicTransport\Delays\DelayData.cs" />
+    <Compile Include="PublicTransport\Delays\ChooseBusStopModel.cs" />
+    <Compile Include="PublicTransport\Delays\DelayModel.cs" />
     <Compile Include="PublicTransport\General\GroupedJoinedModel.cs" />
     <Compile Include="PublicTransport\JoiningTrips\CombinedTripModel.cs" />
     <Compile Include="PublicTransport\JoiningTrips\OrganizedTrips.cs" />

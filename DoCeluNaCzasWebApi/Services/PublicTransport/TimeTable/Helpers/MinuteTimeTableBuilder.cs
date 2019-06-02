@@ -74,7 +74,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
             return minuteTimeTableList;
         }
 
-        static Dictionary<int, string> Build(Dictionary<int, List<int>> hourAndMinuteDictionary)
+        static Dictionary<int, string> Build(IReadOnlyDictionary<int, List<int>> hourAndMinuteDictionary)
         {
             var sb = new StringBuilder();
             var modDic = new Dictionary<int, string>();

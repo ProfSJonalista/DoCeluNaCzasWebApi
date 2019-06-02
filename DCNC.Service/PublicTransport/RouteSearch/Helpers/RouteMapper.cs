@@ -1,22 +1,23 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.RouteSearch;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Bussiness.PublicTransport.RouteSearch;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
     public class RouteMapper
     {
-
         public static Change MapChange(JoinedTripModel joinedTrip, int startStopIndex, int destStopIndex, int changeNo)
         {
+            var stop = joinedTrip.Stops.FirstOrDefault(x => !x.MainTrip);
+            var routeId = stop?.RouteId ?? joinedTrip.RouteId;
+            var tripId = stop?.TripId ?? joinedTrip.TripId;
+
             return new Change
             {
                 BusLineName = joinedTrip.BusLineName,
-                RouteId = joinedTrip.RouteId,
-                TripId = joinedTrip.TripId,
+                RouteId = routeId,
+                TripId = tripId,
                 ChangeNo = changeNo,
                 StopChangeList = MapStops(joinedTrip.Stops, startStopIndex, destStopIndex)
             };

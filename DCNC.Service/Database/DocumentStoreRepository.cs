@@ -121,6 +121,15 @@ namespace DCNC.Service.Database
             }
         }
 
+        public TimeTableData GetTimeTableDataByRouteIdAndDayOfWeek(int routeId, DayOfWeek dayOfWeek)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<TimeTableData>()
+                    .FirstOrDefault(x => x.RouteId == routeId && x.Date.DayOfWeek == dayOfWeek);
+            }
+        }
+
         #endregion
 
         #region DbJson
