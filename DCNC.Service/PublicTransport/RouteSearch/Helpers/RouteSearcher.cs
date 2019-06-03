@@ -77,7 +77,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                             var changeStopIndex = stopSubList.FindIndex(x => x.StopId == joinedStopModel.StopId);
                             var stopToChange = stopSubList[changeStopIndex];
 
-                            if (changeStopIndex < 0 || startStopIndex >= changeStopIndex) continue;
+                            if (changeStopIndex < 0 || startStopIndex >= changeStopIndex || stopToChange.StopId == destStopId) continue;
 
                             foreach (var change in possibleChanges)
                             {
@@ -95,34 +95,42 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                                                              ? change.Stops.FindIndex(x => x.Name.Equals(destStop.StopDesc))
                                                              : -1;
 
-                                if (destStopIndex < 0) continue;
+                                if (destStopIndex < 0 || secondChangeStopIndex >= destStopIndex) continue;
 
                                 var changeOne = RouteMapper.MapChange(joinedTrip, startStopIndex, changeStopIndex + startStopIndex, 0);
                                 var changeTwo = RouteMapper.MapChange(change, secondChangeStopIndex, destStopIndex, 1);
 
-                                //var routeToCheck = routesToReturn.FirstOrDefault(x => x.ChangeList.Any(y =>
-                                //    y.BusLineName.Equals(changeOne.BusLineName) &&
-                                //    y.BusLineName.Equals(changeTwo.BusLineName)));
+                                var routeToCheck = routesToReturn.FirstOrDefault(x =>
+                                {
+                                    var first = x.ChangeList.FirstOrDefault();
+                                    var last = x.ChangeList.LastOrDefault();
 
-                                //if (routeToCheck != null)
-                                //{
-                                //    var changeOneToCheck =
-                                //        routeToCheck.ChangeList.SingleOrDefault(x =>
-                                //            x.BusLineName.Equals(changeOne.BusLineName));
-                                //    var changeTwoToCheck =
-                                //        routeToCheck.ChangeList.SingleOrDefault(x =>
-                                //            x.BusLineName.Equals(changeTwo.BusLineName));
+                                    return 
+                                        first!= null && 
+                                        last != null &&
+                                        first.BusLineName.Equals(changeOne.BusLineName) &&
+                                        last.BusLineName.Equals(changeTwo.BusLineName);
+                                });
 
-                                //    if (changeOneToCheck.StopChangeList.Count <= changeOne.StopChangeList.Count &&
-                                //        changeTwoToCheck.StopChangeList.Count <= changeTwo.StopChangeList.Count)
-                                //    {
-                                //        continue;
-                                //    }
+                                if (routeToCheck != null)
+                                {
+                                    var changeOneToCheck =
+                                        routeToCheck.ChangeList.SingleOrDefault(x =>
+                                            x.BusLineName.Equals(changeOne.BusLineName));
+                                    var changeTwoToCheck =
+                                        routeToCheck.ChangeList.SingleOrDefault(x =>
+                                            x.BusLineName.Equals(changeTwo.BusLineName));
 
-                                //    routesToReturn.Remove(routeToCheck);
-                                //}
+                                    if (changeTwoToCheck != null && 
+                                       (changeOneToCheck != null && 
+                                       (changeOneToCheck.StopChangeList.Count <= changeOne.StopChangeList.Count &&
+                                        changeTwoToCheck.StopChangeList.Count <= changeTwo.StopChangeList.Count)))
+                                    {
+                                        continue;
+                                    }
 
-                                //sprawdzić, które połączenia są krótsze 
+                                    routesToReturn.Remove(routeToCheck);
+                                }
 
                                 var routeToAdd = new Route() { ChangeList = new List<Change>() };
                                 routeToAdd.ChangeList.Add(changeOne);

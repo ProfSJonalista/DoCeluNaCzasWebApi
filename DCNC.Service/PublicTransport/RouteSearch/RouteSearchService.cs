@@ -5,6 +5,7 @@ using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DCNC.Service.PublicTransport.RouteSearch
 {
@@ -24,9 +25,12 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             var groupedJoinedModels = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
 
             var routesToReturn = _routeSearcher.GetDirectLines(groupedJoinedModels, startStopId, destStopId, 0);
-            
-            routesToReturn.AddRange(_routeSearcher.GetLinesWithOneChange(groupedJoinedModels, startStopId, destStopId));
+
+            if(routesToReturn.Count <= 0)
+                routesToReturn = _routeSearcher.GetLinesWithOneChange(groupedJoinedModels, startStopId, destStopId);
+
             routesToReturn = _timeRouteSearcher.GetTimeForRoutes(routesToReturn, departure, desiredTime);
+            routesToReturn = routesToReturn.OrderBy(x => x.DepartureTime).ToList();
 
             return routesToReturn;
         }
