@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace DoCeluNaCzasWebApi.Models.PublicTransport.Delay
+﻿namespace DCNC.Bussiness.PublicTransport.Delays
 {
     public class ChooseBusStopModel
     {

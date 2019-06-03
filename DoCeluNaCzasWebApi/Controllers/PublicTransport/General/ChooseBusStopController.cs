@@ -1,8 +1,8 @@
 ﻿using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
-using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
 using System.Collections.ObjectModel;
 using System.Web.Http;
+using DCNC.Bussiness.PublicTransport.Delays;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.General
 {

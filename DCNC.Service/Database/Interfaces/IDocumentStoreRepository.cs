@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 
@@ -15,6 +16,7 @@ namespace DCNC.Service.Database.Interfaces
         List<MinuteTimeTable> GetMinuteTimeTableListByBusLineName(string busLineName);
         List<TimeTableData> GetTimeTableDataByRouteId(int routeId);
         List<TimeTableData> GetTimeTableDataByRouteId(List<int> routeIds);
+        TimeTableData GetTimeTableDataByRouteIdAndDayOfWeek(int routeId, DayOfWeek dayOfWeek);
         DbJson GetDbJson(JsonType type);
     }
 }

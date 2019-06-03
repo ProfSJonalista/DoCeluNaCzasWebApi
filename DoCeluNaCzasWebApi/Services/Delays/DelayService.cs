@@ -4,7 +4,6 @@ using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Models.PublicTransport.Delay;
 using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DCNC.Bussiness.PublicTransport.Delays;
 
 // ReSharper disable PossibleNullReferenceException
 
@@ -56,7 +56,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
             return new ObservableCollection<DelayModel>(convertedData);
         }
-
+        //todo zaimplementować TimeSpan.FromSeconds
         string GetDelayMessage(int itemDelayInSeconds)
         {
             if (itemDelayInSeconds >= 0)

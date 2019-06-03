@@ -35,6 +35,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         static async void UpdateDataEvent(object source, ElapsedEventArgs e)
         {
             await _timeTableService.SetTimeTables();
+            _minuteTimeTableService.SetMinuteTimeTables();
         }
 
         public static MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)

@@ -5,9 +5,9 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
 {
     public class Route
     {
-        public TimeSpan FullTimeOfTravel { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
+        public TimeSpan FullTimeOfTravel { get; set; }
         public List<Change> ChangeList { get; set; }
     }
 
@@ -17,9 +17,9 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
         public int RouteId { get; set; }
         public int TripId { get; set; }
         public int ChangeNo { get; set; }
-        public TimeSpan TimeOfTravel { get; set; }
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
+        public TimeSpan TimeOfTravel { get; set; }
         public List<StopChange> StopChangeList { get; set; }
     }
 
