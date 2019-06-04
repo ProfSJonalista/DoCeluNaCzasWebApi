@@ -8,6 +8,7 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
         public TimeSpan FullTimeOfTravel { get; set; }
+        public string Buses { get; set; }
         public List<Change> ChangeList { get; set; }
     }
 

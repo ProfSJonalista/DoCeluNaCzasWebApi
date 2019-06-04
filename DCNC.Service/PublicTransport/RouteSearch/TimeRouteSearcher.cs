@@ -104,6 +104,16 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             route.DepartureTime = route.ChangeList.First().DepartureTime;
             route.ArrivalTime = route.ChangeList.Last().ArrivalTime;
             route.FullTimeOfTravel = route.ArrivalTime - route.DepartureTime;
+            route.Buses = "";
+
+            route.ChangeList.ForEach(x =>
+            {
+                route.Buses += x.BusLineName + ", ";
+            });
+
+            route.Buses = string.IsNullOrEmpty(route.Buses)
+                ? ""
+                : route.Buses.Remove(route.Buses.Length - 2);
 
             return route;
         }
