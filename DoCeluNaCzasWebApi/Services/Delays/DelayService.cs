@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.General;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Caching;
@@ -56,27 +57,21 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
             return new ObservableCollection<DelayModel>(convertedData);
         }
-        //todo zaimplementować TimeSpan.FromSeconds
-        string GetDelayMessage(int itemDelayInSeconds)
+
+        static string GetDelayMessage(int itemDelayInSeconds)
         {
+            var timeSpan = TimeSpan.FromSeconds(itemDelayInSeconds);
+
             if (itemDelayInSeconds >= 0)
             {
-                var minutes = itemDelayInSeconds / 60;
+                if (timeSpan.Minutes > 0) return timeSpan.Minutes + " min";
 
-                if (minutes > 0) return minutes + "min";
-
-                var seconds = itemDelayInSeconds % 60;
-                return seconds > 10 ? "> 1 min" : "Teraz!";
+                return timeSpan.Seconds > 10 ? "> 1 min" : "Teraz!";
             }
-            else
-            {
-                var minutes = itemDelayInSeconds / 60;
 
-                if (minutes < 0) return minutes + "min";
+            if (timeSpan.Minutes < 0) return timeSpan.Minutes + " min";
 
-                var seconds = itemDelayInSeconds % 60;
-                return seconds < 10 ? "> 1 min" : "Teraz!";
-            }
+            return timeSpan.Seconds < 10 ? "> 1 min" : "Teraz!";
         }
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
