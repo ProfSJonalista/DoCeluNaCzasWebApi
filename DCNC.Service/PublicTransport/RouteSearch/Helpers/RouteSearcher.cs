@@ -115,10 +115,10 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                                 if (routeToCheck != null)
                                 {
                                     var changeOneToCheck =
-                                        routeToCheck.ChangeList.SingleOrDefault(x =>
+                                        routeToCheck.ChangeList.FirstOrDefault(x =>
                                             x.BusLineName.Equals(changeOne.BusLineName));
                                     var changeTwoToCheck =
-                                        routeToCheck.ChangeList.SingleOrDefault(x =>
+                                        routeToCheck.ChangeList.FirstOrDefault(x =>
                                             x.BusLineName.Equals(changeTwo.BusLineName));
 
                                     if (changeTwoToCheck != null && 

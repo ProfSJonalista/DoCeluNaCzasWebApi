@@ -27,8 +27,9 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
                     var mtt = minuteTimeTableList.FirstOrDefault(x => x.StopId == stopModel.StopId) ??
                               new MinuteTimeTable
                               {
-                                  BusLineName = tripModel.BusLineName,
                                   StopId = stopModel.StopId,
+                                  StopName = stopModel.Name,
+                                  BusLineName = tripModel.BusLineName,
                                   RouteIds = routeIds,
                                   MinuteDictionary = new Dictionary<DayType, Dictionary<int, List<int>>>(),
                                   ModMinuteDictionary = new Dictionary<DayType, Dictionary<int, string>>()
