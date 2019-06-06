@@ -5,8 +5,9 @@ namespace DCNC.Bussiness.PublicTransport.TimeTable
 {
     public class MinuteTimeTable : Common
     {
-        public string BusLineName { get; set; }
         public int StopId { get; set; }
+        public string StopName { get; set; }
+        public string BusLineName { get; set; }
         public List<int> RouteIds { get; set; }
         public Dictionary<DayType, Dictionary<int, List<int>>> MinuteDictionary { get; set; }
         public Dictionary<DayType, Dictionary<int, string>> ModMinuteDictionary { get; set; }

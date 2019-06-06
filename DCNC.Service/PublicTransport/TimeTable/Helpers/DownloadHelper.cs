@@ -29,10 +29,10 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 
             foreach (var stopTime in convertedStopTimes)
             {
+                var objectsToSaveInDb = new List<TimeTableJson>();
+
                 using (var client = new HttpClient())
                 {
-                    var objectsToSaveInDb = new List<TimeTableJson>();
-
                     foreach (var url in stopTime.Urls)
                     {
                         var json = await _publicTransportRepository.DownloadData(url, client);
@@ -54,9 +54,9 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                             });
                         }
                     }
-
-                    _documentStoreRepository.Save(objectsToSaveInDb);
                 }
+
+                _documentStoreRepository.Save(objectsToSaveInDb);
             }
 
             return entitiesThatWerentDownloaded;
