@@ -101,7 +101,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
                 });
             });
 
-            return organizedTrips;
+            return organizedTrips.OrderBy(x => x.BusLineName).ToList();
         }
     }
 }

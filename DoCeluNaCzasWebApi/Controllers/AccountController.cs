@@ -20,7 +20,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : RavenController
+    public class AccountController : /*ApiController//*/RavenController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
@@ -40,12 +40,10 @@ namespace DoCeluNaCzasWebApi.Controllers
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                var manager = _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return manager;
             }
-            private set
-            {
-                _userManager = value;
-            }
+            private set => _userManager = value;
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }

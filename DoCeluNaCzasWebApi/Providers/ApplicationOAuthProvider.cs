@@ -16,7 +16,12 @@ namespace DoCeluNaCzasWebApi.Providers
 
         public ApplicationOAuthProvider(string publicClientId)
         {
-            _publicClientId = publicClientId ?? throw new ArgumentNullException("publicClientId");
+            if (publicClientId == null)
+            {
+                throw new ArgumentNullException("publicClientId");
+            }
+
+            _publicClientId = publicClientId;
         }
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)

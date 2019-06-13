@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Raven.Client.Documents.Session;
-using System;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 
 namespace DoCeluNaCzasWebApi.Controllers
 {
@@ -27,7 +25,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 
         public RavenController()
         {
-            this.AutoSave = true;
+            AutoSave = true;
         }
 
         protected override void Dispose(bool disposing)

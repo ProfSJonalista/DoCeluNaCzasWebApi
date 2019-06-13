@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using DCNC.DataAccess.PublicTransport;
+﻿using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
@@ -10,17 +9,16 @@ using DCNC.Service.PublicTransport.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using DoCeluNaCzasWebApi.Hubs;
 using DoCeluNaCzasWebApi.Services.Delays;
-using DoCeluNaCzasWebApi.Services.PublicTransport;
-using DoCeluNaCzasWebApi.Services.UpdateService;
-using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
-using Microsoft.Owin;
-using Owin;
-using System.Web.Http;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
+using DoCeluNaCzasWebApi.Services.UpdateService;
+using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
 using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
+using Owin;
 using PublicHoliday;
+using System.Web.Http;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -35,10 +33,9 @@ namespace DoCeluNaCzasWebApi
                 IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always // Add this line to enable detail mode in release
             };
 
-            WebApiConfig.Register(config);
             app.UseWebApi(config);
-            //TODO - fix auth - UserManager appears to be null
-            //ConfigureAuth(app);
+            
+            ConfigureAuth(app);
 
             var hubConfiguration = new HubConfiguration {EnableDetailedErrors = true};
             app.MapSignalR(hubConfiguration);
@@ -46,7 +43,7 @@ namespace DoCeluNaCzasWebApi
             ConfigureServices();
         }
 
-        static async Task ConfigureServices()
+        static async void ConfigureServices()
         {
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
