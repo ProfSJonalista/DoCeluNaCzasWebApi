@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DCNC.DataAccess")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("b18e25e2-c003-4234-a2e1-02aeb7d45045")]
+[assembly: Guid("cfd216a0-148f-42a7-a060-6b6a7d0ab655")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -33,6 +33,3 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("DCNC.DataAccess.Tests")]
-[assembly: InternalsVisibleTo("DCNC.DataAccess.Explorables")]
-
