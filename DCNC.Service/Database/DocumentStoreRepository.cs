@@ -3,6 +3,7 @@ using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.Database
@@ -139,6 +140,27 @@ namespace DCNC.Service.Database
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
                 return session.Query<DbJson>().FirstOrDefault(x => x.Type == type);
+            }
+        }
+
+        #endregion
+
+        #region TripsWithBusStops
+
+        public void DeleteTripsWithBusStops()
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var ids = session.Query<TripsWithBusStops>().Select(x => x.Id).ToList();
+                Delete(ids);
+            }
+        }
+
+        public TripsWithBusStops GetTripsByDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<TripsWithBusStops>().FirstOrDefault(x => x.Day.DayOfWeek == dayOfWeek);
             }
         }
 

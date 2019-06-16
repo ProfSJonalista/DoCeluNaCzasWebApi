@@ -24,7 +24,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
             var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
             _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
 
-             SetTimer();
+            SetTimer();
         }
 
         public static void SetTimer()

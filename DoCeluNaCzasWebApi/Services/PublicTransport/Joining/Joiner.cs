@@ -3,6 +3,7 @@ using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
 {
@@ -19,15 +20,14 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining
             _tripsWithBusStopsService = tripsWithBusStopsService;
         }
 
-        public List<JoinedTripsModel> GetJoinedTripsModelList(
-            List<TripData> tripDataList,
-            List<BusStopData> busStopDataList,
-            List<BusLineData> busLineDataList,
-            List<StopInTripData> stopInTripDataList,
-            ExpeditionData expeditionObject)
+        public List<TripsWithBusStops> GetTripsWithBusStopList(List<TripData> tripDataList, List<BusStopData> busStopDataList, 
+            List<BusLineData> busLineDataList, List<StopInTripData> stopInTripDataList, ExpeditionData expeditionObject)
         {
-            var tripsWithBusStops = _tripsWithBusStopsService.GetTripsWithBusStops(tripDataList,
-                busStopDataList, busLineDataList, stopInTripDataList, expeditionObject);
+            return _tripsWithBusStopsService.GetTripsWithBusStops(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionObject);
+        }
+
+        public List<JoinedTripsModel> GetJoinedTripsModelList(List<TripsWithBusStops> tripsWithBusStops, List<BusLineData> busLineDataList)
+        {
             var organizedTrips = _tripsWithBusStopsService.OrganizeTrips(tripsWithBusStops, busLineDataList);
             var joinedDistinctBusLineList = JoinBusLines(busLineDataList);
             var joinedTripList = _combineTripService.JoinTrips(organizedTrips, joinedDistinctBusLineList);
