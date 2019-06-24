@@ -92,7 +92,7 @@ namespace DoCeluNaCzasWebApi
             var minuteTimeTableService = new MinuteTimeTableService(minuteTimeTableBuilder, documentStoreRepository);
 
             await UpdateDataService.Init(timeService, updateServiceHelper);
-            UpdateTimeTableService.Init(timeTableService, minuteTimeTableService);
+            //UpdateTimeTableService.Init(timeTableService, minuteTimeTableService);
         }
     }
 }

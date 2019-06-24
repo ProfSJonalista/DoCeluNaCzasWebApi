@@ -1,9 +1,8 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.TimeTable;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using DCNC.Bussiness.PublicTransport.TimeTable;
-using Newtonsoft.Json.Linq;
 
 namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 {
@@ -44,7 +43,6 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
             var firstStopTime = timeTableData.StopTimes.FirstOrDefault();
 
             timeTableData.RouteId = firstStopTime.RouteId;
-            timeTableData.TripId = firstStopTime.TripId;
             timeTableData.Date = firstStopTime.Date;
 
             return timeTableData;

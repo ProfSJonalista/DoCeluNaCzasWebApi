@@ -22,9 +22,8 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
         {
             var tripsWithBusStops = new List<TripsWithBusStops>();
 
-            busLineDataList.ForEach(busLine => tripsWithBusStops.Add(Map(
-                busLine,
-                expeditionObject,
+            busLineDataList.ForEach(busLine => tripsWithBusStops.Add(
+                Map(busLine, expeditionObject,
                 tripDataList.SingleOrDefault(trip => trip.Day == busLine.Day),
                 busStopDataList.SingleOrDefault(stop => stop.Day == busLine.Day),
                 stopInTripDataList.SingleOrDefault(stopInTrip => stopInTrip.Day == busLine.Day)
@@ -70,6 +69,8 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
                         });
                 });
             });
+
+            tripsWithBusStops.Trips = tripsWithBusStops.Trips.OrderBy(x => x.BusLineName).ToList();
 
             return tripsWithBusStops;
         }

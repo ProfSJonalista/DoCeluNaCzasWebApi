@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Http;
 using DCNC.Service.Database;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
@@ -14,7 +15,8 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
 
         public RouteSearchController()
         {
-            _routeSearchService = new RouteSearchService(new RouteSearcher(), new TimeRouteSearcher(new TimeSearcher(new DocumentStoreRepository())));
+            IDocumentStoreRepository dsr = new DocumentStoreRepository();
+            _routeSearchService = new RouteSearchService(new RouteSearcher(), new TimeRouteSearcher(new TimeSearcher(dsr)), dsr);
         }
 
         public List<Route> Get(int startStopId, int destStopId, bool departure, DateTime desiredTime)
