@@ -8,9 +8,12 @@ namespace DCNC.Service.PublicTransport.RouteSearch
 {
     public class TimeRouteSearcher
     {
+        readonly RouteCreator _routeCreator;
         readonly TimeSearcher _timeSearcher;
-        public TimeRouteSearcher(TimeSearcher timeSearcher)
+
+        public TimeRouteSearcher(TimeSearcher timeSearcher, RouteCreator routeCreator)
         {
+            _routeCreator = routeCreator;
             _timeSearcher = timeSearcher;
         }
 
@@ -20,14 +23,18 @@ namespace DCNC.Service.PublicTransport.RouteSearch
 
             foreach (var route in routes)
             {
-                var routeOneToAdd = new Route { ChangeList = new List<Change>() };
-                var routeTwoToAdd = new Route { ChangeList = new List<Change>() };
-
                 var changeListCount = route.ChangeList.Count;
 
-                if (changeListCount == 0) continue;
+                if (changeListCount == 0)
+                    continue;
+
+                Route routeOneToAdd = new Route { ChangeList = new List<Change>() };
+                Route routeTwoToAdd = new Route { ChangeList = new List<Change>() };
+
                 if (changeListCount == 1)
                 {
+                    //routeOneToAdd = _routeCreator.CreateRoute
+
                     var changeToLookTimeFor = route.ChangeList.First();
                     var changeOneToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, departure, desiredTime, true);
 
@@ -39,6 +46,8 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                     if (changeTwoToAdd.TimeOfTravel.Minutes != 0)
                         routeTwoToAdd.ChangeList.Add(changeTwoToAdd);
                 }
+
+                #region Many routes
 
                 if (changeListCount > 1)
                 {
@@ -70,8 +79,13 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                         //option 1
                         lastElWithTimeOne = _timeSearcher.GetChangeWithTime(lastEl, false, desiredTime, true);
 
-                        var dateTime = lastElWithTimeOne.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
-                        firstElWithTimeOne = _timeSearcher.GetChangeWithTime(firstEl, false, dateTime, true);
+                        if (lastElWithTimeOne.DepartureTime.Year < 1899)
+                            firstElWithTimeOne = new Change();
+                        else
+                        {
+                            var dateTime = lastElWithTimeOne.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
+                            firstElWithTimeOne = _timeSearcher.GetChangeWithTime(firstEl, false, dateTime, true);
+                        }
 
                         //option 2
                         lastElWithTimeTwo = _timeSearcher.GetChangeWithTime(lastEl, false, desiredTime, false);
@@ -97,6 +111,8 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                         routeTwoToAdd.ChangeList.Add(lastElWithTimeTwo);
                     }
                 }
+
+                #endregion
 
                 routeOneToAdd.ChangeList = routeOneToAdd.ChangeList.OrderBy(x => x.ChangeNo).ToList();
                 routeTwoToAdd.ChangeList = routeTwoToAdd.ChangeList.OrderBy(x => x.ChangeNo).ToList();

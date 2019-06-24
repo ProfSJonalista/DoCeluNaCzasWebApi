@@ -31,11 +31,11 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             if (timeTableData == null)
                 return changeToReturn;
 
-            var startingStopTime = GetStartingStopTime(before, departure, timeTableData.StopTimes, desiredTime, change.StopChangeList);
+            var (startingStopTime, stopTimeIndex) = GetStartingStopTime(before, departure, timeTableData.StopTimes, desiredTime, change.StopChangeList);
 
-            var stopTimeIndex = timeTableData.StopTimes.IndexOf(startingStopTime);
+            if (stopTimeIndex < 0)
+                return changeToReturn;
 
-            if (stopTimeIndex < 0) return changeToReturn;
             var stopTimeList = timeTableData.StopTimes.GetRange(stopTimeIndex, change.StopChangeList.Count);
 
             for (var i = 0; i < change.StopChangeList.Count; i++)
@@ -69,7 +69,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             return changeToReturn;
         }
 
-        static StopTime GetStartingStopTime(bool before, bool departure, List<StopTime> stopTimes, DateTime desiredTime, IReadOnlyCollection<StopChange> stopList)
+        static (StopTime, int) GetStartingStopTime(bool before, bool departure, List<StopTime> stopTimes, DateTime desiredTime, IReadOnlyCollection<StopChange> stopList)
         {
             StopTime startingStopTime;
             var firstStop = stopList.First();
@@ -90,12 +90,13 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                 {
                     var lastStopTime = stopTimes
                         .OrderBy(x => x.ArrivalTime)
-                        .FirstOrDefault(time =>
-                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
+                        .LastOrDefault(time =>
+                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < 240
                             && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
 
-                    if(lastStopTime == null) return new StopTime();
+                    if (lastStopTime == null)
+                        return (new StopTime(), -1);
 
                     var lastStopTimeIndex = stopTimes.IndexOf(lastStopTime);
                     var startingStopTimeIndex = lastStopTimeIndex - stopList.Count;
@@ -109,7 +110,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                     startingStopTime = stopTimes
                         .OrderBy(x => x.DepartureTime)
                         .FirstOrDefault(time =>
-                            time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) > 0
+                            time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < 240
                             && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
                 }
@@ -117,12 +118,13 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                 {
                     var lastStopTime = stopTimes
                         .OrderBy(x => x.ArrivalTime)
-                        .LastOrDefault(time =>
-                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) <= 0
+                        .FirstOrDefault(time =>
+                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < 240
                             && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
 
-                    if (lastStopTime == null) return new StopTime();
+                    if (lastStopTime == null) return
+                            (new StopTime(), -1);
 
                     var lastStopTimeIndex = stopTimes.IndexOf(lastStopTime);
                     var startingStopTimeIndex = lastStopTimeIndex - stopList.Count;
@@ -130,7 +132,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                 }
             }
 
-            return startingStopTime;
+            return (startingStopTime, stopTimes.IndexOf(startingStopTime));
         }
     }
 }

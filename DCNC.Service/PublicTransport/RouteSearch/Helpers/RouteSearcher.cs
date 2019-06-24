@@ -64,9 +64,6 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
                     var currentStopIndex = stopSubList.IndexOf(stop);
 
-                    //if (startStopIndex >= currentStopIndex || stop.StopId == destStopId)
-                    //    continue;
-
                     foreach (var option in possibleChanges)
                     {
                         var secondChangeStopIndex = option.Stops.FindIndex(x => x.Name.Equals(stop.Name));

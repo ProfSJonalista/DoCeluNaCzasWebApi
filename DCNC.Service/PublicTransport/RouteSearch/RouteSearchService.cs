@@ -1,12 +1,9 @@
-﻿using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Bussiness.PublicTransport.RouteSearch;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
+﻿using DCNC.Bussiness.PublicTransport.RouteSearch;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DCNC.Service.Database.Interfaces;
 
 namespace DCNC.Service.PublicTransport.RouteSearch
 {
