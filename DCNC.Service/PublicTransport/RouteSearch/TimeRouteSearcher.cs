@@ -9,12 +9,10 @@ namespace DCNC.Service.PublicTransport.RouteSearch
     public class TimeRouteSearcher
     {
         readonly RouteCreator _routeCreator;
-        readonly TimeSearcher _timeSearcher;
 
-        public TimeRouteSearcher(TimeSearcher timeSearcher, RouteCreator routeCreator)
+        public TimeRouteSearcher(RouteCreator routeCreator)
         {
             _routeCreator = routeCreator;
-            _timeSearcher = timeSearcher;
         }
 
         public List<Route> GetTimeForRoutes(List<Route> routes, bool departure, DateTime desiredTime)
@@ -28,26 +26,16 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                 if (changeListCount == 0)
                     continue;
 
-                Route routeOneToAdd = new Route { ChangeList = new List<Change>() };
-                Route routeTwoToAdd = new Route { ChangeList = new List<Change>() };
+                var routeOneToAdd = new Route { ChangeList = new List<Change>() };
+                var routeTwoToAdd = new Route { ChangeList = new List<Change>() };
 
                 if (changeListCount == 1)
                 {
-                    //routeOneToAdd = _routeCreator.CreateRoute
-
                     var changeToLookTimeFor = route.ChangeList.First();
-                    var changeOneToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, departure, desiredTime, true);
 
-                    if (changeOneToAdd.TimeOfTravel.Minutes != 0)
-                        routeOneToAdd.ChangeList.Add(changeOneToAdd);
-
-                    var changeTwoToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, departure, desiredTime, false);
-
-                    if (changeTwoToAdd.TimeOfTravel.Minutes != 0)
-                        routeTwoToAdd.ChangeList.Add(changeTwoToAdd);
+                    _routeCreator.SetDirect(routeOneToAdd, changeToLookTimeFor, desiredTime, departure, true);
+                    _routeCreator.SetDirect(routeTwoToAdd, changeToLookTimeFor, desiredTime, departure, false);
                 }
-
-                #region Many routes
 
                 if (changeListCount > 1)
                 {
@@ -62,94 +50,27 @@ namespace DCNC.Service.PublicTransport.RouteSearch
 
                     if (departure)
                     {
-                        //option 1
-                        firstElWithTimeOne = _timeSearcher.GetChangeWithTime(firstEl, true, desiredTime, true);
-
-                        var dateTime = firstElWithTimeOne.ArrivalTime.AddMinutes(1);
-                        lastElWithTimeOne = _timeSearcher.GetChangeWithTime(lastEl, true, dateTime, false);
-
-                        //option 2
-                        firstElWithTimeTwo = _timeSearcher.GetChangeWithTime(firstEl, true, desiredTime, false);
-
-                        var dateTime2 = firstElWithTimeTwo.ArrivalTime.AddMinutes(1);
-                        lastElWithTimeTwo = _timeSearcher.GetChangeWithTime(lastEl, true, dateTime2, false);
+                        (firstElWithTimeOne, lastElWithTimeOne) = _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, true, true, false);
+                        (firstElWithTimeTwo, lastElWithTimeTwo) = _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, true, false, false);
                     }
                     else
                     {
-                        //option 1
-                        lastElWithTimeOne = _timeSearcher.GetChangeWithTime(lastEl, false, desiredTime, true);
-
-                        if (lastElWithTimeOne.DepartureTime.Year < 1899)
-                            firstElWithTimeOne = new Change();
-                        else
-                        {
-                            var dateTime = lastElWithTimeOne.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
-                            firstElWithTimeOne = _timeSearcher.GetChangeWithTime(firstEl, false, dateTime, true);
-                        }
-
-                        //option 2
-                        lastElWithTimeTwo = _timeSearcher.GetChangeWithTime(lastEl, false, desiredTime, false);
-
-                        if (lastElWithTimeTwo.DepartureTime.Year < 1899)
-                            firstElWithTimeTwo = new Change();
-                        else
-                        {
-                            var dateTime2 = lastElWithTimeTwo.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
-                            firstElWithTimeTwo = _timeSearcher.GetChangeWithTime(firstEl, false, dateTime2, true);
-                        }
+                        (firstElWithTimeOne, lastElWithTimeOne) = _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, false, true, true);
+                        (firstElWithTimeTwo, lastElWithTimeTwo) = _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, false, true, false);
                     }
 
-                    if (firstElWithTimeOne.TimeOfTravel.Minutes != 0 || lastElWithTimeOne.TimeOfTravel.Minutes != 0)
-                    {
-                        routeOneToAdd.ChangeList.Add(firstElWithTimeOne);
-                        routeOneToAdd.ChangeList.Add(lastElWithTimeOne);
-                    }
-
-                    if (firstElWithTimeTwo.TimeOfTravel.Minutes != 0 || lastElWithTimeTwo.TimeOfTravel.Minutes != 0)
-                    {
-                        routeTwoToAdd.ChangeList.Add(firstElWithTimeTwo);
-                        routeTwoToAdd.ChangeList.Add(lastElWithTimeTwo);
-                    }
+                    _routeCreator.CheckTime(routeOneToAdd, firstElWithTimeOne, lastElWithTimeOne);
+                    _routeCreator.CheckTime(routeTwoToAdd, firstElWithTimeTwo, lastElWithTimeTwo);
                 }
-
-                #endregion
 
                 routeOneToAdd.ChangeList = routeOneToAdd.ChangeList.OrderBy(x => x.ChangeNo).ToList();
                 routeTwoToAdd.ChangeList = routeTwoToAdd.ChangeList.OrderBy(x => x.ChangeNo).ToList();
 
-                if (routeOneToAdd.ChangeList.Count > 0)
-                {
-                    routeOneToAdd = SetTimeInRoute(routeOneToAdd);
-
-                    if (routeOneToAdd.FullTimeOfTravel.Hours < 5)
-                        routesWithTime.Add(routeOneToAdd);
-                }
-
-                if (routeTwoToAdd.ChangeList.Count <= 0) continue;
-
-                routeTwoToAdd = SetTimeInRoute(routeTwoToAdd);
-
-                if (routeTwoToAdd.FullTimeOfTravel.Hours < 5)
-                    routesWithTime.Add(routeTwoToAdd);
+                _routeCreator.CheckTime(routesWithTime, routeOneToAdd);
+                _routeCreator.CheckTime(routesWithTime, routeTwoToAdd);
             }
 
             return routesWithTime;
-        }
-
-        static Route SetTimeInRoute(Route route)
-        {
-            route.DepartureTime = route.ChangeList.First().DepartureTime;
-            route.ArrivalTime = route.ChangeList.Last().ArrivalTime;
-            route.FullTimeOfTravel = route.ArrivalTime - route.DepartureTime;
-            route.Buses = "";
-
-            route.ChangeList.ForEach(x => { route.Buses += x.BusLineName + ", "; });
-
-            route.Buses = !string.IsNullOrEmpty(route.Buses)
-                ? route.Buses.Remove(route.Buses.Length - 2)
-                : "";
-
-            return route;
         }
     }
 }

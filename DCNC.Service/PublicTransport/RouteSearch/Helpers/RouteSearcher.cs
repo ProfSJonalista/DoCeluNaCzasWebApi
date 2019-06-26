@@ -14,11 +14,11 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
     {
         readonly string[] separator = { ", " };
 
-        public List<Route> GetDirectLines(List<Trip> trips, int startStopId, int destStopId)
+        public List<Route> GetDirectLines(IEnumerable<Trip> trips, int startStopId, int destStopId)
         {
             var routesToReturn = new List<Route>();
             var listToIterate = trips.Where(x =>
-                x.Stops.Any(y => y.StopId == startStopId) 
+                x.Stops.Any(y => y.StopId == startStopId)
                 && x.Stops.Any(y => y.StopId == destStopId));
 
             foreach (var trip in listToIterate)
@@ -38,10 +38,10 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             return routesToReturn;
         }
 
-        public List<Route> GetLinesWithOneChange(List<Trip> trips, int startStopId, int destStopId)
+        public List<Route> GetRoutes(List<Trip> trips, int startStopId, int destStopId)
         {
             var routesToReturn = new List<Route>();
-            var listToIterate = trips.Where(x => x.Stops.FindIndex(y => y.StopId == startStopId) > 0);
+            var listToIterate = trips.Where(x => x.Stops.FindIndex(y => y.StopId == startStopId) > -1);
             var stopListWithConnectedBusLines = CacheService.GetData<ObservableCollection<ChooseBusStopModel>>(CacheKeys.CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION);
 
             foreach (var trip in listToIterate)
@@ -52,15 +52,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
                 foreach (var stop in stopSubList)
                 {
-                    var stopsWithBuses = stopListWithConnectedBusLines.SingleOrDefault(x => x.StopId == stop.StopId);
-
-                    if (stopsWithBuses == null)
-                        continue;
-
-                    var busLineNamesOnCurrentStop = stopsWithBuses.BusLineNames.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
-                    
-                    var possibleChanges = trips.Where(tripModel => busLineNamesOnCurrentStop.Any(busLineName => busLineName.Equals(tripModel.BusLineName)))
-                                               .Where(tripModel => tripModel.Stops.Any(stopModel => stopModel.StopId == destStopId)).ToList();
+                    var possibleChanges = GetPossibleChanges(stopListWithConnectedBusLines, stop, trips, destStopId);
 
                     var currentStopIndex = stopSubList.IndexOf(stop);
 
@@ -86,36 +78,9 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         var changeOne = RouteMapper.MapChange(trip, startStopIndex, currentStopIndex + startStopIndex, 0);
                         var changeTwo = RouteMapper.MapChange(option, secondChangeStopIndex, destStopIndex, 1);
 
-                        var routeToCheck = routesToReturn.FirstOrDefault(x =>
-                        {
-                            var first = x.ChangeList.First();
-                            var last = x.ChangeList.Last();
+                        CheckRoutes(routesToReturn, changeOne, changeTwo);
 
-                            return first.BusLineName.Equals(changeOne.BusLineName) &&
-                                   last.BusLineName.Equals(changeTwo.BusLineName);
-                        });
-
-                        if (routeToCheck != null)
-                        {
-                            var changeOneToCheck =
-                                routeToCheck.ChangeList.FirstOrDefault(x =>
-                                    x.BusLineName.Equals(changeOne.BusLineName));
-                            var changeTwoToCheck =
-                                routeToCheck.ChangeList.FirstOrDefault(x =>
-                                    x.BusLineName.Equals(changeTwo.BusLineName));
-
-                            if (changeTwoToCheck != null
-                                && changeOneToCheck != null
-                                && changeOneToCheck.StopChangeList.Count <= changeOne.StopChangeList.Count
-                                && changeTwoToCheck.StopChangeList.Count <= changeTwo.StopChangeList.Count)
-                            {
-                                continue;
-                            }
-
-                            routesToReturn.Remove(routeToCheck);
-                        }
-
-                        var routeToAdd = new Route() { ChangeList = new List<Change>() };
+                        var routeToAdd = new Route { ChangeList = new List<Change>() };
                         routeToAdd.ChangeList.Add(changeOne);
                         routeToAdd.ChangeList.Add(changeTwo);
 
@@ -125,6 +90,52 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             }
 
             return routesToReturn;
+        }
+
+        static void CheckRoutes(ICollection<Route> routesToReturn, Change changeOne, Change changeTwo)
+        {
+            var routeToCheck = routesToReturn.FirstOrDefault(x =>
+            {
+                var first = x.ChangeList.First();
+                var last = x.ChangeList.Last();
+
+                return first.BusLineName.Equals(changeOne.BusLineName) &&
+                       last.BusLineName.Equals(changeTwo.BusLineName);
+            });
+
+            if (routeToCheck == null) return;
+
+            var changeOneToCheck =
+                routeToCheck.ChangeList.FirstOrDefault(x =>
+                    x.BusLineName.Equals(changeOne.BusLineName));
+            var changeTwoToCheck =
+                routeToCheck.ChangeList.FirstOrDefault(x =>
+                    x.BusLineName.Equals(changeTwo.BusLineName));
+
+            if (changeTwoToCheck != null
+                && changeOneToCheck != null
+                && changeOneToCheck.StopChangeList.Count <= changeOne.StopChangeList.Count
+                && changeTwoToCheck.StopChangeList.Count <= changeTwo.StopChangeList.Count)
+            {
+                return;
+            }
+
+            routesToReturn.Remove(routeToCheck);
+        }
+
+        IEnumerable<Trip> GetPossibleChanges(ObservableCollection<ChooseBusStopModel> stopListWithConnectedBusLines, Stop stop, IEnumerable<Trip> trips, int destStopId)
+        {
+            var stopsWithBuses = stopListWithConnectedBusLines.SingleOrDefault(x => x.StopId == stop.StopId);
+
+            if (stopsWithBuses == null)
+                return new List<Trip>();
+
+            var busLineNamesOnCurrentStop = stopsWithBuses.BusLineNames.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            var possibleChanges = trips.Where(tripModel => busLineNamesOnCurrentStop.Any(busLineName => busLineName.Equals(tripModel.BusLineName)))
+                .Where(tripModel => tripModel.Stops.Any(stopModel => stopModel.StopId == destStopId));
+
+            return possibleChanges;
         }
     }
 }

@@ -25,8 +25,8 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             var tripsWithBusStops = _documentStoreRepository.GetTripsByDayOfWeek(desiredTime.DayOfWeek);
             var routesToReturn = _routeSearcher.GetDirectLines(tripsWithBusStops.Trips, startStopId, destStopId);
 
-            if(routesToReturn.Count <= 0)
-                routesToReturn = _routeSearcher.GetLinesWithOneChange(tripsWithBusStops.Trips, startStopId, destStopId);
+            if (routesToReturn.Count <= 0)
+                routesToReturn = _routeSearcher.GetRoutes(tripsWithBusStops.Trips, startStopId, destStopId);
 
             routesToReturn = _timeRouteSearcher.GetTimeForRoutes(routesToReturn, departure, desiredTime);
             routesToReturn = routesToReturn.OrderBy(x => x.DepartureTime).ToList();
