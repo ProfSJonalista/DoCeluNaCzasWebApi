@@ -80,7 +80,6 @@
     <Compile Include="PublicTransport\General\GroupedJoinedModel.cs" />
     <Compile Include="PublicTransport\JoiningTrips\CombinedTripModel.cs" />
     <Compile Include="PublicTransport\JoiningTrips\OrganizedTrips.cs" />
-    <Compile Include="PublicTransport\JoiningTrips\Trip.cs" />
     <Compile Include="PublicTransport\JoiningTrips\TripsWithBusStops.cs" />
     <Compile Include="PublicTransport\JsonData\DbJson.cs" />
     <Compile Include="PublicTransport\JsonData\General\BusLineData.cs" />

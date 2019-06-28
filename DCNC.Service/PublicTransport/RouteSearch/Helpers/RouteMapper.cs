@@ -2,31 +2,28 @@
 using DCNC.Bussiness.PublicTransport.RouteSearch;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
     public class RouteMapper
     {
-        public static Change MapChange(JoinedTripModel joinedTrip, int startStopIndex, int destStopIndex, int changeNo)
+        public static Change MapChange(Trip trip, int startStopIndex, int destStopIndex, int changeNo)
         {
-            var stop = joinedTrip.Stops.FirstOrDefault(x => !x.MainTrip);
-            var routeId = stop?.RouteId ?? joinedTrip.RouteId;
-            var tripId = stop?.TripId ?? joinedTrip.TripId;
-
             return new Change
             {
-                BusLineName = joinedTrip.BusLineName,
-                RouteId = routeId,
-                TripId = tripId,
+                BusLineName = trip.BusLineName,
+                RouteId = trip.RouteId,
+                TripId = trip.TripId,
                 ChangeNo = changeNo,
-                StopChangeList = MapStops(joinedTrip.Stops, startStopIndex, destStopIndex)
+                StopChangeList = MapStops(trip.Stops, startStopIndex, destStopIndex)
             };
         }
 
-        static List<StopChange> MapStops(List<JoinedStopModel> joinedTripStops, int startStopIndex, int destStopIndex)
+        static List<StopChange> MapStops(List<Stop> tripStops, int startStopIndex, int destStopIndex)
         {
             var count = (destStopIndex - startStopIndex) + 1;
-            var rangedSublist = joinedTripStops.GetRange(startStopIndex, count);
+            var rangedSublist = tripStops.GetRange(startStopIndex, count);
             var stopSequence = 0;
              
             var stopChangeList = rangedSublist.Select(x =>

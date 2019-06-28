@@ -74,8 +74,8 @@ namespace DoCeluNaCzasWebApi
             var stopInTripService = new StopInTripService(documentStoreRepository, publicTransportRepository);
             var busStopModelService = new BusStopModelService();
 
-            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService,
-            tripService, busStopService, busLineService, expeditionService, stopInTripService, busStopModelService);
+            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService, tripService, busStopService, 
+                busLineService, expeditionService, stopInTripService, busStopModelService, documentStoreRepository);
 
             var converter = new Converter();
             var filterHelper = new FilterHelper();
