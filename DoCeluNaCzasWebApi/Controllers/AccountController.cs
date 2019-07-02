@@ -20,7 +20,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 {
     [Authorize]
     [RoutePrefix("api/Account")]
-    public class AccountController : /*ApiController//*/RavenController
+    public class AccountController : RavenController
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
@@ -38,11 +38,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                var manager = _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-                return manager;
-            }
+            get => _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             private set => _userManager = value;
         }
 
@@ -327,14 +323,9 @@ namespace DoCeluNaCzasWebApi.Controllers
 
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            var result = await UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
+            return result.Succeeded ? Ok() : GetErrorResult(result);
         }
 
         // POST api/Account/RegisterExternal
@@ -383,10 +374,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 
         #region Helpers
 
-        private IAuthenticationManager Authentication
-        {
-            get { return Request.GetOwinContext().Authentication; }
-        }
+        private IAuthenticationManager Authentication => Request.GetOwinContext().Authentication;
 
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
@@ -395,35 +383,32 @@ namespace DoCeluNaCzasWebApi.Controllers
                 return InternalServerError();
             }
 
-            if (!result.Succeeded)
+            if (result.Succeeded) return null;
+
+            if (result.Errors != null)
             {
-                if (result.Errors != null)
+                foreach (var error in result.Errors)
                 {
-                    foreach (string error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error);
-                    }
+                    ModelState.AddModelError("", error);
                 }
-
-                if (ModelState.IsValid)
-                {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return BadRequest();
-                }
-
-                return BadRequest(ModelState);
             }
 
-            return null;
+            if (ModelState.IsValid)
+            {
+                // No ModelState errors are available to send, so just return an empty BadRequest.
+                return BadRequest();
+            }
+
+            return BadRequest(ModelState);
         }
 
         private class ExternalLoginData
         {
-            public string LoginProvider { get; set; }
-            public string ProviderKey { get; set; }
-            public string UserName { get; set; }
+            public string LoginProvider { get; private set; }
+            public string ProviderKey { get; private set; }
+            string UserName { get; set; }
 
-            public IList<Claim> GetClaims()
+            public IEnumerable<Claim> GetClaims()
             {
                 IList<Claim> claims = new List<Claim>
                 {
@@ -464,7 +449,7 @@ namespace DoCeluNaCzasWebApi.Controllers
 
         private static class RandomOAuthStateGenerator
         {
-            private static readonly RandomNumberGenerator Random = new RNGCryptoServiceProvider();
+            static readonly RandomNumberGenerator Random = new RNGCryptoServiceProvider();
 
             public static string Generate(int strengthInBits)
             {
