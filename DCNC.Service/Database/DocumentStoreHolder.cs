@@ -7,15 +7,12 @@ namespace DCNC.Service.Database
     {
         static readonly Lazy<IDocumentStore> _store = new Lazy<IDocumentStore>(CreateDocumentStore);
 
-        private static IDocumentStore CreateDocumentStore()
+        static IDocumentStore CreateDocumentStore()
         {
-            const string serverUrl = "http://127.0.0.1:8080";
-            const string databaseName = "DcncDb";
-
             IDocumentStore documentStore = new DocumentStore
             {
-                Urls = new[] { serverUrl },
-                Database = databaseName
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "DcncDb"
             };
 
             documentStore.Initialize();
