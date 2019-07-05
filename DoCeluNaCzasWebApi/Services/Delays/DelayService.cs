@@ -40,7 +40,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 var tripHeadsign = TripData.Trips
                     .FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
                 var headsign = JoinTripHelper.GetDestinationStopName(tripHeadsign);
-                var delayMessage = GetDelayMessage(item.DelayInSeconds);
+                var delayMessage = GetDelayMessage(item);
 
                 return new DelayModel()
                 {
@@ -58,20 +58,34 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             return new ObservableCollection<DelayModel>(convertedData);
         }
 
-        static string GetDelayMessage(int itemDelayInSeconds)
+        static string GetDelayMessage(Delay delay)
         {
-            var timeSpan = TimeSpan.FromSeconds(itemDelayInSeconds);
+            var difference = delay.EstimatedTime.TimeOfDay - DateTime.Now.TimeOfDay;
 
-            if (itemDelayInSeconds >= 0)
+            if (difference.Ticks > 0)
             {
-                if (timeSpan.Minutes > 0) return timeSpan.Minutes + " min";
+                if (difference.Minutes < 1 && difference.Seconds > 0)
+                {
+                    return difference.Seconds > 10
+                        ? "> 1 min"
+                        : "Teraz!";
+                }
 
-                return timeSpan.Seconds > 10 ? "> 1 min" : "Teraz!";
+                return difference.Minutes > 5
+                    ? delay.EstimatedTime.ToShortTimeString()
+                    : "> " + difference.Minutes + " min";
             }
 
-            if (timeSpan.Minutes < 0) return timeSpan.Minutes + " min";
+            if (difference.Minutes > -1 && difference.Seconds < 0)
+            {
+                return difference.Seconds < -10
+                    ? "> 1 min"
+                    : "Teraz!";
+            }
 
-            return timeSpan.Seconds < 10 ? "> 1 min" : "Teraz!";
+            return difference.Minutes < -5
+                ? delay.EstimatedTime.ToShortTimeString()
+                : "> " + difference.Minutes + " min";
         }
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
