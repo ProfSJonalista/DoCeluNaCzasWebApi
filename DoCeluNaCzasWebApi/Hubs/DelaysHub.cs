@@ -1,8 +1,8 @@
-﻿using DoCeluNaCzasWebApi.Services.Delays;
+﻿using DCNC.Bussiness.PublicTransport.Delays;
+using DoCeluNaCzasWebApi.Services.Delays;
 using Microsoft.AspNet.SignalR;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.Delays;
 
 namespace DoCeluNaCzasWebApi.Hubs
 {

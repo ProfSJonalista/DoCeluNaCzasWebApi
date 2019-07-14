@@ -22,8 +22,8 @@ namespace DoCeluNaCzasWebApi.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : RavenController
     {
-        private const string LocalLoginProvider = "Local";
-        private ApplicationUserManager _userManager;
+        const string LocalLoginProvider = "Local";
+        ApplicationUserManager _userManager;
 
         public AccountController()
         {
@@ -326,6 +326,15 @@ namespace DoCeluNaCzasWebApi.Controllers
             var result = await UserManager.CreateAsync(user, model.Password);
 
             return result.Succeeded ? Ok() : GetErrorResult(result);
+        }
+
+        [AllowAnonymous]
+        [Route("CheckIfEmailExist")]
+        public async Task<bool> CheckIfEmailExist(string email)
+        {
+            var user = await UserManager.FindByEmailAsync(email);
+
+            return user != null;
         }
 
         // POST api/Account/RegisterExternal

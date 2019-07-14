@@ -22,7 +22,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
 
             var stopsToJoin = oneWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
             var startStops = bothWayModel.Trips.FirstOrDefault(x => x.DirectionId == TripKey.START).Stops;
-            bothWayModel.Trips[TripKey.START].Stops = _combineHelper.GetStops(startStops, startStops, stopsToJoin);
+            bothWayModel.Trips[TripKey.START].Stops = _combineHelper.GetStops(stopsToJoin, startStops);
 
             return bothWayModel;
         }
