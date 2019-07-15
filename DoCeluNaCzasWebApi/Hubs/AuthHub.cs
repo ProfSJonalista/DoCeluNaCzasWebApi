@@ -8,9 +8,9 @@ namespace DoCeluNaCzasWebApi.Hubs
     {
         readonly AccountController _accountController = new AccountController();
 
-        public async Task<bool> CheckIfEmailExist(string email)
+        public async Task<bool> EmailExist(string email)
         {
-            return await _accountController.CheckIfEmailExist(email);
+            return await _accountController.EmailExist(email);
         }
     }
 }

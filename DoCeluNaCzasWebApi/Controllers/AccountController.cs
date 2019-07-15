@@ -329,8 +329,8 @@ namespace DoCeluNaCzasWebApi.Controllers
         }
 
         [AllowAnonymous]
-        [Route("CheckIfEmailExist")]
-        public async Task<bool> CheckIfEmailExist(string email)
+        [Route("EmailExist")]
+        public async Task<bool> EmailExist(string email)
         {
             var user = await UserManager.FindByEmailAsync(email);
 
