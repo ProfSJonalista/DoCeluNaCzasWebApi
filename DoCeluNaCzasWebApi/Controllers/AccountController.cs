@@ -328,6 +328,7 @@ namespace DoCeluNaCzasWebApi.Controllers
             return result.Succeeded ? Ok() : GetErrorResult(result);
         }
 
+        [HttpGet]
         [AllowAnonymous]
         [Route("EmailExist")]
         public async Task<bool> EmailExist(string email)
