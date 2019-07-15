@@ -23,7 +23,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
                    : SetMainRoute(firstDayTripList.FirstOrDefault());
         }
 
-        private Trip SetMainRoute(Trip trip)
+        static Trip SetMainRoute(Trip trip)
         {
             trip.MainRoute = true;
             trip.Stops.ForEach(stop => stop.MainTrip = true);
@@ -34,40 +34,37 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
         {
             var stopListToReturn = new List<Stop>();
 
-            trips.ForEach(organizedTrip =>
+            foreach (var organizedTrip in trips)
             {
-                organizedTrip.Trips[key].ForEach(trip =>
+                foreach (var trip in organizedTrip.Trips[key])
                 {
-                    stopListToReturn = GetStops(stopListToReturn, mainTripStopList, trip.Stops);
-                });
-            });
+                    stopListToReturn = GetStops(trip.Stops, stopListToReturn);
+                }
+            }
 
             return stopListToReturn;
         }
 
-        public List<Stop> GetStops(List<Stop> stopListToReturn, List<Stop> mainStops, List<Stop> stopsToJoin)
+        public List<Stop> GetStops(List<Stop> stopsToJoin, List<Stop> stopListToReturn)
         {
-            mainStops.ForEach(stop =>
+            foreach (var possibleStopToAdd in stopsToJoin)
             {
-                stopsToJoin.ForEach(possibleStopToAdd =>
+                var alreadyExists = stopListToReturn.Contains(possibleStopToAdd, _stopComparer);
+
+                if (alreadyExists) continue;
+
+                if (stopListToReturn.Count < 0)
                 {
-                    var alreadyExists = stopListToReturn.Contains(possibleStopToAdd, _stopComparer);
+                    var index = stopsToJoin.IndexOf(possibleStopToAdd);
 
-                    if (alreadyExists) return;
-
-                    if (stopListToReturn.Count > 0)
-                    {
-                        var index = stopsToJoin.IndexOf(possibleStopToAdd);
-
-                        if (index > stopListToReturn.Count)
-                            stopListToReturn.Add(possibleStopToAdd);
-                        else
-                            stopListToReturn.Insert(index, possibleStopToAdd);
-                    }
-                    else
+                    if (index > stopListToReturn.Count)
                         stopListToReturn.Add(possibleStopToAdd);
-                });
-            });
+                    else
+                        stopListToReturn.Insert(index, possibleStopToAdd);
+                }
+                else
+                    stopListToReturn.Add(possibleStopToAdd);
+            }
 
             return stopListToReturn;
         }

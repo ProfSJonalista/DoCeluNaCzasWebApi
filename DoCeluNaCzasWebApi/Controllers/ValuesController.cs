@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Http;
-using DCNC.DataAccess.PublicTransport;
-using DCNC.Service.Database;
+﻿using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.PublicTransport.JsonData.Delays;
 using DoCeluNaCzasWebApi.Services.Delays;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace DoCeluNaCzasWebApi.Controllers
 {
@@ -12,13 +11,13 @@ namespace DoCeluNaCzasWebApi.Controllers
     {
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new[] { "value1", "value2" };
         }
 
         // GET api/values/5
         public async Task<string> Get(int id)
         {
-            var cos = await new DelayService(new DelayJsonService(new PublicTransportRepository())).GetDelays(30129);
+            var cos = await new DelayService(new DelayJsonService(new PublicTransportRepository())).GetDelays(/*30129*/1206);
             return "Pamparampampam";
         }
 
