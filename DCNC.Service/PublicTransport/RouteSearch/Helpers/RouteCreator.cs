@@ -56,7 +56,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
         public void SetDirect(Route route, Change changeToLookTimeFor, DateTime desiredTime, bool departure, bool before)
         {
-            var changeToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, desiredTime, departure, true);
+            var changeToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, desiredTime, departure, before);
 
             if (changeToAdd.TimeOfTravel.Minutes != 0)
                 route.ChangeList.Add(changeToAdd);
@@ -64,7 +64,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
         public void CheckTime(Route route, Change firstElWithTime, Change lastElWithTime)
         {
-            if (firstElWithTime.TimeOfTravel.Minutes == 0 && lastElWithTime.TimeOfTravel.Minutes == 0) return;
+            if (firstElWithTime.TimeOfTravel.Minutes <= 0 && lastElWithTime.TimeOfTravel.Minutes <= 0) return;
 
             route.ChangeList.Add(firstElWithTime);
             route.ChangeList.Add(lastElWithTime);

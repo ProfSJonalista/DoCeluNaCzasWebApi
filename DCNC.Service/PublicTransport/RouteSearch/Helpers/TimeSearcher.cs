@@ -87,7 +87,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .LastOrDefault(time =>
                             time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .LastOrDefault(time =>
                             time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
+                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.TripId == time.TripId);
 
                     (startingStopTime, startingStopTimeIndex) = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
@@ -110,7 +110,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .FirstOrDefault(time =>
                             time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
 
                     startingStopTimeIndex = stopTimes.IndexOf(startingStopTime);
                 }
@@ -121,7 +121,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .FirstOrDefault(time =>
                             time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
+                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.StopId == time.StopId);
 
                     (startingStopTime, startingStopTimeIndex) = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
