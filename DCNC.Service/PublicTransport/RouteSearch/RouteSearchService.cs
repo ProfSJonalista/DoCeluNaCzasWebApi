@@ -29,7 +29,16 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                 routesToReturn = _routeSearcher.GetRoutes(tripsWithBusStops.Trips, startStopId, destStopId);
 
             routesToReturn = _timeRouteSearcher.GetTimeForRoutes(routesToReturn, departure, desiredTime);
+
             routesToReturn = routesToReturn.OrderBy(x => x.DepartureTime).ToList();
+
+            //routesToReturn = (
+            //    from o in routesToReturn
+            //    orderby o.DepartureTime, o.Buses
+            //    group o by o.DepartureTime
+            //    into g
+            //    select g.First()
+            //).ToList();
 
             return routesToReturn;
         }
