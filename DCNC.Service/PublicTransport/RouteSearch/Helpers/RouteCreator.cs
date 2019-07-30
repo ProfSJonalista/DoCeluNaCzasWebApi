@@ -76,7 +76,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
             SetTime(route);
 
-            if (route.FullTimeOfTravel.Hours < 5)
+            if (route.FullTimeOfTravel.Hours < 5 && route.FullTimeOfTravel > TimeSpan.Zero)
                 routesWithTime.Add(route);
         }
     }
