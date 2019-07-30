@@ -73,7 +73,6 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
         static (StopTime, int) GetStartingStopTime(bool before, bool departure, IList<StopTime> stopTimes, DateTime desiredTime, IReadOnlyCollection<StopChange> stopList)
         {
             StopTime startingStopTime;
-            var startingStopTimeIndex = -1;
 
             var firstStop = stopList.First();
             var lastStop = stopList.Last();
@@ -87,7 +86,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .LastOrDefault(time =>
                             time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
                 }
                 else
                 {
@@ -96,9 +95,9 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .LastOrDefault(time =>
                             time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
+                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.TripId == time.TripId);
 
-                    (startingStopTime, startingStopTimeIndex) = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
+                    startingStopTime = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
             }
             else
@@ -110,9 +109,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .FirstOrDefault(time =>
                             time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
-
-                    startingStopTimeIndex = stopTimes.IndexOf(startingStopTime);
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
                 }
                 else
                 {
@@ -121,25 +118,25 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                         .FirstOrDefault(time =>
                             time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
                             && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
+                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.StopId == time.StopId);
 
-                    (startingStopTime, startingStopTimeIndex) = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
+                    startingStopTime = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
             }
 
-            return (startingStopTime, startingStopTimeIndex);
+            return (startingStopTime, stopTimes.IndexOf(startingStopTime));
         }
 
-        static (StopTime, int) GetStartingStopTime(StopTime lastStopTime, IList<StopTime> stopTimes, int stopListCount)
+        static StopTime GetStartingStopTime(StopTime lastStopTime, IList<StopTime> stopTimes, int stopListCount)
         {
             if (lastStopTime == null)
-                return (new StopTime(), -1);
+                return new StopTime();
 
             var lastStopTimeIndex = stopTimes.IndexOf(lastStopTime);
             var startingStopTimeIndex = lastStopTimeIndex - stopListCount;
             var startingStopTime = stopTimes[startingStopTimeIndex];
 
-            return (startingStopTime, startingStopTimeIndex);
+            return startingStopTime;
         }
     }
 }
