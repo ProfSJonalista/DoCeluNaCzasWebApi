@@ -1,10 +1,10 @@
-﻿using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Service.Caching;
+﻿using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.Database.Interfaces;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 {

@@ -268,6 +268,7 @@
     <Compile Include="Services\PublicTransport\Joining\BusStopModelService.cs" />
     <Compile Include="Services\PublicTransport\Joining\Grouper.cs" />
     <Compile Include="Services\PublicTransport\Joining\Helpers\JoinTripHelper.cs" />
+    <Compile Include="Services\PublicTransport\Joining\Helpers\SemiNumericComparer.cs" />
     <Compile Include="Services\PublicTransport\Joining\Helpers\StopMapper.cs" />
     <Compile Include="Services\PublicTransport\Joining\Joiner.cs" />
     <Compile Include="Services\PublicTransport\Joining\JoinTripMappingService.cs" />
@@ -342,7 +343,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\PublicTransport\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

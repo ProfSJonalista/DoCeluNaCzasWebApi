@@ -1,8 +1,8 @@
-﻿using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Bussiness.PublicTransport.TimeTable;
+﻿using DCNC.Bussiness.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
 {

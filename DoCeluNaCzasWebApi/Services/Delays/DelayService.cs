@@ -1,5 +1,4 @@
 ﻿using System;
-using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Caching;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 // ReSharper disable PossibleNullReferenceException
 
