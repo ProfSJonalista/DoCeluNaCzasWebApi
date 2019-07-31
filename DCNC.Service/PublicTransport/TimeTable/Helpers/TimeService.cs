@@ -24,8 +24,8 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
 
         public DateTime GetDateFromUrl(string url)
         {
-            //todo get start index from url by looking for "=" index and adding +1
-            return DateTime.Parse(url.Substring(48, 10));
+            var startIndex = url.IndexOf('=') + 1;
+            return DateTime.Parse(url.Substring(startIndex, 10));
         }
     }
 }

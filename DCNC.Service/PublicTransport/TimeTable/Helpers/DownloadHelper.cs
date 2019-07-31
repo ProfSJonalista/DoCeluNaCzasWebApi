@@ -20,7 +20,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
         {
             _timeService = timeService;
             _documentStoreRepository = documentStoreRepository;
-            _publicTransportRepository = publicTransportRepository; //new PublicTransportRepository();
+            _publicTransportRepository = publicTransportRepository;
         }
 
         public async Task<List<TimeTableDateTime>> MassDownloadAndSaveToDb(List<StopTimeUrl> convertedStopTimes)

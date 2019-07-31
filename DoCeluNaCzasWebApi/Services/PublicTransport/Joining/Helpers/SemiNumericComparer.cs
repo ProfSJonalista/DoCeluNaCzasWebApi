@@ -23,7 +23,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers
             return string.Compare(s1, s2, true);
         }
 
-        static bool IsNumeric(string value)
+        internal static bool IsNumeric(string value)
         {
             try
             {

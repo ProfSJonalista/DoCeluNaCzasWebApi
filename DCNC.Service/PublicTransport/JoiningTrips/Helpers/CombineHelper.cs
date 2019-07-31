@@ -23,7 +23,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
                    : SetMainRoute(firstDayTripList.FirstOrDefault());
         }
 
-        static Trip SetMainRoute(Trip trip)
+        public static Trip SetMainRoute(Trip trip)
         {
             trip.MainRoute = true;
             trip.Stops.ForEach(stop => stop.MainTrip = true);
