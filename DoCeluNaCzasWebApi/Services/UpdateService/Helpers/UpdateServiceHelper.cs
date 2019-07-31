@@ -68,7 +68,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             var expeditionData = _expeditionService.GetData<ExpeditionData>(expeditionsAsJObject).FirstOrDefault();
 
             var busStopDataModel = _busStopModelService.JoinBusStopData(busStopDataList);
-            var tripsWithBusStops = _joiner.GetTripsWithBusStopList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);// to do bazy
+            var tripsWithBusStops = _joiner.GetTripsWithBusStopList(tripDataList, busStopDataList, busLineDataList, stopInTripDataList, expeditionData);
 
             DeleteAndStoreTripsInDb(tripsWithBusStops);
 

@@ -81,21 +81,35 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             {
                 if (departure)
                 {
-                    startingStopTime = stopTimes
+                    startingStopTime =
+                        stopTimes
                         .OrderBy(x => x.DepartureTime)
                         .LastOrDefault(time =>
                             time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
                             && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId) ??
+                        stopTimes
+                        .OrderBy(x => x.DepartureTime)
+                        .LastOrDefault(time =>
+                            time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
+                            && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
+                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
                 }
                 else
                 {
-                    var lastStopTime = stopTimes
-                        .OrderBy(x => x.ArrivalTime)
-                        .LastOrDefault(time =>
-                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
-                            && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.TripId == time.TripId);
+                    var lastStopTime = 
+                        stopTimes
+                            .OrderBy(x => x.ArrivalTime)
+                            .LastOrDefault(time =>
+                                time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
+                                && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.TripId == time.TripId) ??
+                        stopTimes
+                            .OrderBy(x => x.ArrivalTime)
+                            .LastOrDefault(time =>
+                                time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) < 0
+                                && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
 
                     startingStopTime = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
@@ -104,21 +118,35 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             {
                 if (departure)
                 {
-                    startingStopTime = stopTimes
-                        .OrderBy(x => x.DepartureTime)
-                        .FirstOrDefault(time =>
-                            time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
-                            && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId);
+                    startingStopTime = 
+                        stopTimes
+                            .OrderBy(x => x.DepartureTime)
+                            .FirstOrDefault(time =>
+                                time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
+                                && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId && firstStop.TripId == time.TripId) ??
+                        stopTimes
+                            .OrderBy(x => x.DepartureTime)
+                            .FirstOrDefault(time =>
+                                time.DepartureTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
+                                && desiredTime.TimeOfDay.Subtract(time.DepartureTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && firstStop.StopId == time.StopId && firstStop.RouteId == time.RouteId);
                 }
                 else
                 {
-                    var lastStopTime = stopTimes
-                        .OrderBy(x => x.ArrivalTime)
-                        .FirstOrDefault(time =>
-                            time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
-                            && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
-                            && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.StopId == time.StopId);
+                    var lastStopTime = 
+                        stopTimes
+                            .OrderBy(x => x.ArrivalTime)
+                            .FirstOrDefault(time =>
+                                time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
+                                && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId && lastStop.StopId == time.StopId) ??
+                        stopTimes
+                            .OrderBy(x => x.ArrivalTime)
+                            .FirstOrDefault(time =>
+                                time.ArrivalTime.TimeOfDay.CompareTo(desiredTime.TimeOfDay) >= 0
+                                && desiredTime.TimeOfDay.Subtract(time.ArrivalTime.TimeOfDay).TotalMinutes < totalMinutes
+                                && lastStop.StopId == time.StopId && lastStop.RouteId == time.RouteId);
 
                     startingStopTime = GetStartingStopTime(lastStopTime, stopTimes, stopList.Count);
                 }
