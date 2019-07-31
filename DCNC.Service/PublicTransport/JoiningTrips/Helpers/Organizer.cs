@@ -15,8 +15,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips.Helpers
 
                 if (!orgTrips.ContainsKey(key))
                 {
-                    orgTrips.Add(key, new List<Trip>() { trip
-                    });
+                    orgTrips.Add(key, new List<Trip> { trip });
                 }
                 else
                 {
