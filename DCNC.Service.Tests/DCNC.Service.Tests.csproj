@@ -59,6 +59,13 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\CombineHelperTests.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\ObjectMakers\OrganizerMaker.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\ObjectMakers\StopMaker.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\OrganizerTests.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\StopComparerTests.cs" />
+    <Compile Include="PublicTransport\JoiningTrips\Helpers\ObjectMakers\TripMaker.cs" />
+    <Compile Include="PublicTransport\TimeTable\Helpers\TimeServiceTests.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -67,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DCNC.Bussiness\DCNC.Bussiness.csproj">
+      <Project>{AE6D7375-1415-4479-84AE-A8D9DD51EC4A}</Project>
+      <Name>DCNC.Bussiness</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DCNC.Service\DCNC.Service.csproj">
       <Project>{60459510-AEDC-4DAF-8998-1D5480383B04}</Project>
       <Name>DCNC.Service</Name>

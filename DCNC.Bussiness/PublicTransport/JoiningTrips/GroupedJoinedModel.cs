@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DCNC.Bussiness.PublicTransport.General
+namespace DCNC.Bussiness.PublicTransport.JoiningTrips
 {
     public class GroupedJoinedModel
     {

@@ -1,7 +1,7 @@
-﻿using DCNC.Bussiness.PublicTransport.General;
-using DoCeluNaCzasWebApi.Services.UpdateService;
+﻿using DoCeluNaCzasWebApi.Services.UpdateService;
 using System.Collections.Generic;
 using System.Web.Http;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.General
 {
