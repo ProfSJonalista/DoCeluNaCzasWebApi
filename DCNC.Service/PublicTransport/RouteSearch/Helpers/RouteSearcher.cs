@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.General;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
@@ -42,7 +43,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
         {
             var routesToReturn = new List<Route>();
             var listToIterate = trips.Where(x => x.Stops.FindIndex(y => y.StopId == startStopId) > -1);
-            var stopListWithConnectedBusLines = CacheService.GetData<ObservableCollection<ChooseBusStopModel>>(CacheKeys.CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION);
+            var stopListWithConnectedBusLines = CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL).Stops;
 
             foreach (var trip in listToIterate)
             {
@@ -114,7 +115,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             return routesToReturn;
         }
 
-        IEnumerable<Trip> GetPossibleChanges(IEnumerable<ChooseBusStopModel> stopListWithConnectedBusLines, Stop stop, IEnumerable<Trip> trips, int destStopId)
+        IEnumerable<Trip> GetPossibleChanges(IEnumerable<StopModel> stopListWithConnectedBusLines, Stop stop, IEnumerable<Trip> trips, int destStopId)
         {
             var stopsWithBuses = stopListWithConnectedBusLines.SingleOrDefault(x => x.StopId == stop.StopId);
 

@@ -68,6 +68,15 @@ namespace DCNC.Service.Database
             }
         }
 
+        public void DeleteAllTimeTableJsons()
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var ids = session.Query<TimeTableJson>().Select(x => x.Id).ToList();
+                Delete(ids);
+            }
+        }
+
         #endregion
 
         #region MinuteTimeTable

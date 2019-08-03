@@ -245,7 +245,6 @@
     <Compile Include="Controllers\AuthorizedValuesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PublicTransport\General\BusStopController.cs" />
-    <Compile Include="Controllers\PublicTransport\General\ChooseBusStopController.cs" />
     <Compile Include="Controllers\PublicTransport\General\JoinedTripsController.cs" />
     <Compile Include="Controllers\PublicTransport\RouteSearch\RouteSearchController.cs" />
     <Compile Include="Controllers\PublicTransport\TimeTable\TimeTableController.cs" />
@@ -259,8 +258,6 @@
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\PublicTransport\General\BusStopDataModel.cs" />
-    <Compile Include="Models\PublicTransport\General\Shared\CommonModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />

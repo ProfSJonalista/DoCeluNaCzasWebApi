@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.DataAccess.PublicTransport.Interfaces;
 using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
@@ -23,19 +24,24 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         public async Task<JObject> GetDataAsJObjectAsync(string url, JsonType type)
         {
             var json = await _publicTransportRepository.DownloadData(url);
-            //todo usunąć linijkę 29 - implementacja w DelayJsonService
-            if (type == JsonType.Delay) return JsonConvert.DeserializeObject<JObject>(json);
 
-            if (!string.IsNullOrEmpty(json))
+            try
             {
-                var oldJson = _documentStoreRepository.GetDbJson(type);
+                if (!string.IsNullOrEmpty(json))
+                {
+                    var oldJson = _documentStoreRepository.GetDbJson(type);
 
-                if (oldJson != null && !string.IsNullOrEmpty(oldJson.Id))
-                    _documentStoreRepository.Delete(oldJson.Id);
+                    if (oldJson != null && !string.IsNullOrEmpty(oldJson.Id))
+                        _documentStoreRepository.Delete(oldJson.Id);
 
-                _documentStoreRepository.Save(new DbJson() { Json = json, Type = type });
+                    _documentStoreRepository.Save(new DbJson {Json = json, Type = type});
+                }
+                else
+                {
+                    json = _documentStoreRepository.GetDbJson(type).Json;
+                }
             }
-            else
+            catch (OutOfMemoryException e)
             {
                 json = _documentStoreRepository.GetDbJson(type).Json;
             }
@@ -47,9 +53,11 @@ namespace DCNC.Service.PublicTransport.JsonData.Abstracts
         {
             var jsonDataList = new List<T>();
 
+            if (!dataAsJObject.HasValues)  return jsonDataList;
+
             foreach (var item in dataAsJObject.Children())
             {
-                jsonDataList.Add((T)Converter(item));
+                jsonDataList.Add((T) Converter(item));
             }
 
             return jsonDataList;

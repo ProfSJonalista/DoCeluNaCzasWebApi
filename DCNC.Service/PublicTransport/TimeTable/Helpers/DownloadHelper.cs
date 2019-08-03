@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
@@ -27,36 +28,46 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
         {
             var entitiesThatWerentDownloaded = new List<TimeTableDateTime>();
 
-            foreach (var stopTime in convertedStopTimes)
+            try
             {
-                var objectsToSaveInDb = new List<TimeTableJson>();
-
-                using (var client = new HttpClient())
+                foreach (var stopTime in convertedStopTimes)
                 {
-                    foreach (var url in stopTime.Urls)
-                    {
-                        var json = await _publicTransportRepository.DownloadData(url, client);
 
-                        if (!string.IsNullOrEmpty(json))
+                    var objectsToSaveInDb = new List<TimeTableJson>();
+
+                    using (var client = new HttpClient())
+                    {
+                        foreach (var url in stopTime.Urls)
                         {
-                            objectsToSaveInDb.Add(new TimeTableJson()
+
+                            var json = await _publicTransportRepository.DownloadData(url, client);
+
+                            if (!string.IsNullOrEmpty(json))
                             {
-                                RouteId = stopTime.RouteId,
-                                Json = json
-                            });
-                        }
-                        else
-                        {
-                            entitiesThatWerentDownloaded.Add(new TimeTableDateTime()
+                                objectsToSaveInDb.Add(new TimeTableJson()
+                                {
+                                    RouteId = stopTime.RouteId,
+                                    Json = json
+                                });
+                            }
+                            else
                             {
-                                RouteId = stopTime.RouteId,
-                                Date = _timeService.GetDateFromUrl(url)
-                            });
+                                entitiesThatWerentDownloaded.Add(new TimeTableDateTime()
+                                {
+                                    RouteId = stopTime.RouteId,
+                                    Date = _timeService.GetDateFromUrl(url)
+                                });
+                            }
                         }
                     }
-                }
 
-                _documentStoreRepository.Save(objectsToSaveInDb);
+                    _documentStoreRepository.Save(objectsToSaveInDb);
+
+                }
+            }
+            catch (Exception e)
+            {
+                var message = e.Message;
             }
 
             return entitiesThatWerentDownloaded;

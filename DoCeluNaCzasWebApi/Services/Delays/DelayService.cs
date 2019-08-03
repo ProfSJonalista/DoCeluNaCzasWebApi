@@ -4,7 +4,6 @@ using DCNC.DataAccess.PublicTransport.Helpers;
 using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
 // ReSharper disable PossibleNullReferenceException
@@ -90,7 +90,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
         {
-            var chooseBusStopCollection = busStopDataModel.Stops.Select(stop =>
+            busStopDataModel.Stops = new ObservableCollection<StopModel>(busStopDataModel.Stops.Select(stop =>
             {
                 var busLineNamesStringBuilder = new StringBuilder();
                 var destinationsStringBuilder = new StringBuilder();
@@ -120,16 +120,13 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 if (destinations.Length > 0)
                     destinations = destinations.Substring(0, destinations.Length - 2); //removes extra ", " at the end of the string
 
-                return new ChooseBusStopModel
-                {
-                    StopId = stop.StopId,
-                    StopDesc = stop.StopDesc,
-                    BusLineNames = busLines,
-                    DestinationHeadsigns = destinations
-                };
-            }).ToList();
+                stop.BusLineNames = busLines;
+                stop.DestinationHeadsigns = destinations;
 
-            CacheService.CacheData(new ObservableCollection<ChooseBusStopModel>(chooseBusStopCollection), CacheKeys.CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION);
+                return stop;
+            }));
+
+            CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
         }
     }
 }

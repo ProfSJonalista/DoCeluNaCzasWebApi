@@ -13,6 +13,7 @@ namespace DCNC.Service.Database.Interfaces
         void Delete(string idToDelete);
         void Delete(List<string> objectsIdToDelete);
         List<TimeTableJson> GetJsonsByRouteId(int routeId);
+        void DeleteAllTimeTableJsons();
         MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId);
         List<MinuteTimeTable> GetMinuteTimeTableListByBusLineName(string busLineName);
         List<TimeTableData> GetTimeTableDataByRouteId(int routeId);

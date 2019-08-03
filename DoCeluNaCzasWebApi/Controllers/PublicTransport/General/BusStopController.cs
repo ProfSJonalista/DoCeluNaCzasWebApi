@@ -1,4 +1,4 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General;
+﻿using DCNC.Bussiness.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService;
 using System.Web.Http;
 

@@ -1,4 +1,5 @@
-﻿using DCNC.DataAccess.PublicTransport;
+﻿using System;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database;
 using DCNC.Service.PublicTransport.JoiningTrips;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
@@ -19,6 +20,8 @@ using Microsoft.Owin;
 using Owin;
 using PublicHoliday;
 using System.Web.Http;
+using DCNC.DataAccess.PublicTransport.Interfaces;
+using DCNC.Service.Database.Interfaces;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -34,23 +37,23 @@ namespace DoCeluNaCzasWebApi
             };
 
             app.UseWebApi(config);
-            
+
             ConfigureAuth(app);
 
-            var hubConfiguration = new HubConfiguration {EnableDetailedErrors = true};
+            var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true };
             app.MapSignalR(hubConfiguration);
 
-            ConfigureServices();
+            ConfigureUpdateDataService();
         }
 
-        static async void ConfigureServices()
+        static async void ConfigureUpdateDataService()
         {
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
 
             var delayJsonService = new DelayJsonService(publicTransportRepository);
             DelaysHub.DelayService = new DelayService(delayJsonService);
-            
+
             var timeService = new DCNC.Service.PublicTransport.Time.TimeService();
 
             var stopComparer = new StopComparer();
@@ -63,7 +66,7 @@ namespace DoCeluNaCzasWebApi
             var organizer = new Organizer();
             var stopHelper = new StopHelper();
             var tripsWithBusStopsService = new TripsWithBusStopsService(organizer, stopHelper);
-            var joiner = new Joiner(combineTripService,joinTripMappingService, tripsWithBusStopsService);
+            var joiner = new Joiner(combineTripService, joinTripMappingService, tripsWithBusStopsService);
 
             var grouper = new Grouper();
 
@@ -74,9 +77,16 @@ namespace DoCeluNaCzasWebApi
             var stopInTripService = new StopInTripService(documentStoreRepository, publicTransportRepository);
             var busStopModelService = new BusStopModelService();
 
-            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService, tripService, busStopService, 
+            var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService, tripService, busStopService,
                 busLineService, expeditionService, stopInTripService, busStopModelService, documentStoreRepository);
 
+            await UpdateDataService.Init(timeService, updateServiceHelper);
+
+            ConfigureServices(documentStoreRepository, publicTransportRepository);
+        }
+
+        static void ConfigureServices(IDocumentStoreRepository documentStoreRepository, IPublicTransportRepository publicTransportRepository)
+        {
             var converter = new Converter();
             var filterHelper = new FilterHelper();
             var helperTimeService = new TimeService();
@@ -91,7 +101,6 @@ namespace DoCeluNaCzasWebApi
             var minuteTimeTableBuilder = new MinuteTimeTableBuilder(stopTimesFetcher);
             var minuteTimeTableService = new MinuteTimeTableService(minuteTimeTableBuilder, documentStoreRepository);
 
-            await UpdateDataService.Init(timeService, updateServiceHelper);
             UpdateTimeTableService.Init(timeTableService, minuteTimeTableService);
         }
     }
