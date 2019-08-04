@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using DCNC.Service.Database;
 using Newtonsoft.Json;
@@ -26,27 +27,36 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
         {
             foreach (var stopTime in convertedStopTimes)
             {
-                var notDownloadedEntitiesByRouteId = entitiesThatWerentDownloaded.Where(x => x.RouteId == stopTime.RouteId).ToList();
-                var entitiesToDelete = _documentStoreRepository.GetTimeTableDataByRouteId(stopTime.RouteId);
-
-                if(notDownloadedEntitiesByRouteId.Count > 0) entitiesToDelete = _filterHelper.Filter(entitiesToDelete, notDownloadedEntitiesByRouteId);
-
-                var jsonsToConvert = _documentStoreRepository.GetJsonsByRouteId(stopTime.RouteId);
-                var timeTableDataList = new List<TimeTableData>();
-
-                if (jsonsToConvert.Count <= 0) continue;
-
-                foreach (var item in jsonsToConvert)
+                try
                 {
-                    var jsonAsJObject = JsonConvert.DeserializeObject<JObject>(item.Json);
-                    timeTableDataList.Add(_converter.Deserialize(jsonAsJObject));
+                    var notDownloadedEntitiesByRouteId =
+                        entitiesThatWerentDownloaded.Where(x => x.RouteId == stopTime.RouteId).ToList();
+                    var entitiesToDelete = _documentStoreRepository.GetTimeTableDataByRouteId(stopTime.RouteId);
+
+                    if (notDownloadedEntitiesByRouteId.Count > 0)
+                        entitiesToDelete = _filterHelper.Filter(entitiesToDelete, notDownloadedEntitiesByRouteId);
+
+                    var jsonsToConvert = _documentStoreRepository.GetJsonsByRouteId(stopTime.RouteId);
+                    var timeTableDataList = new List<TimeTableData>();
+
+                    if (jsonsToConvert.Count <= 0) continue;
+
+                    foreach (var item in jsonsToConvert)
+                    {
+                        var jsonAsJObject = JsonConvert.DeserializeObject<JObject>(item.Json);
+                        timeTableDataList.Add(_converter.Deserialize(jsonAsJObject));
+                    }
+
+                    timeTableDataList = timeTableDataList.Where(x => x.StopTimes.Count > 0).ToList();
+
+                    _documentStoreRepository.Save(timeTableDataList);
+                    _documentStoreRepository.Delete(jsonsToConvert.Select(x => x.Id).ToList());
+                    _documentStoreRepository.Delete(entitiesToDelete.Select(x => x.Id).ToList());
                 }
-
-                timeTableDataList = timeTableDataList.Where(x => x.StopTimes.Count > 0).ToList();
-
-                _documentStoreRepository.Save(timeTableDataList);
-                _documentStoreRepository.Delete(jsonsToConvert.Select(x => x.Id).ToList());
-                _documentStoreRepository.Delete(entitiesToDelete.Select(x => x.Id).ToList());
+                catch (Exception e)
+                {
+                    var mes = e.Message;
+                }
             }
         }
     }

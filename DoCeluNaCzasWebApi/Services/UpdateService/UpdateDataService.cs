@@ -1,12 +1,15 @@
-﻿using DCNC.Service.Caching;
+﻿using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
+using DCNC.Service.Caching;
 using DCNC.Service.Caching.Helpers;
 using DCNC.Service.PublicTransport.Time;
-using DoCeluNaCzasWebApi.Models.PublicTransport.General;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
+using DCNC.Service.Database.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {
@@ -15,14 +18,18 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         static Timer _timer;
         static TimeService _timeService;
         static UpdateServiceHelper _updateServiceHelper;
+        public static IDocumentStoreRepository DocumentStoreRepository;
 
         public static async Task Init(TimeService timeService, UpdateServiceHelper updateServiceHelper)
         {
             _timeService = timeService;
             _updateServiceHelper = updateServiceHelper;
 
-            var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject) = await _updateServiceHelper.GetDataAsync();
-            _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject);
+            var (tripsAsJObject, busStopsAsJObject, busLinesAsJObject, expeditionsAsJObject, stopsInTripsAsJObject)
+                = await _updateServiceHelper.GetDataAsync();
+
+            _updateServiceHelper.SetAndCache(tripsAsJObject, busStopsAsJObject, busLinesAsJObject,
+                        expeditionsAsJObject, stopsInTripsAsJObject);
 
             SetTimer();
         }
@@ -48,12 +55,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static List<GroupedJoinedModel> GetJoinedTrips()
         {
-            return CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
+            return DocumentStoreRepository.GetGroupedJoinedModels();
         }
 
         public static BusStopDataModel GetBusStops()
         {
-            return CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL);
+            return DocumentStoreRepository.GetBusStopDataModel();
         }
     }
 }

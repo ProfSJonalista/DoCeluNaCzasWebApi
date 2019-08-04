@@ -3,6 +3,7 @@ using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
 using System.Collections.Generic;
 using System.Linq;
+using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Service.Database.Interfaces;
 
@@ -11,6 +12,7 @@ namespace DCNC.Service.Database
     public class DocumentStoreRepository : IDocumentStoreRepository
     {
         #region SaveEntities
+
         public void Save<T>(T objectToSave)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -26,13 +28,19 @@ namespace DCNC.Service.Database
             {
                 if (objectsToSave.Count <= 0) return;
 
-                objectsToSave.ForEach(item => { if (item != null) session.Store(item); });
+                objectsToSave.ForEach(item =>
+                {
+                    if (item != null) session.Store(item);
+                });
+
                 session.SaveChanges();
             }
         }
+
         #endregion
 
         #region DeleteEntities
+
         public void Delete(string idToDelete)
         {
             using (var session = DocumentStoreHolder.Store.OpenSession())
@@ -48,10 +56,14 @@ namespace DCNC.Service.Database
             {
                 if (objectsIdToDelete.Count <= 0) return;
 
-                objectsIdToDelete.ForEach(item => { if (item != null) session.Delete(item); });
+                objectsIdToDelete.ForEach(item =>
+                {
+                    if (item != null) session.Delete(item);
+                });
                 session.SaveChanges();
             }
         }
+
         #endregion
 
         #region GetEntities
@@ -65,6 +77,15 @@ namespace DCNC.Service.Database
                 return session.Query<TimeTableJson>()
                     .Where(x => x.RouteId == routeId)
                     .ToList();
+            }
+        }
+
+        public void DeleteAllTimeTableJsons()
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var ids = session.Query<TimeTableJson>().Select(x => x.Id).ToList();
+                Delete(ids);
             }
         }
 
@@ -161,6 +182,92 @@ namespace DCNC.Service.Database
             using (var session = DocumentStoreHolder.Store.OpenSession())
             {
                 return session.Query<TripsWithBusStops>().FirstOrDefault(x => x.Day.DayOfWeek == dayOfWeek);
+            }
+        }
+
+        #endregion
+
+        #region BusStopDataModel
+
+        public void UpdateBusStopDataModel(BusStopDataModel busStopDataModel)
+        {
+            if(busStopDataModel == null) 
+                return;
+
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var id = session.Query<BusStopDataModel>().FirstOrDefault()?.Id;
+
+                if (string.IsNullOrEmpty(id))
+                {
+                    Save(busStopDataModel);
+                    return;
+                }
+
+                var bsdm = session.Load<BusStopDataModel>(id);
+
+                bsdm.Day = busStopDataModel.Day;
+                bsdm.LastUpdate = busStopDataModel.LastUpdate;
+                bsdm.Stops = busStopDataModel.Stops;
+
+                session.SaveChanges();
+            }
+        }
+
+        public BusStopDataModel GetBusStopDataModel()
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<BusStopDataModel>().FirstOrDefault();
+            }
+        }
+
+        #endregion
+
+        #region JoinedTrips
+
+        public void UpdateGroupedJoinedModels(List<GroupedJoinedModel> groupedJoinedModels)
+        {
+            if (groupedJoinedModels == null || groupedJoinedModels.Count == 0)
+                return;
+
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                var gjm = session.Query<GroupedJoinedModel>().ToList();
+
+                if (gjm.Count == 0)
+                {
+                    Save(groupedJoinedModels);
+                    return;
+                }
+
+                var busId = gjm.First(x => x.Group == Group.Buses).Id;
+                var buses = session.Load<GroupedJoinedModel>(busId);
+                var newBuses = groupedJoinedModels.First(x => x.Group == Group.Buses);
+
+                buses.JoinedTripModels = newBuses.JoinedTripModels;
+
+                var tramId = gjm.First(x => x.Group == Group.Trams).Id;
+                var trams = session.Load<GroupedJoinedModel>(tramId);
+                var newTrams = groupedJoinedModels.First(x => x.Group == Group.Trams);
+
+                trams.JoinedTripModels = newTrams.JoinedTripModels;
+
+                var trolleyId = gjm.First(x => x.Group == Group.Buses).Id;
+                var trolleys = session.Load<GroupedJoinedModel>(trolleyId);
+                var newTrolleys = groupedJoinedModels.First(x => x.Group == Group.Buses);
+
+                trolleys.JoinedTripModels = newTrolleys.JoinedTripModels;
+
+                session.SaveChanges();
+            }
+        }
+
+        public List<GroupedJoinedModel> GetGroupedJoinedModels()
+        {
+            using (var session = DocumentStoreHolder.Store.OpenSession())
+            {
+                return session.Query<GroupedJoinedModel>().ToList();
             }
         }
 

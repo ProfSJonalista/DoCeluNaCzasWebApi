@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.TimeTable;
 using DCNC.Bussiness.PublicTransport.TimeTable;
@@ -8,6 +9,7 @@ using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using System.Threading.Tasks;
 using DCNC.Service.Database.Interfaces;
+using Newtonsoft.Json.Linq;
 
 namespace DCNC.Service.PublicTransport.TimeTable
 {
@@ -30,15 +32,27 @@ namespace DCNC.Service.PublicTransport.TimeTable
 
         public async Task SetTimeTables()
         {
-            var stopTimes = await _stopTimesService.GetDataAsJObjectAsync(Urls.StopTimes, JsonType.StopTime);
+            JObject stopTimes;
 
-            if(!stopTimes.HasValues) return;
+            try
+            {
+                stopTimes = await _stopTimesService.GetDataAsJObjectAsync(Urls.StopTimes, JsonType.StopTime);
+            }
+            catch (OutOfMemoryException e)
+            {
+                stopTimes = new JObject();
+            }
+
+            if (!stopTimes.HasValues) return;
 
             var convertedStopTimes = _stopTimesService.GetData<StopTimeUrl>(stopTimes);
             convertedStopTimes = _timeService.FilterStopTimesByDate(convertedStopTimes);
 
             var entitiesThatWerentDownloaded = await _downloadHelper.MassDownloadAndSaveToDb(convertedStopTimes);
-            _convertingHelper.ChangeTimeTableJsonsToObjectsAndSaveToDb(convertedStopTimes, entitiesThatWerentDownloaded);
+            _convertingHelper.ChangeTimeTableJsonsToObjectsAndSaveToDb(convertedStopTimes,
+                entitiesThatWerentDownloaded);
+
+            _documentStoreRepository.DeleteAllTimeTableJsons();
         }
 
         public MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId)

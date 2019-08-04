@@ -16,6 +16,7 @@ namespace DCNC.Service.PublicTransport.TimeTable.Helpers
                     .Where(x => x.dt.Date >= DateTime.Today)
                     .OrderBy(x => x.dt)
                     .Select(x => x.url)
+                    .Take(7)
                     .ToList();
             }
 

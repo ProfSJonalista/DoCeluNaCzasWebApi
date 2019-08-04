@@ -1,12 +1,13 @@
-﻿using DoCeluNaCzasWebApi.Models.PublicTransport.General.Shared;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections.ObjectModel;
+using DCNC.Bussiness.PublicTransport.General.Shared;
 
-namespace DoCeluNaCzasWebApi.Models.PublicTransport.General
+namespace DCNC.Bussiness.PublicTransport.General
 {
     public class BusStopDataModel : CommonModel
     {
-        public List<StopModel> Stops { get; set; }
+        public string Id { get; set; }
+        public ObservableCollection<StopModel> Stops { get; set; }
     }
 
     public class StopModel
@@ -15,6 +16,8 @@ namespace DoCeluNaCzasWebApi.Models.PublicTransport.General
         public string StopDesc { get; set; }
         public double StopLat { get; set; }
         public double StopLon { get; set; }
+        public string BusLineNames { get; set; }
+        public string DestinationHeadsigns { get; set; }
         public bool? TicketZoneBorder { get; set; }
         public bool? OnDemand { get; set; }
         public DateTime ActivationDate { get; set; }

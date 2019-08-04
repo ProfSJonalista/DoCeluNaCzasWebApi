@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.JoiningTrips;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.Service.PublicTransport.JoiningTrips.Helpers;
 using System.Collections.Generic;
@@ -22,12 +23,19 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
         {
             var tripsWithBusStops = new List<TripsWithBusStops>();
 
-            busLineDataList.ForEach(busLine => tripsWithBusStops.Add(
-                Map(busLine, expeditionObject,
-                tripDataList.SingleOrDefault(trip => trip.Day == busLine.Day),
-                busStopDataList.SingleOrDefault(stop => stop.Day == busLine.Day),
-                stopInTripDataList.SingleOrDefault(stopInTrip => stopInTrip.Day == busLine.Day)
-                )));
+            try
+            {
+                busLineDataList.ForEach(busLine => tripsWithBusStops.Add(
+                    Map(busLine, expeditionObject,
+                        tripDataList.SingleOrDefault(trip => trip.Day == busLine.Day),
+                        busStopDataList.SingleOrDefault(stop => stop.Day == busLine.Day),
+                        stopInTripDataList.SingleOrDefault(stopInTrip => stopInTrip.Day == busLine.Day)
+                    )));
+            }
+            catch (NullReferenceException nre)
+            {
+                var message = nre.Message;
+            }
 
             return tripsWithBusStops;
         }
@@ -78,20 +86,21 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
         public List<OrganizedTrips> OrganizeTrips(List<TripsWithBusStops> tripsWithBusStops, List<BusLineData> busLineDataList)
         {
             var organizedTrips = new List<OrganizedTrips>();
-            tripsWithBusStops.ForEach(day =>
+
+            foreach (var day in tripsWithBusStops)
             {
                 var distinctRoutes = busLineDataList
-                                     .SingleOrDefault(x => x.Day.Date == day.Day.Date)
-                                     .Routes
-                                     .GroupBy(x => x.RouteShortName)
-                                     .Select(x => x.FirstOrDefault())
-                                     .ToList();
+                    .SingleOrDefault(x => x.Day.Date == day.Day.Date)
+                    .Routes
+                    .GroupBy(x => x.RouteShortName)
+                    .Select(x => x.FirstOrDefault())
+                    .ToList();
 
                 distinctRoutes.ForEach(route =>
                 {
                     var busLineTrips = day.Trips
-                                          .Where(trip => trip.BusLineName.Equals(route.RouteShortName))
-                                          .ToList();
+                        .Where(trip => trip.BusLineName.Equals(route.RouteShortName))
+                        .ToList();
 
                     organizedTrips.Add(new OrganizedTrips()
                     {
@@ -100,7 +109,7 @@ namespace DCNC.Service.PublicTransport.JoiningTrips
                         Trips = _organizer.GetTrips(busLineTrips)
                     });
                 });
-            });
+            }
 
             return organizedTrips.OrderBy(x => x.BusLineName).ToList();
         }

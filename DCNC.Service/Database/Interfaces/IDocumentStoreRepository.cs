@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.TimeTable;
@@ -13,6 +14,7 @@ namespace DCNC.Service.Database.Interfaces
         void Delete(string idToDelete);
         void Delete(List<string> objectsIdToDelete);
         List<TimeTableJson> GetJsonsByRouteId(int routeId);
+        void DeleteAllTimeTableJsons();
         MinuteTimeTable GetMinuteTimeTableByRouteIdAndStopId(int routeId, int stopId);
         List<MinuteTimeTable> GetMinuteTimeTableListByBusLineName(string busLineName);
         List<TimeTableData> GetTimeTableDataByRouteId(int routeId);
@@ -21,5 +23,9 @@ namespace DCNC.Service.Database.Interfaces
         DbJson GetDbJson(JsonType type);
         void DeleteTripsWithBusStops();
         TripsWithBusStops GetTripsByDayOfWeek(DayOfWeek dayOfWeek);
+        void UpdateBusStopDataModel(BusStopDataModel busStopDataModel);
+        BusStopDataModel GetBusStopDataModel();
+        void UpdateGroupedJoinedModels(List<GroupedJoinedModel> groupedJoinedModels);
+        List<GroupedJoinedModel> GetGroupedJoinedModels();
     }
 }
