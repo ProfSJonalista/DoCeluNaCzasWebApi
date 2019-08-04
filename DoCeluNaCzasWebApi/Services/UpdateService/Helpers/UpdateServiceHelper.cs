@@ -80,8 +80,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
             DelayService.TripData = tripDataList.FirstOrDefault(x => x.Day.Date <= DateTime.Today);
             DelayService.SetChooseBusStopModelCollection(busStopDataModel, groupedJoinedTrips);
 
-            CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
-            CacheService.CacheData(groupedJoinedTrips, CacheKeys.GROUPED_JOINED_MODEL_LIST);
+            _documentStoreRepository.UpdateGroupedJoinedModels(groupedJoinedTrips);
 
             _timeService.CacheLastUpdates(tripDataList.FirstOrDefault().LastUpdate,
                                           busStopDataList.FirstOrDefault().LastUpdate,

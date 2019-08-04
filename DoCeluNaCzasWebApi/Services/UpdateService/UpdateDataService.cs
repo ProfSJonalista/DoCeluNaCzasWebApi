@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using DCNC.Service.Database.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
@@ -17,6 +18,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
         static Timer _timer;
         static TimeService _timeService;
         static UpdateServiceHelper _updateServiceHelper;
+        public static IDocumentStoreRepository DocumentStoreRepository;
 
         public static async Task Init(TimeService timeService, UpdateServiceHelper updateServiceHelper)
         {
@@ -53,12 +55,12 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService
 
         public static List<GroupedJoinedModel> GetJoinedTrips()
         {
-            return CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
+            return DocumentStoreRepository.GetGroupedJoinedModels();
         }
 
         public static BusStopDataModel GetBusStops()
         {
-            return CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL);
+            return DocumentStoreRepository.GetBusStopDataModel();
         }
     }
 }

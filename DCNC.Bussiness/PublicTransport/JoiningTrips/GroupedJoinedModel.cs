@@ -4,6 +4,7 @@ namespace DCNC.Bussiness.PublicTransport.JoiningTrips
 {
     public class GroupedJoinedModel
     {
+        public string Id { get; set; }
         public Group Group { get; set; }
         public List<JoinedTripsModel> JoinedTripModels { get; set; }
     }

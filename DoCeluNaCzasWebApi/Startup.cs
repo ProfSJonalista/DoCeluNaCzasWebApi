@@ -51,8 +51,11 @@ namespace DoCeluNaCzasWebApi
             var documentStoreRepository = new DocumentStoreRepository();
             var publicTransportRepository = new PublicTransportRepository();
 
+            UpdateDataService.DocumentStoreRepository = documentStoreRepository;
+
             var delayJsonService = new DelayJsonService(publicTransportRepository);
             DelaysHub.DelayService = new DelayService(delayJsonService);
+            DelayService.DocumentStoreRepository = documentStoreRepository;
 
             var timeService = new DCNC.Service.PublicTransport.Time.TimeService();
 
@@ -80,6 +83,7 @@ namespace DoCeluNaCzasWebApi
             var updateServiceHelper = new UpdateServiceHelper(joiner, grouper, timeService, tripService, busStopService,
                 busLineService, expeditionService, stopInTripService, busStopModelService, documentStoreRepository);
 
+            documentStoreRepository.DeleteAllTimeTableJsons();
             await UpdateDataService.Init(timeService, updateServiceHelper);
 
             ConfigureServices(documentStoreRepository, publicTransportRepository);

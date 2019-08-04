@@ -11,13 +11,5 @@
         public static string STOP_IN_TRIP_DATA_LAST_UPDATE = "StopInTripDataLastUpdate";
 
         #endregion
-
-        #region Data to share
-
-        public static string BUS_STOP_DATA_MODEL = "BusStopDataModel";
-        public static string GROUPED_JOINED_MODEL_LIST = "GroupedJoinedTrips";
-        public static string CHOOSE_BUS_STOP_MODEL_OBSERVABALE_COLLECTION = "ChooseBusStolModelObservableCollection";
-
-        #endregion
     }
 }

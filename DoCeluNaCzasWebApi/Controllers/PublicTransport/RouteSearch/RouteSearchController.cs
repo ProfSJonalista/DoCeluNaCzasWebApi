@@ -17,7 +17,7 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
         {
             IDocumentStoreRepository dsr = new DocumentStoreRepository();
             var ts = new TimeSearcher(dsr);
-            _routeSearchService = new RouteSearchService(new RouteSearcher(), new TimeRouteSearcher(new RouteCreator(ts)), dsr);
+            _routeSearchService = new RouteSearchService(new RouteSearcher(dsr), new TimeRouteSearcher(new RouteCreator(ts)), dsr);
         }
 
         public List<Route> Get(int startStopId, int destStopId, bool departure, DateTime desiredTime)

@@ -1,19 +1,22 @@
-﻿using DCNC.Bussiness.PublicTransport.Delays;
+﻿using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Bussiness.PublicTransport.RouteSearch;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
+using DCNC.Service.Database.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using DCNC.Bussiness.PublicTransport.General;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
     public class RouteSearcher
     {
         readonly string[] separator = { ", " };
+        readonly IDocumentStoreRepository _documentStoreRepository;
+
+        public RouteSearcher(IDocumentStoreRepository documentStoreRepository)
+        {
+            _documentStoreRepository = documentStoreRepository;
+        }
 
         public List<Route> GetDirectLines(IEnumerable<Trip> trips, int startStopId, int destStopId)
         {
@@ -43,7 +46,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
         {
             var routesToReturn = new List<Route>();
             var listToIterate = trips.Where(x => x.Stops.FindIndex(y => y.StopId == startStopId) > -1);
-            var stopListWithConnectedBusLines = CacheService.GetData<BusStopDataModel>(CacheKeys.BUS_STOP_DATA_MODEL).Stops;
+            var stopListWithConnectedBusLines = _documentStoreRepository.GetBusStopDataModel().Stops;
 
             foreach (var trip in listToIterate)
             {

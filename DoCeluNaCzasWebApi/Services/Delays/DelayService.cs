@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using DCNC.Bussiness.PublicTransport.Delays;
 using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
+using DCNC.Service.Database.Interfaces;
 
 // ReSharper disable PossibleNullReferenceException
 
@@ -23,6 +24,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
         public static TripData TripData { get; set; }
         public static BusLineData BusLineData { get; set; }
         readonly DelayJsonService _delayJsonService;
+        public static IDocumentStoreRepository DocumentStoreRepository;
 
         public DelayService(DelayJsonService delayJsonService)
         {
@@ -126,7 +128,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 return stop;
             }));
 
-            CacheService.CacheData(busStopDataModel, CacheKeys.BUS_STOP_DATA_MODEL);
+            DocumentStoreRepository.UpdateBusStopDataModel(busStopDataModel);
         }
     }
 }

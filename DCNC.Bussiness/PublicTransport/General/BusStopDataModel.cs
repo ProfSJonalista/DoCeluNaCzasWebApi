@@ -6,6 +6,7 @@ namespace DCNC.Bussiness.PublicTransport.General
 {
     public class BusStopDataModel : CommonModel
     {
+        public string Id { get; set; }
         public ObservableCollection<StopModel> Stops { get; set; }
     }
 

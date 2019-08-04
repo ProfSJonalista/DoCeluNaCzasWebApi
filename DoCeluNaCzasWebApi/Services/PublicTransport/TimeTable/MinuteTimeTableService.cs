@@ -21,7 +21,7 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable
 
         public void SetMinuteTimeTables()
         {
-            var groupedJoinedTrips = CacheService.GetData<List<GroupedJoinedModel>>(CacheKeys.GROUPED_JOINED_MODEL_LIST);
+            var groupedJoinedTrips = _documentStoreRepository.GetGroupedJoinedModels();
 
             foreach (var group in groupedJoinedTrips)
             {
