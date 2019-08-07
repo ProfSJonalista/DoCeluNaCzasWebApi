@@ -15,10 +15,6 @@ namespace DCNC.DataAccess.PublicTransport
             {
                 return await Client.GetStringAsync(url);
             }
-            catch (HttpRequestException httpRequestException)
-            {
-                return string.Empty;
-            }
             catch (Exception exception)
             {
                 return string.Empty;
@@ -30,10 +26,6 @@ namespace DCNC.DataAccess.PublicTransport
             try
             {
                 return await client.GetStringAsync(url);
-            }
-            catch (HttpRequestException httpRequestException)
-            {
-                return string.Empty;
             }
             catch (Exception exception)
             {
