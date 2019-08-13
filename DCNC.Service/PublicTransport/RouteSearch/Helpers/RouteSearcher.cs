@@ -120,15 +120,21 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
         IEnumerable<Trip> GetPossibleChanges(IEnumerable<StopModel> stopListWithConnectedBusLines, Stop stop, IEnumerable<Trip> trips, int destStopId)
         {
-            var stopsWithBuses = stopListWithConnectedBusLines.SingleOrDefault(x => x.StopId == stop.StopId);
+            var stopWithBuses = stopListWithConnectedBusLines.SingleOrDefault(x => x.StopId == stop.StopId);
 
-            if (stopsWithBuses == null)
+            if (stopWithBuses == null)
                 return new List<Trip>();
 
-            var busLineNamesOnCurrentStop = stopsWithBuses.BusLineNames.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var busLineNamesOnCurrentStop = stopWithBuses.BusLineNames.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
-            var possibleChanges = trips.Where(tripModel => busLineNamesOnCurrentStop.Any(busLineName => busLineName.Equals(tripModel.BusLineName)))
-                .Where(tripModel => tripModel.Stops.Any(stopModel => stopModel.StopId == destStopId));
+            var possibleChanges = trips
+                .Where(tripModel => 
+                    busLineNamesOnCurrentStop
+                        .Any(busLineName => 
+                            busLineName.Equals(tripModel.BusLineName)))
+                .Where(tripModel => 
+                    tripModel.Stops
+                        .Any(stopModel => stopModel.StopId == destStopId));
 
             return possibleChanges;
         }

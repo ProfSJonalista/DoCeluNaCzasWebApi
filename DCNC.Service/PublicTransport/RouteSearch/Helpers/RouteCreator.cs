@@ -40,20 +40,6 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             return (firstElWithTime, lastElWithTime);
         }
 
-        public void SetTime(Route route)
-        {
-            route.DepartureTime = route.ChangeList.First().DepartureTime;
-            route.ArrivalTime = route.ChangeList.Last().ArrivalTime;
-            route.FullTimeOfTravel = route.ArrivalTime - route.DepartureTime;
-            route.Buses = "";
-
-            route.ChangeList.ForEach(x => { route.Buses += x.BusLineName + ", "; });
-
-            route.Buses = !string.IsNullOrEmpty(route.Buses)
-                ? route.Buses.Remove(route.Buses.Length - 2)
-                : "";
-        }
-
         public void SetDirect(Route route, Change changeToLookTimeFor, DateTime desiredTime, bool departure, bool before)
         {
             var changeToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, desiredTime, departure, before);
@@ -78,6 +64,20 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
             if (route.FullTimeOfTravel.Hours < 5 && route.FullTimeOfTravel > TimeSpan.Zero)
                 routesWithTime.Add(route);
+        }
+
+        public void SetTime(Route route)
+        {
+            route.DepartureTime = route.ChangeList.First().DepartureTime;
+            route.ArrivalTime = route.ChangeList.Last().ArrivalTime;
+            route.FullTimeOfTravel = route.ArrivalTime - route.DepartureTime;
+            route.Buses = "";
+
+            route.ChangeList.ForEach(x => { route.Buses += x.BusLineName + ", "; });
+
+            route.Buses = !string.IsNullOrEmpty(route.Buses)
+                ? route.Buses.Remove(route.Buses.Length - 2)
+                : "";
         }
     }
 }

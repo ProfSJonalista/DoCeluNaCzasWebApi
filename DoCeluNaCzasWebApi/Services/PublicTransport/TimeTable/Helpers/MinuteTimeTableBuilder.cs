@@ -1,6 +1,7 @@
 ﻿using DCNC.Bussiness.PublicTransport.TimeTable;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
 
@@ -77,8 +78,6 @@ namespace DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers
 
                 var minutes = stopTimes
                     .Where(x =>
-                        x.RouteId == stopModel.RouteId &&
-                        x.TripId == stopModel.TripId &&
                         x.StopId == stopModel.StopId &&
                         x.DepartureTime.Hour == hour)
                     .Select(y => y.DepartureTime.Minute)
