@@ -37,6 +37,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DCNC.DataAccess", "DCNC.Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoCeluNaCzasWebApi.Tests", "DoCeluNaCzasWebApi.Tests\DoCeluNaCzasWebApi.Tests.csproj", "{5DB5F070-BEC1-4752-9793-33D6784D75F1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E9D2D290-61E7-4E4D-9F9B-F5D763237077}"
+	ProjectSection(SolutionItems) = preProject
+		DCNCWAcodeMap.dgml = DCNCWAcodeMap.dgml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
