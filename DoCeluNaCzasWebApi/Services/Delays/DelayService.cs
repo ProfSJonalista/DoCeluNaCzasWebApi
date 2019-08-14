@@ -69,25 +69,25 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 if (difference.Minutes < 1 && difference.Seconds > 0)
                 {
                     return difference.Seconds > 10
-                        ? "> 1 min"
+                        ? "1 min"
                         : "Teraz!";
                 }
 
                 return difference.Minutes > 5
                     ? delay.EstimatedTime.ToShortTimeString()
-                    : "> " + difference.Minutes + " min";
+                    : difference.Minutes + " min";
             }
 
             if (difference.Minutes > -1 && difference.Seconds < 0)
             {
                 return difference.Seconds < -10
-                    ? "> 1 min"
-                    : "Teraz!";
+                    ? "Teraz!"
+                    : "1 min";
             }
 
             return difference.Minutes < -5
                 ? delay.EstimatedTime.ToShortTimeString()
-                : "> " + difference.Minutes + " min";
+                : difference.Minutes + " min";
         }
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
