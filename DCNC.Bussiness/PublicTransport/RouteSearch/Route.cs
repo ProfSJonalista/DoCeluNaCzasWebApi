@@ -9,6 +9,8 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
         public DateTime ArrivalTime { get; set; }
         public TimeSpan FullTimeOfTravel { get; set; }
         public string Buses { get; set; }
+        public StopChange FirstStop { get; set; }
+        public StopChange LastStop { get; set; }
         public List<Change> ChangeList { get; set; }
     }
 
@@ -21,6 +23,8 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
         public DateTime DepartureTime { get; set; }
         public DateTime ArrivalTime { get; set; }
         public TimeSpan TimeOfTravel { get; set; }
+        public StopChange FirstStop { get; set; }
+        public StopChange LastStop { get; set; }
         public List<StopChange> StopChangeList { get; set; }
     }
 
