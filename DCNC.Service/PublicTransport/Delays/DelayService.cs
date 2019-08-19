@@ -1,25 +1,21 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
+using DCNC.Bussiness.PublicTransport.RouteSearch;
 using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.Delays;
-using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DCNC.Bussiness.PublicTransport.RouteSearch;
-using DCNC.Service.Database.Interfaces;
-using Raven.Client.ServerWide.Operations;
 
 // ReSharper disable PossibleNullReferenceException
 
-namespace DoCeluNaCzasWebApi.Services.Delays
+namespace DCNC.Service.PublicTransport.Delays
 {
     public class DelayService
     {
@@ -48,7 +44,8 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             var stop = data.Delays.FirstOrDefault(
                 x => x.RouteId == stopChange.RouteId &&
                      x.TripId == stopChange.TripId &&
-                     x.TheoreticalTime == stopChange.ArrivalTime);
+                     x.TheoreticalTime.Hour == stopChange.ArrivalTime.Hour &&
+                     x.TheoreticalTime.Minute == stopChange.ArrivalTime.Minute);
 
             return stop != null ? Map(stop) : null;
         }
@@ -64,7 +61,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
             var routeShortName = BusLineData.Routes.FirstOrDefault(x => x.RouteId == item.RouteId).RouteShortName;
             var tripHeadsign = TripData.Trips
                 .FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
-            var headsign = JoinTripHelper.GetDestinationStopName(tripHeadsign);
+            var headsign = StopNameHelper.GetDestinationStopName(tripHeadsign);
             var delayMessage = GetDelayMessage(item);
 
             return new DelayModel()

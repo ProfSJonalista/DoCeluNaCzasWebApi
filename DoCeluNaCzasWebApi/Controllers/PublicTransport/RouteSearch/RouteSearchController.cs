@@ -5,6 +5,7 @@ using DCNC.Service.PublicTransport.RouteSearch;
 using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
@@ -20,9 +21,9 @@ namespace DoCeluNaCzasWebApi.Controllers.PublicTransport.RouteSearch
             _routeSearchService = new RouteSearchService(new RouteSearcher(dsr), new TimeRouteSearcher(new RouteCreator(ts)), dsr);
         }
 
-        public List<Route> Get(int startStopId, int destStopId, bool departure, DateTime desiredTime)
+        public async Task<List<Route>> Get(int startStopId, int destStopId, bool departure, DateTime desiredTime)
         {
-            return _routeSearchService.SearchRoute(startStopId, destStopId, departure, desiredTime);
+            return await _routeSearchService.SearchRoute(startStopId, destStopId, departure, desiredTime);
         }
     }
 }

@@ -1,15 +1,22 @@
 ﻿using DCNC.Bussiness.PublicTransport.RouteSearch;
 using DCNC.Bussiness.PublicTransport.TimeTable;
+using DCNC.DataAccess.PublicTransport;
 using DCNC.Service.Database.Interfaces;
+using DCNC.Service.PublicTransport.Delays;
+using DCNC.Service.PublicTransport.JsonData.Delays;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
     public class TimeSearcher
     {
         static readonly int totalMinutes = 240;
+
+        DelayService _delayService = new DelayService(new DelayJsonService(new PublicTransportRepository()));
+
         readonly IDocumentStoreRepository _documentStoreRepository;
 
         public TimeSearcher(IDocumentStoreRepository documentStoreRepository)
@@ -17,13 +24,15 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             _documentStoreRepository = documentStoreRepository;
         }
 
-        public Change GetChangeWithTime(Change change, DateTime desiredTime, bool departure, bool before)
+        public async Task<Change> GetChangeWithTime(Change change, DateTime desiredTime, bool departure, bool before)
         {
             var changeToReturn = new Change
             {
                 BusLineName = change.BusLineName,
                 RouteId = change.RouteId,
                 ChangeNo = change.ChangeNo,
+                FirstStop = new StopChange(),
+                LastStop = new StopChange(),
                 StopChangeList = new List<StopChange>()
             };
 
@@ -59,13 +68,18 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                     OnDemand = stopChange.OnDemand
                 };
 
+                var delayModel = await _delayService.GetOneDelay(stopChangeToAdd);
+
+                if (delayModel != null)
+                    stopChangeToAdd.EstimatedTime = delayModel.EstimatedTime;
+
                 changeToReturn.StopChangeList.Add(stopChangeToAdd);
             }
 
             changeToReturn.TripId = startingStopTime.TripId;
-            changeToReturn.DepartureTime = changeToReturn.StopChangeList.First().DepartureTime;
-            changeToReturn.ArrivalTime = changeToReturn.StopChangeList.Last().DepartureTime;
-            changeToReturn.TimeOfTravel = changeToReturn.ArrivalTime - changeToReturn.DepartureTime;
+            changeToReturn.FirstStop = changeToReturn.StopChangeList.First();
+            changeToReturn.LastStop = changeToReturn.StopChangeList.Last();
+            changeToReturn.TimeOfTravel = changeToReturn.LastStop.ArrivalTime - changeToReturn.FirstStop.DepartureTime;
 
             return changeToReturn;
         }

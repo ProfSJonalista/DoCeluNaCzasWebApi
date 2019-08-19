@@ -4,6 +4,7 @@ using DCNC.Service.PublicTransport.RouteSearch.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DCNC.Service.PublicTransport.RouteSearch
 {
@@ -20,7 +21,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             _documentStoreRepository = documentStoreRepository;
         }
 
-        public List<Route> SearchRoute(int startStopId, int destStopId, bool departure, DateTime desiredTime)
+        public async Task<List<Route>> SearchRoute(int startStopId, int destStopId, bool departure, DateTime desiredTime)
         {
             var tripsWithBusStops = _documentStoreRepository.GetTripsByDayOfWeek(desiredTime.DayOfWeek);
             var routesToReturn = _routeSearcher.GetDirectLines(tripsWithBusStops.Trips, startStopId, destStopId);
@@ -28,9 +29,9 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             if (routesToReturn.Count <= 0)
                 routesToReturn = _routeSearcher.GetRoutes(tripsWithBusStops.Trips, startStopId, destStopId);
 
-            routesToReturn = _timeRouteSearcher.GetTimeForRoutes(routesToReturn, departure, desiredTime);
+            routesToReturn = await _timeRouteSearcher.GetTimeForRoutesAsync(routesToReturn, departure, desiredTime);
 
-            routesToReturn = routesToReturn.OrderBy(x => x.DepartureTime).ToList();
+            routesToReturn = routesToReturn.OrderBy(x => x.FirstStop.DepartureTime).ToList();
 
             //routesToReturn = (
             //    from o in routesToReturn

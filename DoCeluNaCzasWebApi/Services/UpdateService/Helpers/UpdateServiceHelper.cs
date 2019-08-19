@@ -2,12 +2,10 @@
 using DCNC.Bussiness.PublicTransport.JsonData;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
 using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
 using DCNC.Service.Database.Interfaces;
+using DCNC.Service.PublicTransport.Delays;
 using DCNC.Service.PublicTransport.JsonData.Abstracts.Interfaces;
 using DCNC.Service.PublicTransport.Time;
-using DoCeluNaCzasWebApi.Services.Delays;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
 using Newtonsoft.Json.Linq;
 using System;
@@ -20,7 +18,7 @@ namespace DoCeluNaCzasWebApi.Services.UpdateService.Helpers
 {
     public class UpdateServiceHelper
     {
-        private readonly TimeService _timeService;
+        readonly TimeService _timeService;
 
         readonly Joiner _joiner;
         readonly Grouper _grouper;
