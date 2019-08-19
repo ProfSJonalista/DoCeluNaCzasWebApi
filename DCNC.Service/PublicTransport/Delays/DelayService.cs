@@ -37,17 +37,22 @@ namespace DCNC.Service.PublicTransport.Delays
             return new ObservableCollection<DelayModel>(convertedData);
         }
 
-        public async Task<DelayModel> GetOneDelay(StopChange stopChange)
+        public async Task<StopChange> GetOneDelay(StopChange stopChange)
         {
             var data = await GetData(stopChange.StopId);
 
-            var stop = data.Delays.FirstOrDefault(
+            var delay = data.Delays.FirstOrDefault(
                 x => x.RouteId == stopChange.RouteId &&
                      x.TripId == stopChange.TripId &&
                      x.TheoreticalTime.Hour == stopChange.ArrivalTime.Hour &&
                      x.TheoreticalTime.Minute == stopChange.ArrivalTime.Minute);
 
-            return stop != null ? Map(stop) : null;
+            if (delay != null && delay.EstimatedTime > DateTime.MinValue)
+            {
+                stopChange.EstimatedTime = delay.EstimatedTime;
+            }
+
+            return stopChange;
         }
 
         async Task<DelayData> GetData(int stopId)

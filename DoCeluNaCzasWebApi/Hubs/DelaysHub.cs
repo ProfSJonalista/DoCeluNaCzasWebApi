@@ -20,7 +20,7 @@ namespace DoCeluNaCzasWebApi.Hubs
         }
 
         [HubMethodName("GetOneDelay")]
-        public async Task<DelayModel> GetOneDelay(StopChange stopChange)
+        public async Task<StopChange> GetOneDelay(StopChange stopChange)
         {
             return await DelayService.GetOneDelay(stopChange);
         }
