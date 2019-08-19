@@ -9,7 +9,6 @@ using DCNC.Service.PublicTransport.JsonData.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable;
 using DCNC.Service.PublicTransport.TimeTable.Helpers;
 using DoCeluNaCzasWebApi.Hubs;
-using DoCeluNaCzasWebApi.Services.Delays;
 using DoCeluNaCzasWebApi.Services.PublicTransport.Joining;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable;
 using DoCeluNaCzasWebApi.Services.PublicTransport.TimeTable.Helpers;
@@ -22,6 +21,7 @@ using PublicHoliday;
 using System.Web.Http;
 using DCNC.DataAccess.PublicTransport.Interfaces;
 using DCNC.Service.Database.Interfaces;
+using DCNC.Service.PublicTransport.Delays;
 
 [assembly: OwinStartup(typeof(DoCeluNaCzasWebApi.Startup))]
 
@@ -38,7 +38,7 @@ namespace DoCeluNaCzasWebApi
 
             app.UseWebApi(config);
 
-            ConfigureAuth(app);
+            //ConfigureAuth(app);
 
             var hubConfiguration = new HubConfiguration { EnableDetailedErrors = true };
             app.MapSignalR(hubConfiguration);

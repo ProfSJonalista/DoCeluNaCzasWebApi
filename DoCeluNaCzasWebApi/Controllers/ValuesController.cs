@@ -1,6 +1,6 @@
 ﻿using DCNC.DataAccess.PublicTransport;
+using DCNC.Service.PublicTransport.Delays;
 using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Services.Delays;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;

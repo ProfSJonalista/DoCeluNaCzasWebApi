@@ -1,23 +1,21 @@
-﻿using System;
+﻿using DCNC.Bussiness.PublicTransport.Delays;
+using DCNC.Bussiness.PublicTransport.General;
+using DCNC.Bussiness.PublicTransport.JoiningTrips;
 using DCNC.Bussiness.PublicTransport.JsonData.General;
+using DCNC.Bussiness.PublicTransport.RouteSearch;
 using DCNC.DataAccess.PublicTransport.Helpers;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.JsonData.Delays;
-using DoCeluNaCzasWebApi.Services.PublicTransport.Joining.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DCNC.Bussiness.PublicTransport.Delays;
-using DCNC.Bussiness.PublicTransport.General;
-using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DCNC.Service.Database.Interfaces;
 
 // ReSharper disable PossibleNullReferenceException
 
-namespace DoCeluNaCzasWebApi.Services.Delays
+namespace DCNC.Service.PublicTransport.Delays
 {
     public class DelayService
     {
@@ -33,31 +31,50 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
         public async Task<ObservableCollection<DelayModel>> GetDelays(int stopId)
         {
-            var url = string.Format(Urls.Delays, stopId);
-            var data = await _delayJsonService.GetData(url);
-
-            var convertedData = data.Delays.Select(item =>
-            {
-                var routeShortName = BusLineData.Routes.FirstOrDefault(x => x.RouteId == item.RouteId).RouteShortName;
-                var tripHeadsign = TripData.Trips
-                    .FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
-                var headsign = JoinTripHelper.GetDestinationStopName(tripHeadsign);
-                var delayMessage = GetDelayMessage(item);
-
-                return new DelayModel()
-                {
-                    RouteId = item.RouteId,
-                    TripId = item.TripId,
-                    BusLineName = routeShortName,
-                    Headsign = headsign,
-                    DelayMessage = delayMessage,
-                    TheoreticalTime = item.TheoreticalTime,
-                    EstimatedTime = item.EstimatedTime,
-                    Timestamp = item.TimeStamp
-                };
-            }).ToList();
+            var data = await GetData(stopId);
+            var convertedData = data.Delays.Select(Map).ToList();
 
             return new ObservableCollection<DelayModel>(convertedData);
+        }
+
+        public async Task<DelayModel> GetOneDelay(StopChange stopChange)
+        {
+            var data = await GetData(stopChange.StopId);
+
+            var stop = data.Delays.FirstOrDefault(
+                x => x.RouteId == stopChange.RouteId &&
+                     x.TripId == stopChange.TripId &&
+                     x.TheoreticalTime.Hour == stopChange.ArrivalTime.Hour &&
+                     x.TheoreticalTime.Minute == stopChange.ArrivalTime.Minute);
+
+            return stop != null ? Map(stop) : null;
+        }
+
+        async Task<DelayData> GetData(int stopId)
+        {
+            var url = string.Format(Urls.Delays, stopId);
+            return await _delayJsonService.GetData(url);
+        }
+
+        static DelayModel Map(Delay item)
+        {
+            var routeShortName = BusLineData.Routes.FirstOrDefault(x => x.RouteId == item.RouteId).RouteShortName;
+            var tripHeadsign = TripData.Trips
+                .FirstOrDefault(x => x.RouteId == item.RouteId && x.TripId == item.TripId).TripHeadsign;
+            var headsign = StopNameHelper.GetDestinationStopName(tripHeadsign);
+            var delayMessage = GetDelayMessage(item);
+
+            return new DelayModel()
+            {
+                RouteId = item.RouteId,
+                TripId = item.TripId,
+                BusLineName = routeShortName,
+                Headsign = headsign,
+                DelayMessage = delayMessage,
+                TheoreticalTime = item.TheoreticalTime,
+                EstimatedTime = item.EstimatedTime,
+                Timestamp = item.TimeStamp
+            };
         }
 
         static string GetDelayMessage(Delay delay)
@@ -69,25 +86,25 @@ namespace DoCeluNaCzasWebApi.Services.Delays
                 if (difference.Minutes < 1 && difference.Seconds > 0)
                 {
                     return difference.Seconds > 10
-                        ? "> 1 min"
+                        ? "1 min"
                         : "Teraz!";
                 }
 
                 return difference.Minutes > 5
                     ? delay.EstimatedTime.ToShortTimeString()
-                    : "> " + difference.Minutes + " min";
+                    : difference.Minutes + " min";
             }
 
             if (difference.Minutes > -1 && difference.Seconds < 0)
             {
                 return difference.Seconds < -10
-                    ? "> 1 min"
-                    : "Teraz!";
+                    ? "Teraz!"
+                    : "1 min";
             }
 
             return difference.Minutes < -5
                 ? delay.EstimatedTime.ToShortTimeString()
-                : "> " + difference.Minutes + " min";
+                : difference.Minutes + " min";
         }
 
         public static void SetChooseBusStopModelCollection(BusStopDataModel busStopDataModel, List<GroupedJoinedModel> groupedJoinedTrips)
@@ -130,5 +147,7 @@ namespace DoCeluNaCzasWebApi.Services.Delays
 
             DocumentStoreRepository.UpdateBusStopDataModel(busStopDataModel);
         }
+
+        
     }
 }

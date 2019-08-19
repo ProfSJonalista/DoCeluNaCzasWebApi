@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 {
@@ -14,35 +15,35 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
             _timeSearcher = timeSearcher;
         }
 
-        public (Change, Change) GetDepartureTime(Change firstEl, Change lastEl, DateTime desiredTime, bool departure, bool firstElBefore, bool lastElBefore)
+        public async Task<(Change, Change)> GetDepartureTime(Change firstEl, Change lastEl, DateTime desiredTime, bool departure, bool firstElBefore, bool lastElBefore)
         {
-            var firstElWithTime = _timeSearcher.GetChangeWithTime(firstEl, desiredTime, departure, firstElBefore);
+            var firstElWithTime = await _timeSearcher.GetChangeWithTime(firstEl, desiredTime, departure, firstElBefore);
 
-            var arrivalTime = firstElWithTime.ArrivalTime.AddMinutes(1);
-            var lastElWithTime = _timeSearcher.GetChangeWithTime(lastEl, arrivalTime, departure, lastElBefore);
+            var arrivalTime = firstElWithTime.LastStop.ArrivalTime.AddMinutes(1);
+            var lastElWithTime = await _timeSearcher.GetChangeWithTime(lastEl, arrivalTime, departure, lastElBefore);
 
             return (firstElWithTime, lastElWithTime);
         }
 
-        public (Change, Change) GetArrivalTime(Change firstEl, Change lastEl, DateTime desiredTime, bool departure, bool firstElBefore, bool lastElBefore)
+        public async Task<(Change, Change)> GetArrivalTime(Change firstEl, Change lastEl, DateTime desiredTime, bool departure, bool firstElBefore, bool lastElBefore)
         {
             Change firstElWithTime;
-            var lastElWithTime = _timeSearcher.GetChangeWithTime(lastEl, desiredTime, departure, lastElBefore);
+            var lastElWithTime = await _timeSearcher.GetChangeWithTime(lastEl, desiredTime, departure, lastElBefore);
 
-            if (lastElWithTime.DepartureTime.Year < 1899)
+            if (lastElWithTime.FirstStop.DepartureTime.Year < 1899)
                 firstElWithTime = new Change();
             else
             {
-                var substractedDepTime = lastElWithTime.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
-                firstElWithTime = _timeSearcher.GetChangeWithTime(firstEl, substractedDepTime, departure, firstElBefore);
+                var substractedDepTime = lastElWithTime.FirstStop.DepartureTime.Subtract(new TimeSpan(0, 1, 0));
+                firstElWithTime = await _timeSearcher.GetChangeWithTime(firstEl, substractedDepTime, departure, firstElBefore);
             }
 
             return (firstElWithTime, lastElWithTime);
         }
 
-        public void SetDirect(Route route, Change changeToLookTimeFor, DateTime desiredTime, bool departure, bool before)
+        public async Task SetDirect(Route route, Change changeToLookTimeFor, DateTime desiredTime, bool departure, bool before)
         {
-            var changeToAdd = _timeSearcher.GetChangeWithTime(changeToLookTimeFor, desiredTime, departure, before);
+            var changeToAdd = await _timeSearcher.GetChangeWithTime(changeToLookTimeFor, desiredTime, departure, before);
 
             if (changeToAdd.TimeOfTravel.Minutes != 0)
                 route.ChangeList.Add(changeToAdd);
@@ -68,9 +69,9 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
 
         public void SetTime(Route route)
         {
-            route.DepartureTime = route.ChangeList.First().DepartureTime;
-            route.ArrivalTime = route.ChangeList.Last().ArrivalTime;
-            route.FullTimeOfTravel = route.ArrivalTime - route.DepartureTime;
+            route.FirstStop = route.ChangeList.First().FirstStop;
+            route.LastStop = route.ChangeList.Last().LastStop;
+            route.FullTimeOfTravel = route.LastStop.ArrivalTime - route.FirstStop.DepartureTime;
             route.Buses = "";
 
             route.ChangeList.ForEach(x => { route.Buses += x.BusLineName + ", "; });

@@ -1,15 +1,11 @@
 ﻿using DCNC.Bussiness.PublicTransport.General;
 using DCNC.Bussiness.PublicTransport.JoiningTrips;
-using DCNC.Service.Caching;
-using DCNC.Service.Caching.Helpers;
+using DCNC.Service.Database.Interfaces;
 using DCNC.Service.PublicTransport.Time;
 using DoCeluNaCzasWebApi.Services.UpdateService.Helpers;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using DCNC.Service.Database.Interfaces;
-using Newtonsoft.Json.Linq;
 
 namespace DoCeluNaCzasWebApi.Services.UpdateService
 {

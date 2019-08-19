@@ -15,7 +15,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch
             _routeCreator = routeCreator;
         }
 
-        public List<Route> GetTimeForRoutes(List<Route> routes, bool departure, DateTime desiredTime)
+        public async System.Threading.Tasks.Task<List<Route>> GetTimeForRoutesAsync(List<Route> routes, bool departure, DateTime desiredTime)
         {
             var routesWithTime = new List<Route>();
 
@@ -33,8 +33,8 @@ namespace DCNC.Service.PublicTransport.RouteSearch
                 {
                     var changeToLookTimeFor = route.ChangeList.First();
 
-                    _routeCreator.SetDirect(routeOneToAdd, changeToLookTimeFor, desiredTime, departure, before: true);
-                    _routeCreator.SetDirect(routeTwoToAdd, changeToLookTimeFor, desiredTime, departure, before: false);
+                    await _routeCreator.SetDirect(routeOneToAdd, changeToLookTimeFor, desiredTime, departure, before: true);
+                    await _routeCreator.SetDirect(routeTwoToAdd, changeToLookTimeFor, desiredTime, departure, before: false);
                 }
 
                 if (changeListCount > 1)
@@ -50,13 +50,13 @@ namespace DCNC.Service.PublicTransport.RouteSearch
 
                     if (departure)
                     {
-                        (firstElWithTimeOne, lastElWithTimeOne) = _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, departure: true, firstElBefore: true, lastElBefore: false);
-                        (firstElWithTimeTwo, lastElWithTimeTwo) = _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, departure: true, firstElBefore: false, lastElBefore: false);
+                        (firstElWithTimeOne, lastElWithTimeOne) = await _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, departure: true, firstElBefore: true, lastElBefore: false);
+                        (firstElWithTimeTwo, lastElWithTimeTwo) = await _routeCreator.GetDepartureTime(firstEl, lastEl, desiredTime, departure: true, firstElBefore: false, lastElBefore: false);
                     }
                     else
                     {
-                        (firstElWithTimeOne, lastElWithTimeOne) = _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, departure: false, firstElBefore: true, lastElBefore: true);
-                        (firstElWithTimeTwo, lastElWithTimeTwo) = _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, departure: false, firstElBefore: true, lastElBefore: false);
+                        (firstElWithTimeOne, lastElWithTimeOne) = await _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, departure: false, firstElBefore: true, lastElBefore: true);
+                        (firstElWithTimeTwo, lastElWithTimeTwo) = await _routeCreator.GetArrivalTime(firstEl, lastEl, desiredTime, departure: false, firstElBefore: true, lastElBefore: false);
                     }
 
                     _routeCreator.CheckTime(routeOneToAdd, firstElWithTimeOne, lastElWithTimeOne);
