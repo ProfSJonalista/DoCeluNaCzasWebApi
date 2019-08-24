@@ -18,6 +18,7 @@ namespace DCNC.Bussiness.PublicTransport.RouteSearch
         public int RouteId { get; set; }
         public int TripId { get; set; }
         public int ChangeNo { get; set; }
+        public string TripHeadsign { get; set; }
         public TimeSpan TimeOfTravel { get; set; }
         public StopChange FirstStop { get; set; }
         public StopChange LastStop { get; set; }
