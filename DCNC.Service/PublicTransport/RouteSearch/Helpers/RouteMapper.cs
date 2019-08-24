@@ -15,6 +15,7 @@ namespace DCNC.Service.PublicTransport.RouteSearch.Helpers
                 RouteId = trip.RouteId,
                 TripId = trip.TripId,
                 ChangeNo = changeNo,
+                TripHeadsign = trip.TripHeadsign,
                 StopChangeList = MapStops(trip.Stops, startStopIndex, destStopIndex)
             };
         }
