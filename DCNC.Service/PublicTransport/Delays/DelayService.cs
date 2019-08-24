@@ -51,6 +51,10 @@ namespace DCNC.Service.PublicTransport.Delays
             {
                 stopChange.EstimatedTime = delay.EstimatedTime;
             }
+            else
+            {
+                stopChange.EstimatedTime = stopChange.ArrivalTime;
+            }
 
             return stopChange;
         }
