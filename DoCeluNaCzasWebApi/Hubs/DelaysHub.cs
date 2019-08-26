@@ -1,4 +1,5 @@
-﻿using DCNC.Bussiness.PublicTransport.Delays;
+﻿using System;
+using DCNC.Bussiness.PublicTransport.Delays;
 using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 using System.Collections.ObjectModel;
@@ -23,6 +24,20 @@ namespace DoCeluNaCzasWebApi.Hubs
         public async Task<StopChange> GetOneDelay(StopChange stopChange)
         {
             return await DelayService.GetOneDelay(stopChange);
+        }
+
+        [HubMethodName("GetOneDelay")]
+        public async Task<string> GetOneDelay(int stopId, int routeId, int tripId, int arrivalTimeHour, int arrivalTimeMinute)
+        {
+            var result = await DelayService.GetOneDelay(new StopChange
+            {
+                StopId = stopId,
+                RouteId = routeId,
+                TripId = tripId,
+                ArrivalTime = new DateTime(1899, 11, 9, arrivalTimeHour, arrivalTimeMinute, 0),
+            });
+
+            return result.EstimatedTime.ToShortTimeString();
         }
     }
 }
